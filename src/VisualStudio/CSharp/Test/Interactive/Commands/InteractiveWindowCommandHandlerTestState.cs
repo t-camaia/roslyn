@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.Interactive;
 using Microsoft.CodeAnalysis.Editor.UnitTests;
 using Microsoft.VisualStudio.Text.Editor;
@@ -9,6 +8,8 @@ using Microsoft.VisualStudio.Utilities;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.Text;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Utilities;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Interactive.Commands
 {
@@ -30,9 +31,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Interactive.Commands
 
         public TestInteractiveEvaluator Evaluator => TestHost.Evaluator;
 
-        private ICommandHandler<ExecuteInInteractiveCommandArgs> ExecuteInInteractiveCommandHandler => _commandHandler;
+        private VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs> ExecuteInInteractiveCommandHandler => _commandHandler;
 
-        private ICommandHandler<CopyToInteractiveCommandArgs> CopyToInteractiveCommandHandler => _commandHandler;
+        private VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs> CopyToInteractiveCommandHandler => _commandHandler;
 
         public InteractiveWindowCommandHandlerTestState(XElement workspaceElement)
             : base(workspaceElement)
@@ -63,27 +64,19 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Interactive.Commands
         public void SendCopyToInteractive()
         {
             var copyToInteractiveArgs = new CopyToInteractiveCommandArgs(TextView, SubjectBuffer);
-            CopyToInteractiveCommandHandler.ExecuteCommand(copyToInteractiveArgs, () => { });
-        }
-
-        public CommandState GetStateForCopyToInteractive()
-        {
-            var copyToInteractiveArgs = new CopyToInteractiveCommandArgs(TextView, SubjectBuffer);
-            return CopyToInteractiveCommandHandler.GetCommandState(
-                copyToInteractiveArgs, () => { return CommandState.Unavailable; });
+            CopyToInteractiveCommandHandler.ExecuteCommand(copyToInteractiveArgs, new TestCommandExecutionContext());
         }
 
         public void ExecuteInInteractive()
         {
             var executeInInteractiveArgs = new ExecuteInInteractiveCommandArgs(TextView, SubjectBuffer);
-            ExecuteInInteractiveCommandHandler.ExecuteCommand(executeInInteractiveArgs, () => { });
+            ExecuteInInteractiveCommandHandler.ExecuteCommand(executeInInteractiveArgs, new TestCommandExecutionContext());
         }
 
-        public CommandState GetStateForExecuteInInteractive()
+        public VisualStudio.Commanding.CommandState GetStateForExecuteInInteractive()
         {
             var executeInInteractiveArgs = new ExecuteInInteractiveCommandArgs(TextView, SubjectBuffer);
-            return ExecuteInInteractiveCommandHandler.GetCommandState(
-                executeInInteractiveArgs, () => { return CommandState.Unavailable; });
+            return ExecuteInInteractiveCommandHandler.GetCommandState(executeInInteractiveArgs);
         }
     }
 }

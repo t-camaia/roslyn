@@ -2,7 +2,8 @@
 
 using System;
 using System.Linq;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -10,20 +11,20 @@ using Microsoft.VisualStudio.Text.Editor;
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        ICommandHandler<WordDeleteToStartCommandArgs>,
-        ICommandHandler<WordDeleteToEndCommandArgs>
+        IChainedCommandHandler<WordDeleteToStartCommandArgs>,
+        IChainedCommandHandler<WordDeleteToEndCommandArgs>
     {
-        public CommandState GetCommandState(WordDeleteToStartCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(WordDeleteToStartCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public CommandState GetCommandState(WordDeleteToEndCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(WordDeleteToEndCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public void ExecuteCommand(WordDeleteToStartCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(WordDeleteToStartCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             if (HandleWordDeleteCommand(args.SubjectBuffer, args.TextView, deleteToStart: true))
             {
@@ -33,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             nextHandler();
         }
 
-        public void ExecuteCommand(WordDeleteToEndCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(WordDeleteToEndCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             if (HandleWordDeleteCommand(args.SubjectBuffer, args.TextView, deleteToStart: false))
             {

@@ -9,16 +9,26 @@ Imports Microsoft.CodeAnalysis.Shared.Extensions
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.VisualBasic.Extensions
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.TextManager.Interop
 Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
-    <ExportCommandHandler("VB Snippets", ContentTypeNames.VisualBasicContentType)>
+    <Export(GetType(Commanding.ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name("VB Snippets")>
+    <HandlesCommand(GetType(SurroundWithCommandArgs))>
+    <HandlesCommand(GetType(TabKeyCommandArgs))>
+    <HandlesCommand(GetType(BackTabKeyCommandArgs))>
+    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
+    <HandlesCommand(GetType(EscapeKeyCommandArgs))>
+    <HandlesCommand(GetType(InsertSnippetCommandArgs))>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>
     <Order(After:=PredefinedCommandHandlerNames.IntelliSense)>
     Friend NotInheritable Class SnippetCommandHandler
@@ -41,13 +51,12 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
             Return SnippetExpansionClient.GetSnippetExpansionClient(textView, subjectBuffer, EditorAdaptersFactoryService)
         End Function
 
-        Protected Overrides Sub InvokeInsertionUI(textView As ITextView, subjectBuffer As ITextBuffer, nextHandler As Action, Optional surroundWith As Boolean = False)
+        Protected Overrides Function TryInvokeInsertionUI(textView As ITextView, subjectBuffer As ITextBuffer, Optional surroundWith As Boolean = False) As Boolean
             Debug.Assert(Not surroundWith)
 
             Dim expansionManager As IVsExpansionManager = Nothing
             If Not TryGetExpansionManager(expansionManager) Then
-                nextHandler()
-                Return
+                Return False
             End If
 
             expansionManager.InvokeInsertionUI(
@@ -63,7 +72,9 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
                 bstrPrefixText:=BasicVSResources.Insert_Snippet,
                 bstrCompletionChar:=">"c)
 
-        End Sub
+            Return True
+
+        End Function
 
         Protected Overrides Function TryInvokeSnippetPickerOnQuestionMark(textView As ITextView, subjectBuffer As ITextBuffer) As Boolean
             Dim text = subjectBuffer.AsTextContainer().CurrentText
@@ -73,7 +84,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
                 (caretPosition = 1 AndAlso text(0) = "?"c) Then
 
                 DeleteQuestionMark(textView, subjectBuffer, caretPosition)
-                InvokeInsertionUI(textView, subjectBuffer, Sub() Return)
+                TryInvokeInsertionUI(textView, subjectBuffer)
                 Return True
             End If
 
@@ -90,6 +101,5 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
                 editorWorkspace.ApplyTextChanges(document.Id, change, CancellationToken.None)
             End If
         End Sub
-
     End Class
 End Namespace

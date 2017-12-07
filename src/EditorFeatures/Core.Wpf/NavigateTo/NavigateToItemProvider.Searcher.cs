@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Shared.TestHooks;
 using Microsoft.CodeAnalysis.Shared.Utilities;
 using Microsoft.VisualStudio.Language.NavigateTo.Interfaces;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigateTo
 {
     internal partial class NavigateToItemProvider
@@ -167,3 +168,4 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigateTo
         }
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete

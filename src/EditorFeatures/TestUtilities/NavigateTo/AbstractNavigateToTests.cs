@@ -25,6 +25,7 @@ using Roslyn.Test.EditorUtilities.NavigateTo;
 using Roslyn.Test.Utilities;
 using Xunit;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.CodeAnalysis.Editor.UnitTests.NavigateTo
 {
     public abstract class AbstractNavigateToTests
@@ -165,3 +166,4 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.NavigateTo
         }
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete

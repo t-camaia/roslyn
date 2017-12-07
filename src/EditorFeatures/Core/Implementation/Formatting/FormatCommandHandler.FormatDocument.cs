@@ -1,29 +1,29 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis.Editor.Commands;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
     internal partial class FormatCommandHandler
     {
-        public CommandState GetCommandState(FormatDocumentCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(FormatDocumentCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return GetCommandState(args.SubjectBuffer, nextHandler);
         }
 
-        public void ExecuteCommand(FormatDocumentCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(FormatDocumentCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            if (!TryExecuteCommand(args))
+            if (!TryExecuteCommand(args, context))
             {
                 nextHandler();
             }
         }
 
-        private bool TryExecuteCommand(FormatDocumentCommandArgs args)
+        private bool TryExecuteCommand(FormatDocumentCommandArgs args, CommandExecutionContext context)
         {
             if (!args.SubjectBuffer.CanApplyChangeDocumentToWorkspace())
             {
@@ -42,19 +42,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            var result = false;
-            _waitIndicator.Wait(
-                title: EditorFeaturesResources.Format_Document,
-                message: EditorFeaturesResources.Formatting_document,
-                allowCancel: true,
-                action: waitContext =>
-                {
-                    Format(args.TextView, document, null, waitContext.CancellationToken);
-                    result = true;
-                });
+            context.WaitContext.AllowCancellation = true;
+            context.WaitContext.Description = EditorFeaturesResources.Formatting_document;
 
+            Format(args.TextView, document, null, context.WaitContext.CancellationToken);
+            
             // We don't call nextHandler, since we have handled this command.
-            return result;
+            return true;
         }
     }
 }

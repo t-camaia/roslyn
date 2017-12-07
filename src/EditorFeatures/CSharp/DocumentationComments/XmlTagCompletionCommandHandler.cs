@@ -8,20 +8,25 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments;
 using Microsoft.CodeAnalysis.Shared.Extensions;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
 {
-    [ExportCommandHandler("XmlTagCompletionCommandHandler", ContentTypeNames.CSharpContentType)]
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.CSharpContentType)]
+    [Name("XmlTagCompletionCommandHandler")]
+    [HandlesCommand(typeof(TypeCharCommandArgs))]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal class XmlTagCompletionCommandHandler : AbstractXmlTagCompletionCommandHandler
     {
         [ImportingConstructor]
-        public XmlTagCompletionCommandHandler(ITextUndoHistoryRegistry undoHistory, IWaitIndicator waitIndicator)
-            : base(undoHistory, waitIndicator)
+        public XmlTagCompletionCommandHandler(ITextUndoHistoryRegistry undoHistory)
+            : base(undoHistory)
         {
         }
 

@@ -8,12 +8,16 @@ Imports Microsoft.CodeAnalysis.Formatting.Rules
 Imports Microsoft.CodeAnalysis.Options
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualStudio.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Formatting.Indentation
-    <ExportCommandHandler(PredefinedCommandHandlerNames.Indent,
-        ContentTypeNames.VisualBasicContentType)>
+    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <ContentType(ContentTypeNames.CSharpContentType)>
+    <Name(PredefinedCommandHandlerNames.Indent)>
+    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
     <Order(After:=PredefinedCommandHandlerNames.Rename)>
     Friend Class SmartTokenFormatterCommandHandler
         Inherits AbstractSmartTokenFormatterCommandHandler

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
+using Microsoft.CodeAnalysis.Editor.UnitTests.Utilities;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
@@ -31,7 +32,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SplitStringLiteral
                 var commandHandler = new SplitStringLiteralCommandHandler(
                     undoHistoryRegistry,
                     workspace.GetService<IEditorOperationsFactoryService>());
-                commandHandler.ExecuteCommand(new ReturnKeyCommandArgs(view, view.TextBuffer), callback);
+                //TODO: fix it
+                commandHandler.ExecuteCommand(new VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs(view, view.TextBuffer), new TestCommandExecutionContext());
 
                 if (expectedOutputMarkup != null)
                 {

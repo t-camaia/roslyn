@@ -2,19 +2,20 @@
 
 using System;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 {
     internal partial class Controller
     {
-        CommandState ICommandHandler<ReturnKeyCommandArgs>.GetCommandState(ReturnKeyCommandArgs args, Func<CommandState> nextHandler)
+        VisualStudio.Commanding.CommandState IChainedCommandHandler<ReturnKeyCommandArgs>.GetCommandState(ReturnKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return nextHandler();
         }
 
-        void ICommandHandler<ReturnKeyCommandArgs>.ExecuteCommand(ReturnKeyCommandArgs args, Action nextHandler)
+        void IChainedCommandHandler<ReturnKeyCommandArgs>.ExecuteCommand(ReturnKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             AssertIsForeground();
 

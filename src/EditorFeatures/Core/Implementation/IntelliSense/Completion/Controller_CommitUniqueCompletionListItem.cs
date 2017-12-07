@@ -4,22 +4,22 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
-using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 {
     internal partial class Controller
     {
-        CommandState ICommandHandler<CommitUniqueCompletionListItemCommandArgs>.GetCommandState(CommitUniqueCompletionListItemCommandArgs args, Func<CommandState> nextHandler)
+        VisualStudio.Commanding.CommandState IChainedCommandHandler<CommitUniqueCompletionListItemCommandArgs>.GetCommandState(CommitUniqueCompletionListItemCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return nextHandler();
         }
 
-        void ICommandHandler<CommitUniqueCompletionListItemCommandArgs>.ExecuteCommand(
-            CommitUniqueCompletionListItemCommandArgs args, Action nextHandler)
+        void IChainedCommandHandler<CommitUniqueCompletionListItemCommandArgs>.ExecuteCommand(
+            CommitUniqueCompletionListItemCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             AssertIsForeground();
 

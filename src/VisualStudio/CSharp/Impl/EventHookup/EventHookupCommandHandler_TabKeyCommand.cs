@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeGeneration;
 using Microsoft.CodeAnalysis.CSharp.Extensions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.CodeAnalysis.Formatting;
@@ -20,15 +19,18 @@ using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Simplification;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
-    internal partial class EventHookupCommandHandler : ICommandHandler<TabKeyCommandArgs>
+    [HandlesCommand(typeof(TabKeyCommandArgs))]
+    internal partial class EventHookupCommandHandler : IChainedCommandHandler<TabKeyCommandArgs>
     {
-        public void ExecuteCommand(TabKeyCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(TabKeyCommandArgs args, Action nextHandler, CommandExecutionContext cotext)
         {
             AssertIsForeground();
             if (!args.SubjectBuffer.GetFeatureOnOffOption(InternalFeatureOnOffOptions.EventHookup))
@@ -47,12 +49,12 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             HandleTabWorker(args.TextView, args.SubjectBuffer, nextHandler, CancellationToken.None);
         }
 
-        public CommandState GetCommandState(TabKeyCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(TabKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             if (EventHookupSessionManager.CurrentSession != null)
             {
-                return CommandState.Available;
+                return VisualStudio.Commanding.CommandState.CommandIsAvailable;
             }
             else
             {

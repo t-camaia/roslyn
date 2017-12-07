@@ -1,21 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.LanguageServices;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        ICommandHandler<TypeCharCommandArgs>
+        IChainedCommandHandler<TypeCharCommandArgs>
     {
-        public CommandState GetCommandState(TypeCharCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(TypeCharCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public void ExecuteCommand(TypeCharCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(TypeCharCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             HandlePossibleTypingCommand(args, nextHandler, span =>
             {

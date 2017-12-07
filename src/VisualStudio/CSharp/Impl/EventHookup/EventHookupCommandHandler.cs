@@ -6,7 +6,9 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
@@ -30,13 +32,14 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
     /// Because we are explicitly asking the user to tab, so we should handle the tab command before
     /// Automatic Completion.
     /// </summary>
-    [ExportCommandHandler(PredefinedCommandHandlerNames.EventHookup, ContentTypeNames.CSharpContentType)]
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.CSharpContentType)]
+    [Name(PredefinedCommandHandlerNames.EventHookup)]
     [Order(Before = PredefinedCommandHandlerNames.AutomaticCompletion)]
     internal partial class EventHookupCommandHandler : ForegroundThreadAffinitizedObject
     {
         private readonly IInlineRenameService _inlineRenameService;
         private readonly AggregateAsynchronousOperationListener _asyncListener;
-        private readonly Microsoft.CodeAnalysis.Editor.Host.IWaitIndicator _waitIndicator;
 
         internal readonly EventHookupSessionManager EventHookupSessionManager;
 
@@ -49,13 +52,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
         [ImportingConstructor]
         public EventHookupCommandHandler(
             IInlineRenameService inlineRenameService,
-            Microsoft.CodeAnalysis.Editor.Host.IWaitIndicator waitIndicator,
             IQuickInfoBroker quickInfoBroker,
             [Import(AllowDefault = true)] IHACK_EventHookupDismissalOnBufferChangePreventerService prematureDismissalPreventer,
             [ImportMany] IEnumerable<Lazy<IAsynchronousOperationListener, FeatureMetadata>> asyncListeners)
         {
             _inlineRenameService = inlineRenameService;
-            _waitIndicator = waitIndicator;
             _prematureDismissalPreventer = prematureDismissalPreventer;
             _asyncListener = new AggregateAsynchronousOperationListener(asyncListeners, FeatureAttribute.EventHookup);
 

@@ -2,21 +2,28 @@
 
 Imports System.Threading
 Imports Microsoft.CodeAnalysis
-Imports Microsoft.CodeAnalysis.Editor.Commands
 Imports Microsoft.CodeAnalysis.Editor.Implementation.EndConstructGeneration
 Imports Microsoft.CodeAnalysis.Formatting
 Imports Microsoft.CodeAnalysis.Simplification
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.Text.Shared.Extensions
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Text
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
     Friend MustInherit Class AbstractImplementAbstractClassOrInterfaceCommandHandler
-        Implements ICommandHandler(Of ReturnKeyCommandArgs)
+        Implements IChainedCommandHandler(Of ReturnKeyCommandArgs)
 
         Private ReadOnly _editorOperationsFactoryService As IEditorOperationsFactoryService
+
+        Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
 
         Protected Sub New(editorOperationsFactoryService As IEditorOperationsFactoryService)
             _editorOperationsFactoryService = editorOperationsFactoryService
@@ -27,7 +34,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
             typeSyntax As TypeSyntax,
             cancellationToken As CancellationToken) As Document
 
-        Private Sub ExecuteCommand(args As ReturnKeyCommandArgs, nextHandler As Action) Implements ICommandHandler(Of ReturnKeyCommandArgs).ExecuteCommand
+        Private Sub ExecuteCommand(args As ReturnKeyCommandArgs, nextHandler As Action, context As CommandExecutionContext) Implements IChainedCommandHandler(Of ReturnKeyCommandArgs).ExecuteCommand
             Dim caretPointOpt = args.TextView.GetCaretPoint(args.SubjectBuffer)
             If caretPointOpt Is Nothing Then
                 nextHandler()
@@ -172,7 +179,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
             Return True
         End Function
 
-        Private Function GetCommandState(args As ReturnKeyCommandArgs, nextHandler As Func(Of CommandState)) As CommandState Implements ICommandHandler(Of ReturnKeyCommandArgs).GetCommandState
+        Private Function GetCommandState(args As ReturnKeyCommandArgs, nextHandler As Func(Of VisualStudio.Commanding.CommandState)) As VisualStudio.Commanding.CommandState Implements IChainedCommandHandler(Of ReturnKeyCommandArgs).GetCommandState
             Return nextHandler()
         End Function
     End Class

@@ -6,6 +6,8 @@ Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 Imports Microsoft.CodeAnalysis.Text
+Imports Microsoft.VisualStudio.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
@@ -13,17 +15,19 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.AutomaticCompletion
     ' <summary>
     ' visual basic automatic line ender command handler
     ' </summary>
-    <ExportCommandHandler(PredefinedCommandHandlerNames.AutomaticLineEnder, ContentTypeNames.VisualBasicContentType)>
+    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.AutomaticLineEnder)>
+    <HandlesCommand(GetType(AutomaticLineEnderCommandArgs), DefaultCommandAvailability.AlwaysAvailable)>
     <Order(Before:=PredefinedCommandHandlerNames.Completion)>
     Friend Class AutomaticLineEnderCommandHandler
         Inherits AbstractAutomaticLineEnderCommandHandler
 
         <ImportingConstructor>
-        Friend Sub New(waitIndicator As IWaitIndicator,
-                       undoRegistry As ITextUndoHistoryRegistry,
+        Friend Sub New(undoRegistry As ITextUndoHistoryRegistry,
                        editorOperations As IEditorOperationsFactoryService)
 
-            MyBase.New(waitIndicator, undoRegistry, editorOperations)
+            MyBase.New(undoRegistry, editorOperations)
         End Sub
 
         Protected Overrides Sub NextAction(editorOperation As IEditorOperations, nextAction As Action)

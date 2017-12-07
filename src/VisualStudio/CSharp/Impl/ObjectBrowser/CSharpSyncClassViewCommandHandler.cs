@@ -2,18 +2,22 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor;
-using Microsoft.CodeAnalysis.Editor.Host;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassView;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
 {
-    [ExportCommandHandler(PredefinedCommandHandlerNames.ClassView, ContentTypeNames.CSharpContentType)]
+    [Export(typeof(Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.CSharpContentType)]
+    [Name(PredefinedCommandHandlerNames.ClassView)]
+    [HandlesCommand(typeof(AbstractSyncClassViewCommandHandler), DefaultCommandAvailability.AlwaysUndetermined)]
     internal class CSharpSyncClassViewCommandHandler : AbstractSyncClassViewCommandHandler
     {
         [ImportingConstructor]
-        private CSharpSyncClassViewCommandHandler(SVsServiceProvider serviceProvider, IWaitIndicator waitIndicator)
-            : base(serviceProvider, waitIndicator)
+        private CSharpSyncClassViewCommandHandler(SVsServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
         }
     }

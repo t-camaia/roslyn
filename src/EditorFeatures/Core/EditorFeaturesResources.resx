@@ -767,4 +767,7 @@ Do you want to proceed?</value>
   <data name="Inline_Rename_Field_Text" xml:space="preserve">
     <value>Inline Rename Field Text</value>
   </data>
+  <data name="View_Call_Hierarchy_Command_Handler_Display_Name" xml:space="preserve">
+    <value>View Call Hierarchy Command Handler</value>
+  </data>
 </root>

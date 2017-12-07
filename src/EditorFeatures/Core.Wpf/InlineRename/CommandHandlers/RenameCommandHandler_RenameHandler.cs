@@ -3,7 +3,8 @@
 using System;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
@@ -14,9 +15,9 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
-    internal partial class RenameCommandHandler : ICommandHandler<RenameCommandArgs>
+    internal partial class RenameCommandHandler : IChainedCommandHandler<RenameCommandArgs>
     {
-        public CommandState GetCommandState(RenameCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(RenameCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
             if (!caretPoint.HasValue)
@@ -42,19 +43,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 return nextHandler();
             }
 
-            return CommandState.Available;
+            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
         }
 
-        public void ExecuteCommand(RenameCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(RenameCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            _waitIndicator.Wait(
-                title: EditorFeaturesResources.Rename,
-                message: EditorFeaturesResources.Finding_token_to_rename,
-                allowCancel: true,
-                action: waitContext =>
-            {
-                ExecuteRenameWorker(args, waitContext.CancellationToken);
-            });
+            context.WaitContext.AllowCancellation = true;
+            context.WaitContext.Description = EditorFeaturesResources.Finding_token_to_rename;
+            ExecuteRenameWorker(args, context.WaitContext.CancellationToken);
         }
 
         private void ExecuteRenameWorker(RenameCommandArgs args, CancellationToken cancellationToken)

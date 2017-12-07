@@ -1919,7 +1919,7 @@ class C { }";
             get { return '/'; }
         }
 
-        internal override ICommandHandler CreateCommandHandler(
+        internal override VisualStudio.Commanding.ICommandHandler CreateCommandHandler(
             IWaitIndicator waitIndicator,
             ITextUndoHistoryRegistry undoHistoryRegistry,
             IEditorOperationsFactoryService editorOperationsFactoryService)

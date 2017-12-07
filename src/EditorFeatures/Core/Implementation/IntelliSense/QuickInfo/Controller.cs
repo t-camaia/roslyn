@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.ErrorReporting;
 using Microsoft.CodeAnalysis.Host.Mef;
@@ -14,18 +13,22 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 {
     internal partial class Controller :
         AbstractController<Session<Controller, Model, IQuickInfoPresenterSession>, Model, IQuickInfoPresenterSession, IQuickInfoSession>,
-        ICommandHandler<InvokeQuickInfoCommandArgs>
+        VisualStudio.Commanding.ICommandHandler<InvokeQuickInfoCommandArgs>
     {
         private static readonly object s_quickInfoPropertyKey = new object();
 
         private readonly IList<Lazy<IQuickInfoProvider, OrderableLanguageMetadata>> _allProviders;
         private IList<IQuickInfoProvider> _providers;
+
+        public string DisplayName => throw new NotImplementedException();
 
         public Controller(
             ITextView textView,
@@ -53,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
         }
 
         internal static Controller GetInstance(
-            CommandArgs args,
+            EditorCommandArgs args,
             IIntelliSensePresenter<IQuickInfoPresenterSession, IQuickInfoSession> presenter,
             IAsynchronousOperationListener asyncListener,
             IList<Lazy<IQuickInfoProvider, OrderableLanguageMetadata>> allProviders)

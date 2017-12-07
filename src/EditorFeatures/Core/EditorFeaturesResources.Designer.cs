@@ -1855,6 +1855,15 @@ namespace Microsoft.CodeAnalysis.Editor {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Call Hierarchy Command Handler.
+        /// </summary>
+        internal static string View_Call_Hierarchy_Command_Handler_Display_Name {
+            get {
+                return ResourceManager.GetString("View_Call_Hierarchy_Command_Handler_Display_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We can fix the error by not making struct &quot;out/ref&quot; parameter(s). 
         ///Do you want to proceed?.
         /// </summary>

@@ -64,14 +64,14 @@ class C
                 Dim mockDocumentNavigationService =
                     DirectCast(workspace.Services.GetService(Of IDocumentNavigationService)(), MockDocumentNavigationService)
 
-                Dim commandHandler = New GoToDefinitionCommandHandler(New TestWaitIndicator(New TestWaitContext(100)))
-                commandHandler.TryExecuteCommand(view.TextSnapshot, baseDocument.CursorPosition.Value)
+                Dim commandHandler = New GoToDefinitionCommandHandler()
+                commandHandler.TryExecuteCommand(view.TextSnapshot, baseDocument.CursorPosition.Value, New TestCommandExecutionContext())
                 Assert.True(mockDocumentNavigationService._triedNavigationToSpan)
                 Assert.Equal(New TextSpan(78, 2), mockDocumentNavigationService._span)
 
                 workspace.SetDocumentContext(linkDocument.Id)
 
-                commandHandler.TryExecuteCommand(view.TextSnapshot, baseDocument.CursorPosition.Value)
+                commandHandler.TryExecuteCommand(view.TextSnapshot, baseDocument.CursorPosition.Value, New TestCommandExecutionContext())
                 Assert.True(mockDocumentNavigationService._triedNavigationToSpan)
                 Assert.Equal(New TextSpan(121, 2), mockDocumentNavigationService._span)
             End Using
@@ -80,11 +80,11 @@ class C
         Private Function Cancel(updatesBeforeCancel As Integer, expectedCancel As Boolean) As Integer
             Dim definition =
 <Workspace>
-<Project Language="C#" CommonReferences="true">
-<Document>
+    <Project Language="C#" CommonReferences="true">
+        <Document>
             class [|C|] { $$C c; }"
         </Document>
-</Project>
+    </Project>
 </Workspace>
 
             Using workspace = TestWorkspace.Create(definition, exportProvider:=GoToTestHelpers.ExportProvider)
@@ -102,11 +102,10 @@ class C
 
                 Dim goToDefService = New CSharpGoToDefinitionService(presenters)
 
-                Dim waitContext = New TestWaitContext(updatesBeforeCancel)
-                Dim waitIndicator = New TestWaitIndicator(waitContext)
-                Dim commandHandler = New GoToDefinitionCommandHandler(waitIndicator)
+                Dim waitContext = New TestWaitableUIOperationContext(updatesBeforeCancel)
+                Dim commandHandler = New GoToDefinitionCommandHandler()
 
-                commandHandler.TryExecuteCommand(document, cursorPosition, goToDefService)
+                commandHandler.TryExecuteCommand(document, cursorPosition, goToDefService, New TestCommandExecutionContext(waitContext))
 
                 Assert.Equal(navigatedTo OrElse mockDocumentNavigationService._triedNavigationToSpan, Not expectedCancel)
 

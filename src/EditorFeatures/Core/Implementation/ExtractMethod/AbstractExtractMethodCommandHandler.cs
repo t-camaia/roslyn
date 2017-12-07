@@ -3,8 +3,6 @@
 using System;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Commands;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.ExtractMethod;
@@ -12,79 +10,76 @@ using Microsoft.CodeAnalysis.Notification;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 {
-    internal abstract class AbstractExtractMethodCommandHandler : ICommandHandler<ExtractMethodCommandArgs>
+    internal abstract class AbstractExtractMethodCommandHandler : VisualStudio.Commanding.ICommandHandler<ExtractMethodCommandArgs>
     {
         private readonly ITextBufferUndoManagerProvider _undoManager;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
         private readonly IInlineRenameService _renameService;
-        private readonly IWaitIndicator _waitIndicator;
 
         public AbstractExtractMethodCommandHandler(
             ITextBufferUndoManagerProvider undoManager,
             IEditorOperationsFactoryService editorOperationsFactoryService,
-            IInlineRenameService renameService,
-            IWaitIndicator waitIndicator)
+            IInlineRenameService renameService)
         {
             Contract.ThrowIfNull(undoManager);
             Contract.ThrowIfNull(editorOperationsFactoryService);
             Contract.ThrowIfNull(renameService);
-            Contract.ThrowIfNull(waitIndicator);
 
             _undoManager = undoManager;
             _editorOperationsFactoryService = editorOperationsFactoryService;
             _renameService = renameService;
-            _waitIndicator = waitIndicator;
         }
+        public string DisplayName => EditorFeaturesResources.Extract_Method;
 
-        public CommandState GetCommandState(ExtractMethodCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(ExtractMethodCommandArgs args)
         {
             var spans = args.TextView.Selection.GetSnapshotSpansOnBuffer(args.SubjectBuffer);
             if (spans.Count(s => s.Length > 0) != 1)
             {
-                return nextHandler();
+                return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return nextHandler();
+                return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
             if (!document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return nextHandler();
+                return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return nextHandler();
+                return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
-            return CommandState.Available;
+            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
         }
 
-        public void ExecuteCommand(ExtractMethodCommandArgs args, Action nextHandler)
+        public bool ExecuteCommand(ExtractMethodCommandArgs args, CommandExecutionContext context)
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                nextHandler();
-                return;
+                return false;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                nextHandler();
-                return;
+                return false;
             }
 
             // Finish any rename that had been started. We'll do this here before we enter the
@@ -94,20 +89,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
                 _renameService.ActiveSession.Commit();
             }
 
-            var executed = false;
-            _waitIndicator.Wait(
-                title: EditorFeaturesResources.Extract_Method,
-                message: EditorFeaturesResources.Applying_Extract_Method_refactoring,
-                allowCancel: true,
-                action: waitContext =>
-                {
-                    executed = this.Execute(args.SubjectBuffer, args.TextView, waitContext.CancellationToken);
-                });
+            context.WaitContext.AllowCancellation = true;
+            context.WaitContext.Description = EditorFeaturesResources.Applying_Extract_Method_refactoring;
 
-            if (!executed)
-            {
-                nextHandler();
-            }
+            return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.CancellationToken);
         }
 
         private bool Execute(

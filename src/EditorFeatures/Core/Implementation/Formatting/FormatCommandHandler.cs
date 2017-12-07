@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
@@ -13,35 +12,44 @@ using Microsoft.CodeAnalysis.Formatting.Rules;
 using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
-    [ExportCommandHandler(PredefinedCommandHandlerNames.FormatDocument, ContentTypeNames.RoslynContentType)]
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.RoslynContentType)]
+    [Name(PredefinedCommandHandlerNames.FormatDocument)]
+    [HandlesCommand(typeof(FormatDocumentCommandArgs))]
+    [HandlesCommand(typeof(FormatSelectionCommandArgs))]
+    [HandlesCommand(typeof(PasteCommandArgs))]
+    [HandlesCommand(typeof(TypeCharCommandArgs))]
+    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal partial class FormatCommandHandler :
-        ICommandHandler<FormatDocumentCommandArgs>,
-        ICommandHandler<FormatSelectionCommandArgs>,
-        ICommandHandler<PasteCommandArgs>,
-        ICommandHandler<TypeCharCommandArgs>,
-        ICommandHandler<ReturnKeyCommandArgs>
+        IChainedCommandHandler<FormatDocumentCommandArgs>,
+        IChainedCommandHandler<FormatSelectionCommandArgs>,
+        IChainedCommandHandler<PasteCommandArgs>,
+        IChainedCommandHandler<TypeCharCommandArgs>,
+        IChainedCommandHandler<ReturnKeyCommandArgs>
     {
-        private readonly IWaitIndicator _waitIndicator;
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
 
+        public string DisplayName => throw new NotImplementedException();
+
         [ImportingConstructor]
         public FormatCommandHandler(
-            IWaitIndicator waitIndicator,
             ITextUndoHistoryRegistry undoHistoryRegistry,
             IEditorOperationsFactoryService editorOperationsFactoryService)
         {
-            _waitIndicator = waitIndicator;
             _undoHistoryRegistry = undoHistoryRegistry;
             _editorOperationsFactoryService = editorOperationsFactoryService;
         }
@@ -79,17 +87,17 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             }
         }
 
-        private static CommandState GetCommandState(ITextBuffer buffer, Func<CommandState> nextHandler)
+        private static VisualStudio.Commanding.CommandState GetCommandState(ITextBuffer buffer, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             if (!buffer.CanApplyChangeDocumentToWorkspace())
             {
                 return nextHandler();
             }
 
-            return CommandState.Available;
+            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
         }
 
-        public void ExecuteReturnOrTypeCommand(CommandArgs args, Action nextHandler, CancellationToken cancellationToken)
+        public void ExecuteReturnOrTypeCommand(EditorCommandArgs args, Action nextHandler, CancellationToken cancellationToken)
         {
             // This method handles only return / type char
             if (!(args is ReturnKeyCommandArgs || args is TypeCharCommandArgs))

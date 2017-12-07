@@ -2,7 +2,8 @@
 
 using System;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Options;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Options;
@@ -12,15 +13,15 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 {
     internal partial class Controller
     {
-        CommandState ICommandHandler<ToggleCompletionModeCommandArgs>.GetCommandState(ToggleCompletionModeCommandArgs args, System.Func<CommandState> nextHandler)
+        VisualStudio.Commanding.CommandState IChainedCommandHandler<ToggleCompletionModeCommandArgs>.GetCommandState(ToggleCompletionModeCommandArgs args, System.Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
 
             var isEnabled = args.SubjectBuffer.GetFeatureOnOffOption(EditorCompletionOptions.UseSuggestionMode);
-            return new CommandState(isAvailable: true, isChecked: isEnabled);
+            return new VisualStudio.Commanding.CommandState(isAvailable: true, isChecked: isEnabled);
         }
 
-        void ICommandHandler<ToggleCompletionModeCommandArgs>.ExecuteCommand(ToggleCompletionModeCommandArgs args, Action nextHandler)
+        void IChainedCommandHandler<ToggleCompletionModeCommandArgs>.ExecuteCommand(ToggleCompletionModeCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             if (Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {

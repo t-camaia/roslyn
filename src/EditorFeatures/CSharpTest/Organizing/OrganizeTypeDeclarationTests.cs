@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.Editor.Implementation.Interactive;
 using Microsoft.CodeAnalysis.Editor.Implementation.Organizing;
 using Microsoft.CodeAnalysis.Editor.UnitTests;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Test.Utilities;
 using Xunit;
 
@@ -1095,22 +1096,13 @@ interface I
 
                 var textView = workspace.Documents.Single().GetTextView();
 
-                var handler = new OrganizeDocumentCommandHandler(workspace.GetService<Host.IWaitIndicator>());
-                var delegatedToNext = false;
-                CommandState nextHandler()
-                {
-                    delegatedToNext = true;
-                    return CommandState.Unavailable;
-                }
+                var handler = new OrganizeDocumentCommandHandler();
+                
+                var state = handler.GetCommandState(new SortAndRemoveUnnecessaryImportsCommandArgs(textView, textView.TextBuffer));
+                Assert.True(state.IsUndetermined);
 
-                var state = handler.GetCommandState(new Commands.SortAndRemoveUnnecessaryImportsCommandArgs(textView, textView.TextBuffer), nextHandler);
-                Assert.True(delegatedToNext);
-                Assert.False(state.IsAvailable);
-                delegatedToNext = false;
-
-                state = handler.GetCommandState(new Commands.OrganizeDocumentCommandArgs(textView, textView.TextBuffer), nextHandler);
-                Assert.True(delegatedToNext);
-                Assert.False(state.IsAvailable);
+                state = handler.GetCommandState(new OrganizeDocumentCommandArgs(textView, textView.TextBuffer));
+                Assert.True(state.IsUndetermined);
             }
         }
     }

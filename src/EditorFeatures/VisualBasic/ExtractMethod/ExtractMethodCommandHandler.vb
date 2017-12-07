@@ -3,12 +3,17 @@
 Imports System.ComponentModel.Composition
 Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
+Imports Microsoft.VisualStudio.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ExtractMethod
-    <ExportCommandHandler(PredefinedCommandHandlerNames.ExtractMethod,
-        ContentTypeNames.VisualBasicContentType)>
+    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <HandlesCommand(GetType(ExtractMethodCommandArgs))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.ExtractMethod)>
     <Order(After:=PredefinedCommandHandlerNames.DocumentationComments)>
     Friend Class ExtractMethodCommandHandler
         Inherits AbstractExtractMethodCommandHandler
@@ -18,7 +23,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ExtractMethod
                        editorOperationsFactoryService As IEditorOperationsFactoryService,
                        renameService As IInlineRenameService,
                        waitIndicator As IWaitIndicator)
-            MyBase.New(undoManager, editorOperationsFactoryService, renameService, waitIndicator)
+            MyBase.New(undoManager, editorOperationsFactoryService, renameService)
         End Sub
     End Class
 End Namespace

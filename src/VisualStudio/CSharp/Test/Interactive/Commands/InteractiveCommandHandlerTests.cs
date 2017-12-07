@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Roslyn.Test.Utilities;
+using Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Interactive.Commands
 {
@@ -176,7 +177,7 @@ $@"#define DEF
             using (var workspace = InteractiveWindowCommandHandlerTestState.CreateTestState(code))
             {
                 PrepareSubmissionBuffer(submissionBuffer, workspace);
-                Assert.Equal(CommandState.Available, workspace.GetStateForExecuteInInteractive());
+                Assert.Equal(VisualStudio.Commanding.CommandState.CommandIsAvailable, (VisualStudio.Commanding.CommandState)workspace.GetStateForExecuteInInteractive());
 
                 workspace.Evaluator.OnExecute += appendSubmission;
                 workspace.ExecuteInInteractive();

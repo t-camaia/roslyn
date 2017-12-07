@@ -1,19 +1,20 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 {
     internal partial class Controller
     {
-        CommandState ICommandHandler<PageUpKeyCommandArgs>.GetCommandState(PageUpKeyCommandArgs args, Func<CommandState> nextHandler)
+        VisualStudio.Commanding.CommandState IChainedCommandHandler<PageUpKeyCommandArgs>.GetCommandState(PageUpKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return nextHandler();
         }
 
-        CommandState ICommandHandler<PageDownKeyCommandArgs>.GetCommandState(PageDownKeyCommandArgs args, Func<CommandState> nextHandler)
+        VisualStudio.Commanding.CommandState IChainedCommandHandler<PageDownKeyCommandArgs>.GetCommandState(PageDownKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return nextHandler();
@@ -31,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             return ChangeSelection(() => sessionOpt.PresenterSession.SelectNextItem());
         }
 
-        void ICommandHandler<PageUpKeyCommandArgs>.ExecuteCommand(PageUpKeyCommandArgs args, Action nextHandler)
+        void IChainedCommandHandler<PageUpKeyCommandArgs>.ExecuteCommand(PageUpKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             AssertIsForeground();
             if (!ChangeSelection(() => sessionOpt.PresenterSession.SelectPreviousPageItem()))
@@ -40,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             }
         }
 
-        void ICommandHandler<PageDownKeyCommandArgs>.ExecuteCommand(PageDownKeyCommandArgs args, Action nextHandler)
+        void IChainedCommandHandler<PageDownKeyCommandArgs>.ExecuteCommand(PageDownKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             AssertIsForeground();
             if (!ChangeSelection(() => sessionOpt.PresenterSession.SelectNextPageItem()))

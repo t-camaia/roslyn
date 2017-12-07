@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor
 {
@@ -12,6 +13,6 @@ namespace Microsoft.CodeAnalysis.Editor
         /// presents them.
         /// </summary>
         /// <returns>True if finding references of the symbol at the provided position succeeds.  False, otherwise.</returns>
-        bool TryFindReferences(Document document, int position, IWaitContext waitContext);
+        bool TryFindReferences(Document document, int position, IWaitableUIOperationContext waitContext);
     }
 }

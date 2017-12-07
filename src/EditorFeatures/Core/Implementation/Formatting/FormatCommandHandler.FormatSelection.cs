@@ -1,32 +1,32 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis.Editor.Commands;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
     internal partial class FormatCommandHandler
     {
-        public CommandState GetCommandState(FormatSelectionCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(FormatSelectionCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return GetCommandState(args.SubjectBuffer, nextHandler);
         }
 
-        public void ExecuteCommand(FormatSelectionCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(FormatSelectionCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            if (!TryExecuteCommand(args))
+            if (!TryExecuteCommand(args, context))
             {
                 nextHandler();
             }
         }
 
-        private bool TryExecuteCommand(FormatSelectionCommandArgs args)
+        private bool TryExecuteCommand(FormatSelectionCommandArgs args, CommandExecutionContext context)
         {
             if (!args.SubjectBuffer.CanApplyChangeDocumentToWorkspace())
             {
@@ -45,38 +45,31 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            var result = false;
-            _waitIndicator.Wait(
-                title: EditorFeaturesResources.Format_Selection,
-                message: EditorFeaturesResources.Formatting_currently_selected_text,
-                allowCancel: true,
-                action: waitContext =>
+            context.WaitContext.AllowCancellation = true;
+            context.WaitContext.Description = EditorFeaturesResources.Formatting_currently_selected_text;
+
+            var buffer = args.SubjectBuffer;
+
+            // we only support single selection for now
+            var selection = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer);
+            if (selection.Count != 1)
             {
-                var buffer = args.SubjectBuffer;
+                return false;
+            }
 
-                // we only support single selection for now
-                var selection = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer);
-                if (selection.Count != 1)
-                {
-                    return;
-                }
+            var formattingSpan = selection[0].Span.ToTextSpan();
 
-                var formattingSpan = selection[0].Span.ToTextSpan();
+            Format(args.TextView, document, formattingSpan, context.WaitContext.CancellationToken);
 
-                Format(args.TextView, document, formattingSpan, waitContext.CancellationToken);
+            // make behavior same as dev12. 
+            // make sure we set selection back and set caret position at the end of selection
+            // we can delete this code once razor side fixes a bug where it depends on this behavior (dev12) on formatting.
+            var currentSelection = selection[0].TranslateTo(args.SubjectBuffer.CurrentSnapshot, SpanTrackingMode.EdgeExclusive);
+            args.TextView.SetSelection(currentSelection);
+            args.TextView.TryMoveCaretToAndEnsureVisible(currentSelection.End, ensureSpanVisibleOptions: EnsureSpanVisibleOptions.MinimumScroll);
 
-                // make behavior same as dev12. 
-                // make sure we set selection back and set caret position at the end of selection
-                // we can delete this code once razor side fixes a bug where it depends on this behavior (dev12) on formatting.
-                var currentSelection = selection[0].TranslateTo(args.SubjectBuffer.CurrentSnapshot, SpanTrackingMode.EdgeExclusive);
-                args.TextView.SetSelection(currentSelection);
-                args.TextView.TryMoveCaretToAndEnsureVisible(currentSelection.End, ensureSpanVisibleOptions: EnsureSpanVisibleOptions.MinimumScroll);
-
-                // We don't call nextHandler, since we have handled this command.
-                result = true;
-            });
-
-            return result;
+            // We don't call nextHandler, since we have handled this command.
+            return true;
         }
     }
 }

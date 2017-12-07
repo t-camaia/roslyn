@@ -5,12 +5,24 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.RoslynContentType)]
+    [ContentType(ContentTypeNames.XamlContentType)]
+    [Name(PredefinedCommandHandlerNames.Rename)]
+    [HandlesCommand(typeof(FormatDocumentCommandArgs))]
+    [HandlesCommand(typeof(FormatSelectionCommandArgs))]
+    [HandlesCommand(typeof(PasteCommandArgs))]
+    [HandlesCommand(typeof(TypeCharCommandArgs))]
+    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
     // Line commit and rename are both executed on Save. Ensure any rename session is committed
     // before line commit runs to ensure changes from both are correctly applied.
     [Order(Before = PredefinedCommandHandlerNames.Commit)]
@@ -18,35 +30,33 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
     [Order(Before = PredefinedCommandHandlerNames.ChangeSignature)]
     [Order(Before = PredefinedCommandHandlerNames.ExtractInterface)]
     [Order(Before = PredefinedCommandHandlerNames.EncapsulateField)]
-    [ExportCommandHandler(PredefinedCommandHandlerNames.Rename, ContentTypeNames.RoslynContentType, ContentTypeNames.XamlContentType)]
     internal partial class RenameCommandHandler
     {
         private readonly InlineRenameService _renameService;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
-        private readonly IWaitIndicator _waitIndicator;
 
         [ImportingConstructor]
         public RenameCommandHandler(
             InlineRenameService renameService,
-            IEditorOperationsFactoryService editorOperationsFactoryService,
-            IWaitIndicator waitIndicator)
+            IEditorOperationsFactoryService editorOperationsFactoryService)
         {
             _renameService = renameService;
             _editorOperationsFactoryService = editorOperationsFactoryService;
-            _waitIndicator = waitIndicator;
         }
 
-        private CommandState GetCommandState(Func<CommandState> nextHandler)
+        public string DisplayName => throw new NotImplementedException();
+
+        private VisualStudio.Commanding.CommandState GetCommandState(Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             if (_renameService.ActiveSession != null)
             {
-                return CommandState.Available;
+                return VisualStudio.Commanding.CommandState.CommandIsAvailable;
             }
 
             return nextHandler();
         }
 
-        private void HandlePossibleTypingCommand(CommandArgs args, Action nextHandler, Action<SnapshotSpan> actionIfInsideActiveSpan)
+        private void HandlePossibleTypingCommand(EditorCommandArgs args, Action nextHandler, Action<SnapshotSpan> actionIfInsideActiveSpan)
         {
             if (_renameService.ActiveSession == null)
             {
@@ -79,7 +89,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             }
         }
 
-        private void CommitIfActiveAndCallNextHandler(CommandArgs args, Action nextHandler)
+        private void CommitIfActiveAndCallNextHandler(EditorCommandArgs args, Action nextHandler)
         {
             if (_renameService.ActiveSession != null)
             {

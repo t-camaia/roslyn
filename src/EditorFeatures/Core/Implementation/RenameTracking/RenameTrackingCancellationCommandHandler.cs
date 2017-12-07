@@ -1,38 +1,41 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis.Editor.Commands;
+using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 {
-    [ExportCommandHandler(PredefinedCommandHandlerNames.RenameTrackingCancellation, ContentTypeNames.RoslynContentType, ContentTypeNames.XamlContentType)]
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.RoslynContentType)]
+    [ContentType(ContentTypeNames.XamlContentType)]
+    [Name(PredefinedCommandHandlerNames.RenameTrackingCancellation)]
+    [HandlesCommand(typeof(EscapeKeyCommandArgs), DefaultCommandAvailability.AlwaysUndetermined)]
     [Order(After = PredefinedCommandHandlerNames.SignatureHelp)]
     [Order(After = PredefinedCommandHandlerNames.IntelliSense)]
     [Order(After = PredefinedCommandHandlerNames.AutomaticCompletion)]
     [Order(After = PredefinedCommandHandlerNames.Completion)]
     [Order(After = PredefinedCommandHandlerNames.QuickInfo)]
     [Order(After = PredefinedCommandHandlerNames.EventHookup)]
-    internal class RenameTrackingCancellationCommandHandler : ICommandHandler<EscapeKeyCommandArgs>
+    internal class RenameTrackingCancellationCommandHandler : VisualStudio.Commanding.ICommandHandler<EscapeKeyCommandArgs>
     {
-        public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler)
+        public string DisplayName => PredefinedCommandHandlerNames.RenameTrackingCancellation; //TODO: localize it
+
+        public bool ExecuteCommand(EscapeKeyCommandArgs args, CommandExecutionContext context)
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
 
-            if (document != null &&
-                RenameTrackingDismisser.DismissVisibleRenameTracking(document.Project.Solution.Workspace, document.Id))
-            {
-                return;
-            }
-
-            nextHandler();
+            return document != null &&
+                RenameTrackingDismisser.DismissVisibleRenameTracking(document.Project.Solution.Workspace, document.Id);
         }
 
-        public CommandState GetCommandState(EscapeKeyCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
         {
-            return nextHandler();
+            return VisualStudio.Commanding.CommandState.Undetermined;
         }
     }
 }

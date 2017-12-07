@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Commands;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
@@ -13,19 +12,21 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 {
     internal abstract class AbstractDocumentationCommentCommandHandler<TDocumentationComment, TMemberNode> :
-        ICommandHandler<TypeCharCommandArgs>,
-        ICommandHandler<ReturnKeyCommandArgs>,
-        ICommandHandler<InsertCommentCommandArgs>,
-        ICommandHandler<OpenLineAboveCommandArgs>,
-        ICommandHandler<OpenLineBelowCommandArgs>
+        IChainedCommandHandler<TypeCharCommandArgs>,
+        IChainedCommandHandler<ReturnKeyCommandArgs>,
+        IChainedCommandHandler<InsertCommentCommandArgs>,
+        IChainedCommandHandler<OpenLineAboveCommandArgs>,
+        IChainedCommandHandler<OpenLineBelowCommandArgs>
         where TDocumentationComment : SyntaxNode, IStructuredTriviaSyntax
         where TMemberNode : SyntaxNode
     {
@@ -71,6 +72,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
         {
             get { return ExteriorTriviaText[ExteriorTriviaText.Length - 1]; }
         }
+
+        public string DisplayName => throw new NotImplementedException();
 
         private string GetNewLine(SourceText text)
         {
@@ -465,12 +468,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             return insertAction(syntaxTree, text, caretPosition, originalCaretPosition, subjectBuffer, textView, documentOptions, cancellationToken);
         }
 
-        public CommandState GetCommandState(TypeCharCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(TypeCharCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public void ExecuteCommand(TypeCharCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(TypeCharCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             var originalCaretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
 
@@ -485,12 +488,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCharacterTyped, CancellationToken.None);
         }
 
-        public CommandState GetCommandState(ReturnKeyCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public void ExecuteCommand(ReturnKeyCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(ReturnKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             // Check to see if the current line starts with exterior trivia. If so, we'll take over.
             // If not, let the nextHandler run.
@@ -540,18 +543,18 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             }
         }
 
-        public CommandState GetCommandState(InsertCommentCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(InsertCommentCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             var caretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
             if (caretPosition < 0)
             {
-                return CommandState.Unavailable;
+                return VisualStudio.Commanding.CommandState.CommandIsUnavailable;
             }
 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return CommandState.Unavailable;
+                return VisualStudio.Commanding.CommandState.CommandIsUnavailable;
             }
 
             TMemberNode targetMember = null;
@@ -563,33 +566,29 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             });
 
             return targetMember != null
-                ? CommandState.Available
-                : CommandState.Unavailable;
+                ? VisualStudio.Commanding.CommandState.CommandIsAvailable
+                : VisualStudio.Commanding.CommandState.CommandIsUnavailable;
         }
 
-        public void ExecuteCommand(InsertCommentCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(InsertCommentCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             var originalCaretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
 
-            _waitIndicator.Wait(
-                title: EditorFeaturesResources.Documentation_Comment,
-                message: EditorFeaturesResources.Inserting_documentation_comment,
-                allowCancel: true,
-                action: w =>
-                {
-                    if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, w.CancellationToken))
-                    {
-                        nextHandler();
-                    }
-                });
+            context.WaitContext.AllowCancellation = true;
+            context.WaitContext.Description = EditorFeaturesResources.Inserting_documentation_comment;
+
+            if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.CancellationToken))
+            {
+                nextHandler();
+            }
         }
 
-        public CommandState GetCommandState(OpenLineAboveCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(OpenLineAboveCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public void ExecuteCommand(OpenLineAboveCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(OpenLineAboveCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             // Check to see if the current line starts with exterior trivia. If so, we'll take over.
             // If not, let the nextHandler run.
@@ -613,12 +612,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             InsertExteriorTriviaIfNeeded(args.TextView, args.SubjectBuffer);
         }
 
-        public CommandState GetCommandState(OpenLineBelowCommandArgs args, Func<CommandState> nextHandler)
+        public VisualStudio.Commanding.CommandState GetCommandState(OpenLineBelowCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public void ExecuteCommand(OpenLineBelowCommandArgs args, Action nextHandler)
+        public void ExecuteCommand(OpenLineBelowCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             // Check to see if the current line starts with exterior trivia. If so, we'll take over.
             // If not, let the nextHandler run.

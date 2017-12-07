@@ -9,11 +9,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Extensions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp.Utilities;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
@@ -23,16 +24,18 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
     /// <summary>
     /// csharp automatic line ender command handler
     /// </summary>
-    [ExportCommandHandler(PredefinedCommandHandlerNames.AutomaticLineEnder, ContentTypeNames.CSharpContentType)]
+    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [ContentType(ContentTypeNames.CSharpContentType)]
+    [Name(PredefinedCommandHandlerNames.AutomaticLineEnder)]
+    [HandlesCommand(typeof(AutomaticLineEnderCommandArgs), DefaultCommandAvailability.AlwaysAvailable)]
     [Order(After = PredefinedCommandHandlerNames.Completion)]
     internal class AutomaticLineEnderCommandHandler : AbstractAutomaticLineEnderCommandHandler
     {
         [ImportingConstructor]
         public AutomaticLineEnderCommandHandler(
-            IWaitIndicator waitIndicator,
             ITextUndoHistoryRegistry undoRegistry,
             IEditorOperationsFactoryService editorOperations)
-            : base(waitIndicator, undoRegistry, editorOperations)
+            : base(undoRegistry, editorOperations)
         {
         }
 

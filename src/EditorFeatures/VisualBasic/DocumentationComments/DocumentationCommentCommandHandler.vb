@@ -5,11 +5,20 @@ Imports System.Threading
 Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
+Imports Microsoft.VisualStudio.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
-    <ExportCommandHandler(PredefinedCommandHandlerNames.DocumentationComments, ContentTypeNames.VisualBasicContentType)>
+    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <ContentType(ContentTypeNames.CSharpContentType)>
+    <Name(PredefinedCommandHandlerNames.DocumentationComments)>
+    <HandlesCommand(GetType(TypeCharCommandArgs))>
+    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
+    <HandlesCommand(GetType(InsertCommentCommandArgs))>
+    <HandlesCommand(GetType(OpenLineAboveCommandArgs))>
+    <HandlesCommand(GetType(OpenLineBelowCommandArgs))>
     <Order(After:=PredefinedCommandHandlerNames.Rename)>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>
     Friend Class DocumentationCommentCommandHandler

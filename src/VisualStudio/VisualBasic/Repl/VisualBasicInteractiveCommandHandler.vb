@@ -12,6 +12,7 @@ Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Interactive
 
+    ' TODO: is is dead code?
     <ExportCommandHandler("Interactive Command Handler")>
     Friend NotInheritable Class VisualBasicInteractiveCommandHandler
         Inherits InteractiveCommandHandler

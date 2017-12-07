@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Format_Command_Handler_Name;
 
         [ImportingConstructor]
         public FormatCommandHandler(

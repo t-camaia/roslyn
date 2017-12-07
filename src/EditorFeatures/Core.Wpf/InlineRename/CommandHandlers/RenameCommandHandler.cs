@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             _editorOperationsFactoryService = editorOperationsFactoryService;
         }
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Rename_Command_Handler_Name;
 
         private VisualStudio.Commanding.CommandState GetCommandState(Func<VisualStudio.Commanding.CommandState> nextHandler)
         {

@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
         {
         }
 
-        public string DisplayName => "Block Comment Editing Command Handler"; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Block_Comment_Editing_Command_Handler_Name;
 
         public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args) => VisualStudio.Commanding.CommandState.Undetermined;
 

@@ -47,7 +47,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
 
         Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
             Get
-                Throw New NotImplementedException()
+                Return VBEditorResources.Commit_Command_Handler_Name
             End Get
         End Property
 

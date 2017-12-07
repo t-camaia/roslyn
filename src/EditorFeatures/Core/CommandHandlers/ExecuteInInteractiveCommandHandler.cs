@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     {
         private readonly IEnumerable<Lazy<IExecuteInInteractiveCommandHandler, ContentTypeMetadata>> _executeInInteractiveHandlers;
 
-        public string DisplayName => "Interactive Command Handler"; //TODO: localize
+        public string DisplayName => EditorFeaturesResources.Execute_In_Interactive_Command_Handler_Name;
 
         [ImportingConstructor]
         public ExecuteInInteractiveCommandHandler(

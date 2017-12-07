@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
         private readonly IList<Lazy<IQuickInfoProvider, OrderableLanguageMetadata>> _allProviders;
         private IList<IQuickInfoProvider> _providers;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Quick_Info_Command_Handler_Name;
 
         public Controller(
             ITextView textView,

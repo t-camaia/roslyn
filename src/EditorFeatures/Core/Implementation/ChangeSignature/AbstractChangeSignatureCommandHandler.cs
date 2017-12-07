@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
     internal abstract class AbstractChangeSignatureCommandHandler : VisualStudio.Commanding.ICommandHandler<ReorderParametersCommandArgs>,
         VisualStudio.Commanding.ICommandHandler<RemoveParametersCommandArgs>
     {
-        public string DisplayName => PredefinedCommandHandlerNames.ChangeSignature; // TODO: localize
+        public string DisplayName => EditorFeaturesResources.Change_Signature_Command_Handler_Name;
 
         public VisualStudio.Commanding.CommandState GetCommandState(ReorderParametersCommandArgs args)
             => GetCommandState(args.SubjectBuffer);

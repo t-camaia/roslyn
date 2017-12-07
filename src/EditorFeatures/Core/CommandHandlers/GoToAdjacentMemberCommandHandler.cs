@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     {
         private readonly IOutliningManagerService _outliningManagerService;
 
-        public string DisplayName => PredefinedCommandHandlerNames.GoToAdjacentMember; //TODO: localize
+        public string DisplayName => EditorFeaturesResources.Go_To_Adjacent_Member_Command_Handler_Name;
 
         [ImportingConstructor]
         public GoToAdjacentMemberCommandHandler(IOutliningManagerService outliningManagerService)

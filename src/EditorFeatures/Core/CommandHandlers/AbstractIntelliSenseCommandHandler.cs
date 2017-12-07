@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         private readonly SignatureHelpCommandHandler _signatureHelpCommandHandler;
         private readonly QuickInfoCommandHandlerAndSourceProvider _quickInfoCommandHandler;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.IntelliSense_Command_Handler_Name;
 
         protected AbstractIntelliSenseCommandHandler(
             CompletionCommandHandler completionCommandHandler,

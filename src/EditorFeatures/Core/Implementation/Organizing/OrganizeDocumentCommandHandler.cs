@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
         VisualStudio.Commanding.ICommandHandler<OrganizeDocumentCommandArgs>,
         VisualStudio.Commanding.ICommandHandler<SortAndRemoveUnnecessaryImportsCommandArgs>
     {
-        public string DisplayName => PredefinedCommandHandlerNames.OrganizeDocument; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Organize_Document_Command_Handler_Name;
 
         public VisualStudio.Commanding.CommandState GetCommandState(OrganizeDocumentCommandArgs args)
         {

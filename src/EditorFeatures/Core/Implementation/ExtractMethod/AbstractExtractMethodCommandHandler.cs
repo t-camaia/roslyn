@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
             _editorOperationsFactoryService = editorOperationsFactoryService;
             _renameService = renameService;
         }
-        public string DisplayName => EditorFeaturesResources.Extract_Method;
+        public string DisplayName => EditorFeaturesResources.Extract_Method_Command_Handler_Name;
 
         public VisualStudio.Commanding.CommandState GetCommandState(ExtractMethodCommandArgs args)
         {

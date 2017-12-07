@@ -34,7 +34,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.EndConstructGeneration
 
         Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
             Get
-                Throw New NotImplementedException()
+                Return VBEditorResources.End_Construct_Command_Handler_Name
             End Get
         End Property
 

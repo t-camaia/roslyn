@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
             _editorOperationsFactoryService = editorOperationsFactoryService;
         }
 
-        public string DisplayName => PredefinedCommandHandlerNames.CommentSelection; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Comment_Uncomment_Selection_Command_Handler_Name;
 
         private static VisualStudio.Commanding.CommandState GetCommandState(ITextBuffer buffer)
         {

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
         private readonly ITextUndoHistoryRegistry _undoRegistry;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Automatic_Line_Ender_Command_Handler_Name;
 
         public AbstractAutomaticLineEnderCommandHandler(
             ITextUndoHistoryRegistry undoRegistry,

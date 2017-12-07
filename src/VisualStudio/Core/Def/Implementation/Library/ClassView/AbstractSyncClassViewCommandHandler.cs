@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
 
         private readonly IServiceProvider _serviceProvider;
 
-        public string DisplayName => PredefinedCommandHandlerNames.ClassView; //TODO: localize
+        public string DisplayName => ServicesVSResources.Sync_Class_View_Command_Handler_Name;
 
         protected AbstractSyncClassViewCommandHandler(
             SVsServiceProvider serviceProvider)

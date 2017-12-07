@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.LanguageServices.CSharp;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
@@ -10,7 +11,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
     internal partial class EventHookupCommandHandler :
         IChainedCommandHandler<EscapeKeyCommandArgs>
     {
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => CSharpVSResources.Event_Hookup_Command_Handler_Name;
 
         public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {

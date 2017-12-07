@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
     {
         private readonly ITextUndoHistoryRegistry _undoHistory;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Xml_Tag_Completion_Command_Handler_Name;
 
         public AbstractXmlTagCompletionCommandHandler(ITextUndoHistoryRegistry undoHistory)
         {

@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         // This is for unit test purpose only, do not explicitly set this field otherwise.
         internal IRoslynClipboard RoslynClipboard;
 
-        public string DisplayName => PredefinedCommandHandlerNames.InteractivePaste; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Interactive_Paste_Command_Handler_Name;
 
         [ImportingConstructor]
         public InteractivePasteCommandHandler(IEditorOperationsFactoryService editorOperationsFactoryService, ITextUndoHistoryRegistry textUndoHistoryRegistry)

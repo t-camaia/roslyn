@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
         private ImmutableArray<ISignatureHelpProvider> _providers;
         private IContentType _lastSeenContentType;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Signature_Help_Command_Handler_Name;
 
         public Controller(
             ITextView textView,

@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
             _streamingPresenters = streamingPresenters;
         }
 
-        public string DisplayName => PredefinedCommandHandlerNames.GoToImplementation; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Go_To_Implementation_Command_Handler_Name;
 
         private (Document, IGoToImplementationService, IFindUsagesService) GetDocumentAndServices(ITextSnapshot snapshot)
         {

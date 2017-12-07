@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             get { return ExteriorTriviaText[ExteriorTriviaText.Length - 1]; }
         }
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Documentation_Comment_Command_Handler_Name;
 
         private string GetNewLine(SourceText text)
         {

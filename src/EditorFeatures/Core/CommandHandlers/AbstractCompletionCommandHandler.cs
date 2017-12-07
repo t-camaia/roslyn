@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     {
         private readonly IAsyncCompletionService _completionService;
 
-        public string DisplayName => throw new NotImplementedException();
+        public string DisplayName => EditorFeaturesResources.Completion_Command_Handler_Name;
 
         protected AbstractCompletionCommandHandler(IAsyncCompletionService completionService)
         {

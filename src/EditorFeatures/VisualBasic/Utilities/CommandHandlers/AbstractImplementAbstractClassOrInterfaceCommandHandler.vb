@@ -21,7 +21,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
 
         Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
             Get
-                Throw New NotImplementedException()
+                Return VBEditorResources.Implement_Abstract_Class_Or_Interface_Command_Handler_Name
             End Get
         End Property
 

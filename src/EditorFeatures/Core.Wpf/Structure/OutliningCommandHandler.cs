@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
             _outliningManagerService = outliningManagerService;
         }
 
-        public string DisplayName => "Outlining Command Handler"; //TODO: localize
+        public string DisplayName => EditorFeaturesResources.Outlining_Command_Handler_Name;
 
         public bool ExecuteCommand(StartAutomaticOutliningCommandArgs args, CommandExecutionContext context)
         {

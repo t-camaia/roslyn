@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
     internal class GoToDefinitionCommandHandler :
         VisualStudio.Commanding.ICommandHandler<GoToDefinitionCommandArgs>
     {
-        public string DisplayName => PredefinedCommandHandlerNames.GoToDefinition; //TODO: localize it
+        public string DisplayName => EditorFeaturesResources.Go_To_Definition_Command_Handler_Name;
 
         private (Document, IGoToDefinitionService) GetDocumentAndService(ITextSnapshot snapshot)
         {

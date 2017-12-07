@@ -22,7 +22,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.VBEditorResources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -88,6 +88,15 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.VBEditorResources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Line Commit Command Handler.
+        '''</summary>
+        Friend ReadOnly Property Commit_Command_Handler_Name() As String
+            Get
+                Return ResourceManager.GetString("Commit_Command_Handler_Name", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Committing line.
         '''</summary>
         Friend ReadOnly Property Committing_line() As String
@@ -111,6 +120,15 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.VBEditorResources
         Friend ReadOnly Property End_Construct() As String
             Get
                 Return ResourceManager.GetString("End_Construct", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to End Construct Command Handler.
+        '''</summary>
+        Friend ReadOnly Property End_Construct_Command_Handler_Name() As String
+            Get
+                Return ResourceManager.GetString("End_Construct_Command_Handler_Name", resourceCulture)
             End Get
         End Property
         
@@ -165,6 +183,15 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.VBEditorResources
         Friend ReadOnly Property Generate_Member() As String
             Get
                 Return ResourceManager.GetString("Generate_Member", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Implement Abstract Class Or Interface Command Handler.
+        '''</summary>
+        Friend ReadOnly Property Implement_Abstract_Class_Or_Interface_Command_Handler_Name() As String
+            Get
+                Return ResourceManager.GetString("Implement_Abstract_Class_Or_Interface_Command_Handler_Name", resourceCulture)
             End Get
         End Property
         

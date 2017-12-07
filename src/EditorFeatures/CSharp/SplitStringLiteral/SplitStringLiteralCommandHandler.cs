@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
             _editorOperationsFactoryService = editorOperationsFactoryService;
         }
 
-        public string DisplayName => "Split String Literal Command Handler"; //TODO: localize it
+        public string DisplayName => CSharpEditorResources.Split_String_Literal_Command_Handler_Name;
 
         public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args)
         {

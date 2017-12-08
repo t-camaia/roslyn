@@ -10,7 +10,7 @@ Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
     <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
-    <ContentType(ContentTypeNames.CSharpContentType)>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.DocumentationComments)>
     <Order(After:=PredefinedCommandHandlerNames.Rename)>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>

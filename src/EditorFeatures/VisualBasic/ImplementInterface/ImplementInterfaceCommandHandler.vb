@@ -5,8 +5,6 @@ Imports System.Threading
 Imports Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
 Imports Microsoft.CodeAnalysis.ImplementInterface
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
-Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
@@ -14,7 +12,6 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ImplementInterface
     <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("ImplementInterfaceCommandHandler")>
-    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
     <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>
     Friend Class ImplementInterfaceCommandHandler

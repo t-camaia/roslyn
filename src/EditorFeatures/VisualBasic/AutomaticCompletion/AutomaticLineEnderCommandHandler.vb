@@ -3,11 +3,8 @@
 Imports System.ComponentModel.Composition
 Imports System.Threading
 Imports Microsoft.CodeAnalysis
-Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 Imports Microsoft.CodeAnalysis.Text
-Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
@@ -18,7 +15,6 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.AutomaticCompletion
     <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.AutomaticLineEnder)>
-    <HandlesCommand(GetType(AutomaticLineEnderCommandArgs), DefaultCommandAvailability.AlwaysAvailable)>
     <Order(Before:=PredefinedCommandHandlerNames.Completion)>
     Friend Class AutomaticLineEnderCommandHandler
         Inherits AbstractAutomaticLineEnderCommandHandler

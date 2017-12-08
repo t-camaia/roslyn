@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -13,7 +12,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
@@ -21,12 +19,6 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
     [Export(typeof(ICommandHandler))]
     [ContentType(CodeAnalysis.Editor.ContentTypeNames.CSharpContentType)]
     [Name("CSharp Snippets")]
-    [HandlesCommand(typeof(SurroundWithCommandArgs))]
-    [HandlesCommand(typeof(TabKeyCommandArgs))]
-    [HandlesCommand(typeof(BackTabKeyCommandArgs))]
-    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
-    [HandlesCommand(typeof(EscapeKeyCommandArgs))]
-    [HandlesCommand(typeof(InsertSnippetCommandArgs))]
     [Order(After = CodeAnalysis.Editor.PredefinedCommandHandlerNames.Completion)]
     [Order(After = CodeAnalysis.Editor.PredefinedCommandHandlerNames.IntelliSense)]
     internal sealed class SnippetCommandHandler :

@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
-    [HandlesCommand(typeof(InvokeCompletionListCommandArgs))]
     internal partial class EventHookupCommandHandler : IChainedCommandHandler<InvokeCompletionListCommandArgs>
     {
         public void ExecuteCommand(InvokeCompletionListCommandArgs args, Action nextHandler, CommandExecutionContext context)

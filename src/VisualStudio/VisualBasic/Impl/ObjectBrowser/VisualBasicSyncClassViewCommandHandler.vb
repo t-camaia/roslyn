@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel.Composition
 Imports Microsoft.CodeAnalysis.Editor
-Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassView
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Utilities
@@ -11,7 +10,6 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.ObjectBrowser
     <Export(GetType(Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.ClassView)>
-    <HandlesCommand(GetType(AbstractSyncClassViewCommandHandler), DefaultCommandAvailability.AlwaysUndetermined)>
     Friend Class VisualBasicSyncClassViewCommandHandler
         Inherits AbstractSyncClassViewCommandHandler
 

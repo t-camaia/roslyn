@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Text;
@@ -14,7 +13,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
     [ContentType(ContentTypeNames.RoslynContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.RenameTrackingCancellation)]
-    [HandlesCommand(typeof(EscapeKeyCommandArgs), DefaultCommandAvailability.AlwaysUndetermined)]
     [Order(After = PredefinedCommandHandlerNames.SignatureHelp)]
     [Order(After = PredefinedCommandHandlerNames.IntelliSense)]
     [Order(After = PredefinedCommandHandlerNames.AutomaticCompletion)]

@@ -11,7 +11,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name("Outlining Command Handler")]
-    [HandlesCommand(typeof(StartAutomaticOutliningCommandArgs))]
     internal sealed class OutliningCommandHandler : VisualStudio.Commanding.ICommandHandler<StartAutomaticOutliningCommandArgs>
     {
         private readonly IOutliningManagerService _outliningManagerService;

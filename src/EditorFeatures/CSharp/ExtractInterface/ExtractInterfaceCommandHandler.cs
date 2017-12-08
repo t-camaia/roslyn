@@ -2,8 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface;
-using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.ExtractInterface
@@ -11,7 +9,6 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.ExtractInterface
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.ExtractInterface)]
-    [HandlesCommand(typeof(ExtractInterfaceCommandArgs))]
     internal class ExtractInterfaceCommandHandler : AbstractExtractInterfaceCommandHandler
     {
     }

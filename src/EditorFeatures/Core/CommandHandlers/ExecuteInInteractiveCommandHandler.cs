@@ -18,7 +18,6 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     /// to load any of the interactive dll files just to get the command's status.
     /// </summary>
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
-    [HandlesCommand(typeof(ExecuteInInteractiveCommandArgs))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name("Interactive Command Handler")]
     internal class ExecuteInInteractiveCommandHandler

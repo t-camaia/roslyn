@@ -11,8 +11,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments;
 using Microsoft.CodeAnalysis.Shared.Extensions;
-using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 
@@ -21,11 +19,6 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.DocumentationComments)]
-    [HandlesCommand(typeof(TypeCharCommandArgs))]
-    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
-    [HandlesCommand(typeof(InsertCommentCommandArgs))]
-    [HandlesCommand(typeof(OpenLineAboveCommandArgs))]
-    [HandlesCommand(typeof(OpenLineBelowCommandArgs))]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(After = PredefinedCommandHandlerNames.Completion)]
     internal class DocumentationCommentCommandHandler

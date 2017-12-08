@@ -24,8 +24,6 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.SignatureHelp)]
-    [HandlesCommand(typeof(TypeCharCommandArgs))]
-    [HandlesCommand(typeof(InvokeSignatureHelpCommandArgs))]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal class SignatureHelpCommandHandler :
         ForegroundThreadAffinitizedObject,

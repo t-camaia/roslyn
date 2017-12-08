@@ -23,7 +23,6 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.FindReferences)]
-    [HandlesCommand(typeof(FindReferencesCommandArgs), DefaultCommandAvailability.AlwaysUndetermined)]
     internal class FindReferencesCommandHandler : VisualStudio.Commanding.ICommandHandler<FindReferencesCommandArgs>
     {
         private readonly IEnumerable<IDefinitionsAndReferencesPresenter> _synchronousPresenters;

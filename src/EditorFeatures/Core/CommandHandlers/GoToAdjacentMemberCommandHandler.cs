@@ -23,8 +23,6 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToAdjacentMember)]
-    [HandlesCommand(typeof(GoToNextMemberCommandArgs))]
-    [HandlesCommand(typeof(GoToPreviousMemberCommandArgs))]
     internal class GoToAdjacentMemberCommandHandler : VisualStudio.Commanding.ICommandHandler<GoToNextMemberCommandArgs>, VisualStudio.Commanding.ICommandHandler<GoToPreviousMemberCommandArgs>
     {
         private readonly IOutliningManagerService _outliningManagerService;

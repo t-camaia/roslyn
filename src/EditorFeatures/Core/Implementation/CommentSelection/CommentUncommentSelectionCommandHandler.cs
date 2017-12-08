@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis.CommentSelection;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Shared.Extensions;
@@ -26,8 +25,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.CommentSelection)]
-    [HandlesCommand(typeof(CommentSelectionCommandArgs))]
-    [HandlesCommand(typeof(UncommentSelectionCommandArgs))]
     internal class CommentUncommentSelectionCommandHandler :
         VisualStudio.Commanding.ICommandHandler<CommentSelectionCommandArgs>,
         VisualStudio.Commanding.ICommandHandler<UncommentSelectionCommandArgs>

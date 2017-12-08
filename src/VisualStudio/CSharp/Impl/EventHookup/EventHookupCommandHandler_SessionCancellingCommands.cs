@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
-    [HandlesCommand(typeof(EscapeKeyCommandArgs))]
     internal partial class EventHookupCommandHandler :
         IChainedCommandHandler<EscapeKeyCommandArgs>
     {

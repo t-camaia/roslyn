@@ -19,9 +19,6 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.EndConstructGeneration
     <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.EndConstruct)>
-    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
-    <HandlesCommand(GetType(TypeCharCommandArgs))>
-    <HandlesCommand(GetType(AutomaticLineEnderCommandArgs))>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>
     <Order(After:=PredefinedCommandHandlerNames.AutomaticLineEnder)>
     Friend Class EndConstructCommandHandler

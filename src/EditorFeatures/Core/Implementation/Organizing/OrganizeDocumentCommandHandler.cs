@@ -24,8 +24,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
     [ContentType(ContentTypeNames.VisualBasicContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.OrganizeDocument)]
-    [HandlesCommand(typeof(OrganizeDocumentCommandArgs))]
-    [HandlesCommand(typeof(SortAndRemoveUnnecessaryImportsCommandArgs))]
     internal class OrganizeDocumentCommandHandler :
         VisualStudio.Commanding.ICommandHandler<OrganizeDocumentCommandArgs>,
         VisualStudio.Commanding.ICommandHandler<SortAndRemoveUnnecessaryImportsCommandArgs>

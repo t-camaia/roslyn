@@ -22,7 +22,6 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToImplementation)]
-    [HandlesCommand(typeof(GoToImplementationCommandArgs))]
     internal partial class GoToImplementationCommandHandler : VisualStudio.Commanding.ICommandHandler<GoToImplementationCommandArgs>
     {
         private readonly IEnumerable<Lazy<IStreamingFindUsagesPresenter>> _streamingPresenters;

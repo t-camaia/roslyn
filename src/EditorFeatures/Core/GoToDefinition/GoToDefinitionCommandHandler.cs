@@ -16,7 +16,6 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToDefinition)]
-    [HandlesCommand(typeof(GoToDefinitionCommandArgs))]
     internal class GoToDefinitionCommandHandler :
         VisualStudio.Commanding.ICommandHandler<GoToDefinitionCommandArgs>
     {

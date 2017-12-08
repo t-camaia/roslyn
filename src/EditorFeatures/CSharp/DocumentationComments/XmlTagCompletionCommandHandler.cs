@@ -5,13 +5,10 @@ using System.Threading;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Extensions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments;
 using Microsoft.CodeAnalysis.Shared.Extensions;
-using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 
@@ -20,7 +17,6 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name("XmlTagCompletionCommandHandler")]
-    [HandlesCommand(typeof(TypeCharCommandArgs))]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal class XmlTagCompletionCommandHandler : AbstractXmlTagCompletionCommandHandler
     {

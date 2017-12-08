@@ -11,8 +11,6 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Formatting.Rules;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
@@ -22,7 +20,6 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.Indent)]
-    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal class SmartTokenFormatterCommandHandler :

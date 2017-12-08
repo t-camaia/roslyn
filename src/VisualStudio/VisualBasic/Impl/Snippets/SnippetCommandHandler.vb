@@ -9,13 +9,11 @@ Imports Microsoft.CodeAnalysis.Shared.Extensions
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.VisualBasic.Extensions
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
-Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
-Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.TextManager.Interop
 Imports Microsoft.VisualStudio.Utilities
 
@@ -23,12 +21,6 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
     <Export(GetType(Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("VB Snippets")>
-    <HandlesCommand(GetType(SurroundWithCommandArgs))>
-    <HandlesCommand(GetType(TabKeyCommandArgs))>
-    <HandlesCommand(GetType(BackTabKeyCommandArgs))>
-    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
-    <HandlesCommand(GetType(EscapeKeyCommandArgs))>
-    <HandlesCommand(GetType(InsertSnippetCommandArgs))>
     <Order(After:=PredefinedCommandHandlerNames.Completion)>
     <Order(After:=PredefinedCommandHandlerNames.IntelliSense)>
     Friend NotInheritable Class SnippetCommandHandler

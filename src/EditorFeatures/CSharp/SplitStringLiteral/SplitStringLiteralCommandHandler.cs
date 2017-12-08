@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
@@ -19,7 +18,6 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(SplitStringLiteralCommandHandler))]
-    [HandlesCommand(typeof(ReturnKeyCommandArgs), DefaultCommandAvailability.AlwaysUndetermined)]
     internal partial class SplitStringLiteralCommandHandler : VisualStudio.Commanding.ICommandHandler<ReturnKeyCommandArgs>
     {
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;

@@ -22,7 +22,6 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.InteractivePaste)]
-    [HandlesCommand(typeof(PasteCommandArgs), DefaultCommandAvailability.AlwaysUndetermined)]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(After = PredefinedCommandHandlerNames.FormatDocument)]
     [Order(After = PredefinedCommandHandlerNames.Commit)]

@@ -3,7 +3,6 @@
 Imports System.ComponentModel.Composition
 Imports System.Threading
 Imports Microsoft.CodeAnalysis
-Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Shared.Utilities
 Imports Microsoft.CodeAnalysis.Formatting.Rules
 Imports Microsoft.CodeAnalysis.Text
@@ -25,11 +24,6 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
     <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.Commit)>
-    <HandlesCommand(GetType(ReturnKeyCommandArgs))>
-    <HandlesCommand(GetType(PasteCommandArgs))>
-    <HandlesCommand(GetType(SaveCommandArgs))>
-    <HandlesCommand(GetType(FormatDocumentCommandArgs))>
-    <HandlesCommand(GetType(FormatSelectionCommandArgs))>
     <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
     <Order(Before:=PredefinedCommandHandlerNames.Completion)>
     Friend Class CommitCommandHandler

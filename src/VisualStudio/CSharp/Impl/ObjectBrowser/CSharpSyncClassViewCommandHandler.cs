@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor;
-using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassView;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Utilities;
@@ -12,7 +11,6 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
     [Export(typeof(Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.ClassView)]
-    [HandlesCommand(typeof(AbstractSyncClassViewCommandHandler), DefaultCommandAvailability.AlwaysUndetermined)]
     internal class CSharpSyncClassViewCommandHandler : AbstractSyncClassViewCommandHandler
     {
         [ImportingConstructor]

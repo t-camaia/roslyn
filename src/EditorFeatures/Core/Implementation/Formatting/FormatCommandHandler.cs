@@ -4,9 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
-using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Formatting.Rules;
 using Microsoft.CodeAnalysis.Internal.Log;
@@ -26,11 +24,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
     [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.FormatDocument)]
-    [HandlesCommand(typeof(FormatDocumentCommandArgs))]
-    [HandlesCommand(typeof(FormatSelectionCommandArgs))]
-    [HandlesCommand(typeof(PasteCommandArgs))]
-    [HandlesCommand(typeof(TypeCharCommandArgs))]
-    [HandlesCommand(typeof(ReturnKeyCommandArgs))]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal partial class FormatCommandHandler :

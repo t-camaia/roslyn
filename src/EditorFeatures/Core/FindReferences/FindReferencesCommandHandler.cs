@@ -4,14 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis.Editor.FindUsages;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
+using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.ErrorReporting;
 using Microsoft.CodeAnalysis.FindUsages;
 using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
+using Microsoft.CodeAnalysis.Shared.Utilities;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
@@ -170,7 +173,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
                 KeyValueLogMessage.Create(LogType.UserAction, m => m["type"] = "legacy"),
                 context.WaitContext.CancellationToken))
             {
-                if (!service.TryFindReferences(document, caretPosition, context.WaitContext))
+                if (!service.TryFindReferences(document, caretPosition, new WaitContextAdapter(context.WaitContext)))
                 {
                     // The service failed, so just present an empty list of references
                     foreach (var presenter in _synchronousPresenters)

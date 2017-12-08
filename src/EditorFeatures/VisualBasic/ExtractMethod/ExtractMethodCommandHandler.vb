@@ -21,8 +21,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ExtractMethod
         <ImportingConstructor()>
         Public Sub New(undoManager As ITextBufferUndoManagerProvider,
                        editorOperationsFactoryService As IEditorOperationsFactoryService,
-                       renameService As IInlineRenameService,
-                       waitIndicator As IWaitIndicator)
+                       renameService As IInlineRenameService)
             MyBase.New(undoManager, editorOperationsFactoryService, renameService)
         End Sub
     End Class

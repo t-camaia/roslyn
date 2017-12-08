@@ -84,8 +84,9 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=False, isLineCopy:=False, isBoxCopy:=False)
 
-                'TODO: Fix it
-                'handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), Sub() editorOperations.InsertText("p"))
+                If Not handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()) Then
+                    editorOperations.InsertText("p")
+                End If
 
                 Assert.Equal("p", textView.TextBuffer.CurrentSnapshot.GetText())
             End Using

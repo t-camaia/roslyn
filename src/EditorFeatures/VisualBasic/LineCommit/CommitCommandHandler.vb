@@ -43,7 +43,6 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
         Private ReadOnly _editorOperationsFactoryService As IEditorOperationsFactoryService
         Private ReadOnly _smartIndentationService As ISmartIndentationService
         Private ReadOnly _textUndoHistoryRegistry As ITextUndoHistoryRegistry
-        Private ReadOnly _waitIndicator As IWaitIndicator
 
         Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
             Get
@@ -70,20 +69,15 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
                 Return
             End If
 
-            _waitIndicator.Wait(
-                VBEditorResources.Format_Document,
-                VBEditorResources.Formatting_Document,
-                allowCancel:=True,
-                action:=
-                Sub(waitContext)
-                    Dim buffer = args.SubjectBuffer
-                    Dim snapshot = buffer.CurrentSnapshot
+            context.WaitContext.AllowCancellation = True
+            context.WaitContext.Description = VBEditorResources.Formatting_Document
+            Dim buffer = args.SubjectBuffer
+            Dim snapshot = buffer.CurrentSnapshot
 
-                    Dim wholeFile = snapshot.GetFullSpan()
-                    Dim commitBufferManager = _bufferManagerFactory.CreateForBuffer(buffer)
-                    commitBufferManager.ExpandDirtyRegion(wholeFile)
-                    commitBufferManager.CommitDirty(isExplicitFormat:=True, cancellationToken:=waitContext.CancellationToken)
-                End Sub)
+            Dim wholeFile = snapshot.GetFullSpan()
+            Dim commitBufferManager = _bufferManagerFactory.CreateForBuffer(buffer)
+            commitBufferManager.ExpandDirtyRegion(wholeFile)
+            commitBufferManager.CommitDirty(isExplicitFormat:=True, cancellationToken:=context.WaitContext.CancellationToken)
         End Sub
 
         Public Function GetCommandState(args As FormatDocumentCommandArgs, nextHandler As Func(Of VisualStudio.Commanding.CommandState)) As VisualStudio.Commanding.CommandState Implements IChainedCommandHandler(Of FormatDocumentCommandArgs).GetCommandState
@@ -96,29 +90,24 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
                 Return
             End If
 
-            _waitIndicator.Wait(
-                VBEditorResources.Format_Document,
-                VBEditorResources.Formatting_Document,
-                allowCancel:=True,
-                action:=
-                Sub(waitContext)
-                    Dim buffer = args.SubjectBuffer
-                    Dim selections = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer)
+            context.WaitContext.AllowCancellation = True
+            context.WaitContext.Description = VBEditorResources.Formatting_Document
+            Dim buffer = args.SubjectBuffer
+            Dim selections = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer)
 
-                    If selections.Count < 1 Then
-                        nextHandler()
-                        Return
-                    End If
+            If selections.Count < 1 Then
+                nextHandler()
+                Return
+            End If
 
-                    Dim snapshot = buffer.CurrentSnapshot
-                    For index As Integer = 0 To selections.Count - 1
-                        Dim textspan = CommonFormattingHelpers.GetFormattingSpan(snapshot, selections(0))
-                        Dim selectedSpan = New SnapshotSpan(snapshot, textspan.Start, textspan.Length)
-                        Dim commitBufferManager = _bufferManagerFactory.CreateForBuffer(buffer)
-                        commitBufferManager.ExpandDirtyRegion(selectedSpan)
-                        commitBufferManager.CommitDirty(isExplicitFormat:=True, cancellationToken:=waitContext.CancellationToken)
-                    Next
-                End Sub)
+            Dim snapshot = buffer.CurrentSnapshot
+            For index As Integer = 0 To selections.Count - 1
+                Dim textspan = CommonFormattingHelpers.GetFormattingSpan(snapshot, selections(0))
+                Dim selectedSpan = New SnapshotSpan(snapshot, textspan.Start, textspan.Length)
+                Dim commitBufferManager = _bufferManagerFactory.CreateForBuffer(buffer)
+                commitBufferManager.ExpandDirtyRegion(selectedSpan)
+                commitBufferManager.CommitDirty(isExplicitFormat:=True, cancellationToken:=context.WaitContext.CancellationToken)
+            Next
 
             'We don't call nextHandler, since we have handled this command.
         End Sub
@@ -228,14 +217,12 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
         End Function
 
         Public Sub ExecuteCommand(args As PasteCommandArgs, nextHandler As Action, context As CommandExecutionContext) Implements IChainedCommandHandler(Of PasteCommandArgs).ExecuteCommand
-            _waitIndicator.Wait(
-                title:=VBEditorResources.Format_Paste,
-                message:=VBEditorResources.Formatting_pasted_text,
-                allowCancel:=True,
-                action:=Sub(waitContext) CommitOnPaste(args, nextHandler, waitContext))
+            context.WaitContext.AllowCancellation = True
+            context.WaitContext.Description = VBEditorResources.Formatting_pasted_text
+            CommitOnPaste(args, nextHandler, context.WaitContext.CancellationToken)
         End Sub
 
-        Private Sub CommitOnPaste(args As PasteCommandArgs, nextHandler As Action, waitContext As IWaitContext)
+        Private Sub CommitOnPaste(args As PasteCommandArgs, nextHandler As Action, cancellationToken As CancellationToken)
             Using transaction = _textUndoHistoryRegistry.GetHistory(args.TextView.TextBuffer).CreateTransaction(VBEditorResources.Paste)
                 Dim oldVersion = args.SubjectBuffer.CurrentSnapshot.Version
 
@@ -259,7 +246,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
                 ' Did we paste content that changed the number of lines?
                 If oldVersion.Changes IsNot Nothing AndAlso oldVersion.Changes.IncludesLineChanges Then
                     Try
-                        _bufferManagerFactory.CreateForBuffer(args.SubjectBuffer).CommitDirty(isExplicitFormat:=False, cancellationToken:=waitContext.CancellationToken)
+                        _bufferManagerFactory.CreateForBuffer(args.SubjectBuffer).CommitDirty(isExplicitFormat:=False, cancellationToken:=cancellationToken)
                     Catch ex As OperationCanceledException
                         ' If the commit was cancelled, we still want the paste to go through
                     End Try
@@ -275,20 +262,16 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
 
         Public Sub ExecuteCommand(args As SaveCommandArgs, nextHandler As Action, context As CommandExecutionContext) Implements IChainedCommandHandler(Of SaveCommandArgs).ExecuteCommand
             If args.SubjectBuffer.GetFeatureOnOffOption(InternalFeatureOnOffOptions.FormatOnSave) Then
-                _waitIndicator.Wait(
-                    title:=VBEditorResources.Format_on_Save,
-                    message:=VBEditorResources.Formatting_Document,
-                    allowCancel:=True,
-                    action:=Sub(waitContext)
-                                Using transaction = _textUndoHistoryRegistry.GetHistory(args.TextView.TextBuffer).CreateTransaction(VBEditorResources.Format_on_Save)
-                                    _bufferManagerFactory.CreateForBuffer(args.SubjectBuffer).CommitDirty(isExplicitFormat:=False, cancellationToken:=waitContext.CancellationToken)
+                context.WaitContext.AllowCancellation = True
+                context.WaitContext.Description = VBEditorResources.Formatting_Document
+                Using transaction = _textUndoHistoryRegistry.GetHistory(args.TextView.TextBuffer).CreateTransaction(VBEditorResources.Format_on_Save)
+                    _bufferManagerFactory.CreateForBuffer(args.SubjectBuffer).CommitDirty(isExplicitFormat:=False, cancellationToken:=context.WaitContext.CancellationToken)
 
-                                    ' We should only create the transaction if anything actually happened
-                                    If transaction.UndoPrimitives.Any() Then
-                                        transaction.Complete()
-                                    End If
-                                End Using
-                            End Sub)
+                    ' We should only create the transaction if anything actually happened
+                    If transaction.UndoPrimitives.Any() Then
+                        transaction.Complete()
+                    End If
+                End Using
             End If
 
             nextHandler()

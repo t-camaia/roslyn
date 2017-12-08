@@ -2,16 +2,11 @@
 
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Editor.Commands;
-using Microsoft.CodeAnalysis.Editor.Host;
-using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Utilities;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Roslyn.Test.Utilities;
 using Xunit;
@@ -20,7 +15,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.BlockCommentEditing
 {
     public abstract class AbstractBlockCommentEditingTests
     {
-        internal abstract VisualStudio.Commanding.ICommandHandler<VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs> CreateCommandHandler(
+        internal abstract VisualStudio.Commanding.ICommandHandler<ReturnKeyCommandArgs> CreateCommandHandler(
             ITextUndoHistoryRegistry undoHistoryRegistry,
             IEditorOperationsFactoryService editorOperationsFactoryService);
 
@@ -39,8 +34,11 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.BlockCommentEditing
                 var args = new ReturnKeyCommandArgs(view, view.TextBuffer);
                 var nextHandler = CreateInsertTextHandler(view, "\r\n");
 
-                //TODO: fix it
-                //commandHandler.ExecuteCommand(args, nextHandler);
+                if (!commandHandler.ExecuteCommand(args, new TestCommandExecutionContext()))
+                {
+                    nextHandler();
+                }
+
                 MarkupTestFile.GetPosition(expectedMarkup, out var expectedCode, out int expectedPosition);
 
                 Assert.Equal(expectedCode, view.TextSnapshot.GetText());

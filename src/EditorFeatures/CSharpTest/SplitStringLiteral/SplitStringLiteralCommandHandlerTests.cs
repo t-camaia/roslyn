@@ -32,8 +32,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SplitStringLiteral
                 var commandHandler = new SplitStringLiteralCommandHandler(
                     undoHistoryRegistry,
                     workspace.GetService<IEditorOperationsFactoryService>());
-                //TODO: fix it
-                commandHandler.ExecuteCommand(new VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs(view, view.TextBuffer), new TestCommandExecutionContext());
+                
+                if (!commandHandler.ExecuteCommand(new VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs(view, view.TextBuffer), new TestCommandExecutionContext()))
+                {
+                    callback();
+                }
 
                 if (expectedOutputMarkup != null)
                 {

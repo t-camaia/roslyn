@@ -337,6 +337,11 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
             commandHandler(new EscapeKeyCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
         }
 
+        public bool SendEscape(Func<EscapeKeyCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new EscapeKeyCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
+        }
+
         public void SendUpKey(Action<UpKeyCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)
         {
             commandHandler(new UpKeyCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
@@ -352,14 +357,29 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
             commandHandler(new TabKeyCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
         }
 
+        public bool SendTab(Func<TabKeyCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new TabKeyCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
+        }
+
         public void SendBackTab(Action<BackTabKeyCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)
         {
             commandHandler(new BackTabKeyCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
         }
 
+        public bool SendBackTab(Func<BackTabKeyCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new BackTabKeyCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
+        }
+
         public void SendReturn(Action<ReturnKeyCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)
         {
             commandHandler(new ReturnKeyCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
+        }
+
+        public bool SendReturn(Func<ReturnKeyCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new ReturnKeyCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
         }
 
         public void SendPageUp(Action<PageUpKeyCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)
@@ -397,9 +417,19 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
             commandHandler(new InsertSnippetCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
         }
 
+        public bool SendInsertSnippetCommand(Func<InsertSnippetCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new InsertSnippetCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
+        }
+
         public void SendSurroundWithCommand(Action<SurroundWithCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)
         {
             commandHandler(new SurroundWithCommandArgs(TextView, SubjectBuffer), nextHandler, new TestCommandExecutionContext());
+        }
+
+        public bool SendSurroundWithCommand(Func<SurroundWithCommandArgs, CommandExecutionContext, bool> commandHandler)
+        {
+            return commandHandler(new SurroundWithCommandArgs(TextView, SubjectBuffer), new TestCommandExecutionContext());
         }
 
         public void SendInvokeSignatureHelp(Action<InvokeSignatureHelpCommandArgs, Action, CommandExecutionContext> commandHandler, Action nextHandler)

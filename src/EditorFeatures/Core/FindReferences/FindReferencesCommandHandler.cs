@@ -165,6 +165,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
         {
             context.WaitContext.AllowCancellation = true;
             context.WaitContext.Description = EditorFeaturesResources.Finding_references;
+
             using (Logger.LogBlock(
                 FunctionId.CommandHandler_FindAllReference,
                 KeyValueLogMessage.Create(LogType.UserAction, m => m["type"] = "legacy"),

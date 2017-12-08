@@ -3385,12 +3385,9 @@ End Namespace"
                     Dim handler = New ExtractMethodCommandHandler(
                         workspace.GetService(Of ITextBufferUndoManagerProvider)(),
                         workspace.GetService(Of IEditorOperationsFactoryService)(),
-                        workspace.GetService(Of IInlineRenameService)(),
-                        workspace.GetService(Of Host.IWaitIndicator)())
-                    Dim delegatedToNext = False
+                        workspace.GetService(Of IInlineRenameService)())
 
                     Dim state = handler.GetCommandState(New ExtractMethodCommandArgs(textView, textView.TextBuffer))
-                    Assert.True(delegatedToNext)
                     Assert.True(state.IsUndetermined)
                 End Using
             End Sub

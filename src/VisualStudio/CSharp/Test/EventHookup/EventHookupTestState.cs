@@ -16,6 +16,10 @@ using Xunit;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.CodeAnalysis.Shared.TestHooks;
+using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup
 {
@@ -27,10 +31,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup
         public EventHookupTestState(XElement workspaceElement, IDictionary<OptionKey, object> options)
             : base(workspaceElement, GetExtraParts(), false)
         {
-            CommandHandlerService t = (CommandHandlerService)Workspace.GetService<ICommandHandlerServiceFactory>().GetService(Workspace.Documents.Single().TextBuffer);
-            var field = t.GetType().GetField("_commandHandlers", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Instance);
-            var handlers = (IEnumerable<Lazy<ICommandHandler, OrderableContentTypeMetadata>>)field.GetValue(t);
-            _commandHandler = handlers.Single(h => h.Value is EventHookupCommandHandler).Value as EventHookupCommandHandler;
+            _commandHandler = new EventHookupCommandHandler(Workspace.GetService<IInlineRenameService>(), Workspace.GetService<IQuickInfoBroker>(),
+                null, Workspace.ExportProvider.GetExportedValues<IAsynchronousOperationListener>().Select(l => new Lazy<IAsynchronousOperationListener, FeatureMetadata>(() => l, new FeatureMetadata("EventHookup"))));
 
             _testSessionHookupMutex = new Mutex(false);
             _commandHandler.TESTSessionHookupMutex = _testSessionHookupMutex;

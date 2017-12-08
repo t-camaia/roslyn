@@ -121,23 +121,27 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Snippets
         End Sub
 
         Friend Overloads Sub SendTab()
-            ' TODO: fix it
-            'SendTab(AddressOf SnippetCommandHandler.ExecuteCommand, Function() EditorOperations.InsertText("    "))
+            If Not SendTab(AddressOf SnippetCommandHandler.ExecuteCommand) Then
+                EditorOperations.InsertText("    ")
+            End If
         End Sub
 
         Friend Overloads Sub SendBackTab()
-            ' TODO: fix it
-            'SendBackTab(AddressOf SnippetCommandHandler.ExecuteCommand, Function() EditorOperations.Unindent())
+            If Not SendBackTab(AddressOf SnippetCommandHandler.ExecuteCommand) Then
+                EditorOperations.Unindent()
+            End If
         End Sub
 
         Friend Overloads Sub SendReturn()
-            ' TODO: fix it
-            'SendReturn(AddressOf SnippetCommandHandler.ExecuteCommand, Function() EditorOperations.InsertNewLine())
+            If Not SendReturn(AddressOf SnippetCommandHandler.ExecuteCommand) Then
+                EditorOperations.InsertNewLine()
+            End If
         End Sub
 
         Friend Overloads Sub SendEscape()
-            ' TODO: fix it
-            'SendEscape(AddressOf SnippetCommandHandler.ExecuteCommand, Function() EditorOperations.InsertText("EscapePassedThrough!"))
+            If Not SendEscape(AddressOf SnippetCommandHandler.ExecuteCommand) Then
+                EditorOperations.InsertText("EscapePassedThrough!")
+            End If
         End Sub
 
         Public Overloads Sub SendTypeChars(typeChars As String)

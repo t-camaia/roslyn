@@ -165,15 +165,13 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
         internal void FindReferences(
             Document document, IFindReferencesService service, int caretPosition, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Finding_references;
-
+            using (var waitScope = context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Finding_references))
             using (Logger.LogBlock(
                 FunctionId.CommandHandler_FindAllReference,
                 KeyValueLogMessage.Create(LogType.UserAction, m => m["type"] = "legacy"),
                 context.WaitContext.CancellationToken))
             {
-                if (!service.TryFindReferences(document, caretPosition, new WaitContextAdapter(context.WaitContext)))
+                if (!service.TryFindReferences(document, caretPosition, new WaitContextAdapter(waitScope)))
                 {
                     // The service failed, so just present an empty list of references
                     foreach (var presenter in _synchronousPresenters)

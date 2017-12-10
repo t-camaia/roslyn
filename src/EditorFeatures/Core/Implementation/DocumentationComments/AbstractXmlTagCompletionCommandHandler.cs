@@ -41,26 +41,27 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
                 return;
             }
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Completing_Tag;
-            var buffer = args.SubjectBuffer;
-
-            var document = buffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null)
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Completing_Tag))
             {
-                return;
+                var buffer = args.SubjectBuffer;
+
+                var document = buffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
+                if (document == null)
+                {
+                    return;
+                }
+
+                // We actually want the caret position after any operations
+                var position = args.TextView.GetCaretPoint(args.SubjectBuffer);
+
+                // No caret position? No edit!
+                if (!position.HasValue)
+                {
+                    return;
+                }
+
+                TryCompleteTag(args.TextView, args.SubjectBuffer, document, position.Value, context.WaitContext.CancellationToken);
             }
-
-            // We actually want the caret position after any operations
-            var position = args.TextView.GetCaretPoint(args.SubjectBuffer);
-
-            // No caret position? No edit!
-            if (!position.HasValue)
-            {
-                return;
-            }
-
-            TryCompleteTag(args.TextView, args.SubjectBuffer, document, position.Value, context.WaitContext.CancellationToken);
         }
 
         protected void InsertTextAndMoveCaret(ITextView textView, ITextBuffer subjectBuffer, SnapshotPoint position, string insertionText, int? finalCaretPosition)

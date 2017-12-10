@@ -79,14 +79,15 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
 
             ChangeSignatureResult result = null;
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = FeaturesResources.Change_signature;
-                    var reorderParametersService = document.GetLanguageService<AbstractChangeSignatureService>();
-            result = reorderParametersService.ChangeSignature(
-                document,
-                caretPoint.Value.Position,
-                (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
-                context.WaitContext.CancellationToken);
+            using (context.WaitContext.AddScope(allowCancellation: true, FeaturesResources.Change_signature))
+            {
+                var reorderParametersService = document.GetLanguageService<AbstractChangeSignatureService>();
+                result = reorderParametersService.ChangeSignature(
+                    document,
+                    caretPoint.Value.Position,
+                    (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
+                    context.WaitContext.CancellationToken);
+            }
 
             if (result == null || !result.Succeeded)
             {

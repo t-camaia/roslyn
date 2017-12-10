@@ -49,17 +49,18 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
                 return false;
             }
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Applying_Encapsulate_Field_refactoring;
-            return Execute(args, context.WaitContext);
+            using (var waitScope = context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Applying_Encapsulate_Field_refactoring))
+            {
+                return Execute(args, waitScope);
+            }
         }
 
-        private bool Execute(EncapsulateFieldCommandArgs args, IWaitableUIOperationContext waitContext)
+        private bool Execute(EncapsulateFieldCommandArgs args, IWaitableUIOperationScope waitScope)
         {
             using (var token = _listener.BeginAsyncOperation("EncapsulateField"))
             {
                 var text = args.TextView.TextBuffer.CurrentSnapshot.AsText();
-                var cancellationToken = waitContext.CancellationToken;
+                var cancellationToken = waitScope.Context.CancellationToken;
                 if (!Workspace.TryGetWorkspace(text.Container, out var workspace))
                 {
                     return false;
@@ -90,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
                     return false;
                 }
 
-                waitContext.AllowCancellation = false;
+                waitScope.AllowCancellation = false;
 
                 var finalSolution = result.GetSolutionAsync(cancellationToken).WaitAndGetResult(cancellationToken);
 

@@ -42,42 +42,42 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
 
         private void AddRootNode(ViewCallHierarchyCommandArgs args, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Computing_Call_Hierarchy_Information;
-
-            var cancellationToken = context.WaitContext.CancellationToken;
-            var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null)
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Computing_Call_Hierarchy_Information))
             {
-                return;
-            }
-
-            var workspace = document.Project.Solution.Workspace;
-            var semanticModel = document.GetSemanticModelAsync(cancellationToken).WaitAndGetResult(cancellationToken);
-
-            var caretPosition = args.TextView.Caret.Position.BufferPosition.Position;
-            var symbolUnderCaret = SymbolFinder.FindSymbolAtPositionAsync(semanticModel, caretPosition, workspace, cancellationToken)
-                .WaitAndGetResult(cancellationToken);
-
-            if (symbolUnderCaret != null)
-            {
-                // Map symbols so that Call Hierarchy works from metadata-as-source
-                var mappingService = document.Project.Solution.Workspace.Services.GetService<ISymbolMappingService>();
-                var mapping = mappingService.MapSymbolAsync(document, symbolUnderCaret, cancellationToken).WaitAndGetResult(cancellationToken);
-
-                if (mapping.Symbol != null)
+                var cancellationToken = context.WaitContext.CancellationToken;
+                var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
+                if (document == null)
                 {
-                    var node = _provider.CreateItem(mapping.Symbol, mapping.Project, SpecializedCollections.EmptyEnumerable<Location>(), cancellationToken).WaitAndGetResult(cancellationToken);
-                    if (node != null)
+                    return;
+                }
+
+                var workspace = document.Project.Solution.Workspace;
+                var semanticModel = document.GetSemanticModelAsync(cancellationToken).WaitAndGetResult(cancellationToken);
+
+                var caretPosition = args.TextView.Caret.Position.BufferPosition.Position;
+                var symbolUnderCaret = SymbolFinder.FindSymbolAtPositionAsync(semanticModel, caretPosition, workspace, cancellationToken)
+                    .WaitAndGetResult(cancellationToken);
+
+                if (symbolUnderCaret != null)
+                {
+                    // Map symbols so that Call Hierarchy works from metadata-as-source
+                    var mappingService = document.Project.Solution.Workspace.Services.GetService<ISymbolMappingService>();
+                    var mapping = mappingService.MapSymbolAsync(document, symbolUnderCaret, cancellationToken).WaitAndGetResult(cancellationToken);
+
+                    if (mapping.Symbol != null)
                     {
-                        _presenter.PresentRoot((CallHierarchyItem)node);
+                        var node = _provider.CreateItem(mapping.Symbol, mapping.Project, SpecializedCollections.EmptyEnumerable<Location>(), cancellationToken).WaitAndGetResult(cancellationToken);
+                        if (node != null)
+                        {
+                            _presenter.PresentRoot((CallHierarchyItem)node);
+                        }
                     }
                 }
-            }
-            else
-            {
-                var notificationService = document.Project.Solution.Workspace.Services.GetService<INotificationService>();
-                notificationService.SendNotification(EditorFeaturesResources.Cursor_must_be_on_a_member_name, severity: NotificationSeverity.Information);
+                else
+                {
+                    var notificationService = document.Project.Solution.Workspace.Services.GetService<INotificationService>();
+                    notificationService.SendNotification(EditorFeaturesResources.Cursor_must_be_on_a_member_name, severity: NotificationSeverity.Information);
+                }
             }
         }
 

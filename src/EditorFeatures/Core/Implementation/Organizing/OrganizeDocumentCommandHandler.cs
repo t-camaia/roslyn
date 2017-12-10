@@ -37,10 +37,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
 
         public bool ExecuteCommand(OrganizeDocumentCommandArgs args, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Organizing_document;
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Organizing_document))
+            {
+                this.Organize(args.SubjectBuffer, context.WaitContext.CancellationToken);
+            }
 
-            this.Organize(args.SubjectBuffer, context.WaitContext.CancellationToken);
             return true;
         }
 
@@ -89,10 +90,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
 
         public bool ExecuteCommand(SortAndRemoveUnnecessaryImportsCommandArgs args, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Organizing_document;
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Organizing_document))
+            {
+                this.SortAndRemoveUnusedImports(args.SubjectBuffer, context.WaitContext.CancellationToken);
+            }
 
-            this.SortAndRemoveUnusedImports(args.SubjectBuffer, context.WaitContext.CancellationToken);
             return true;
         }
 

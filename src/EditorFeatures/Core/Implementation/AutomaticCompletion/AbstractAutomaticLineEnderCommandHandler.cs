@@ -80,51 +80,53 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 NextAction(operations, nextHandler);
                 return;
             }
-            context.WaitContext.AllowCancellation = false;
-            context.WaitContext.Description = EditorFeaturesResources.Automatically_completing;
-            var w = context.WaitContext;
 
-            // caret is not on the subject buffer. nothing we can do
-            var position = args.TextView.GetCaretPoint(args.SubjectBuffer);
-            if (!position.HasValue)
+            using (context.WaitContext.AddScope(allowCancellation: false, EditorFeaturesResources.Automatically_completing))
             {
-                NextAction(operations, nextHandler);
-                return;
-            }
+                var w = context.WaitContext;
 
-            var subjectLineWhereCaretIsOn = position.Value.GetContainingLine();
-            var insertionPoint = GetInsertionPoint(document, subjectLineWhereCaretIsOn, w.CancellationToken);
-            if (!insertionPoint.HasValue)
-            {
-                NextAction(operations, nextHandler);
-                return;
-            }
+                // caret is not on the subject buffer. nothing we can do
+                var position = args.TextView.GetCaretPoint(args.SubjectBuffer);
+                if (!position.HasValue)
+                {
+                    NextAction(operations, nextHandler);
+                    return;
+                }
 
-            // special cases where we treat this command simply as Return.
-            if (TreatAsReturn(document, position.Value.Position, w.CancellationToken))
-            {
-                // leave it to the VS editor to handle this command.
-                // VS editor's default implementation of SmartBreakLine is simply BreakLine, which inserts
-                // a new line and positions the caret with smart indent.
-                nextHandler();
-                return;
-            }
+                var subjectLineWhereCaretIsOn = position.Value.GetContainingLine();
+                var insertionPoint = GetInsertionPoint(document, subjectLineWhereCaretIsOn, w.CancellationToken);
+                if (!insertionPoint.HasValue)
+                {
+                    NextAction(operations, nextHandler);
+                    return;
+                }
 
-            using (var transaction = args.TextView.CreateEditTransaction(EditorFeaturesResources.Automatic_Line_Ender, _undoRegistry, _editorOperationsFactoryService))
-            {
-                // try to move the caret to the end of the line on which the caret is
-                args.TextView.TryMoveCaretToAndEnsureVisible(subjectLineWhereCaretIsOn.End);
+                // special cases where we treat this command simply as Return.
+                if (TreatAsReturn(document, position.Value.Position, w.CancellationToken))
+                {
+                    // leave it to the VS editor to handle this command.
+                    // VS editor's default implementation of SmartBreakLine is simply BreakLine, which inserts
+                    // a new line and positions the caret with smart indent.
+                    nextHandler();
+                    return;
+                }
 
-                // okay, now insert ending if we need to
-                var newDocument = InsertEndingIfRequired(document, insertionPoint.Value, position.Value, w.CancellationToken);
+                using (var transaction = args.TextView.CreateEditTransaction(EditorFeaturesResources.Automatic_Line_Ender, _undoRegistry, _editorOperationsFactoryService))
+                {
+                    // try to move the caret to the end of the line on which the caret is
+                    args.TextView.TryMoveCaretToAndEnsureVisible(subjectLineWhereCaretIsOn.End);
 
-                // format the document and apply the changes to the workspace
-                FormatAndApply(newDocument, insertionPoint.Value, w.CancellationToken);
+                    // okay, now insert ending if we need to
+                    var newDocument = InsertEndingIfRequired(document, insertionPoint.Value, position.Value, w.CancellationToken);
 
-                // now, insert new line
-                NextAction(operations, nextHandler);
+                    // format the document and apply the changes to the workspace
+                    FormatAndApply(newDocument, insertionPoint.Value, w.CancellationToken);
 
-                transaction.Complete();
+                    // now, insert new line
+                    NextAction(operations, nextHandler);
+
+                    transaction.Complete();
+                }
             }
         }
 

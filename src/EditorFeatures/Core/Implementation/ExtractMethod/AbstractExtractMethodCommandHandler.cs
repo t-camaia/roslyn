@@ -89,10 +89,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
                 _renameService.ActiveSession.Commit();
             }
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Applying_Extract_Method_refactoring;
-
-            return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.CancellationToken);
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Applying_Extract_Method_refactoring))
+            {
+                return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.CancellationToken);
+            }
         }
 
         private bool Execute(

@@ -45,64 +45,65 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
 
             var snapshot = args.SubjectBuffer.CurrentSnapshot;
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = string.Format(ServicesVSResources.Synchronizing_with_0, ClassView);
-            var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null)
+            using (var waitScope = context.WaitContext.AddScope(allowCancellation: true, string.Format(ServicesVSResources.Synchronizing_with_0, ClassView)))
             {
+                var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
+                if (document == null)
+                {
+                    return true;
+                }
+
+                var syntaxFactsService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
+                if (syntaxFactsService == null)
+                {
+                    return true;
+                }
+
+                var libraryService = document.Project.LanguageServices.GetService<ILibraryService>();
+                if (libraryService == null)
+                {
+                    return true;
+                }
+
+                var semanticModel = document
+                    .GetSemanticModelAsync(context.WaitContext.CancellationToken)
+                    .WaitAndGetResult(context.WaitContext.CancellationToken);
+
+                var root = semanticModel.SyntaxTree
+                    .GetRootAsync(context.WaitContext.CancellationToken)
+                    .WaitAndGetResult(context.WaitContext.CancellationToken);
+
+                var memberDeclaration = syntaxFactsService.GetContainingMemberDeclaration(root, caretPosition);
+
+                var symbol = memberDeclaration != null
+                    ? semanticModel.GetDeclaredSymbol(memberDeclaration, context.WaitContext.CancellationToken)
+                    : null;
+
+                while (symbol != null && !IsValidSymbolToSynchronize(symbol))
+                {
+                    symbol = symbol.ContainingSymbol;
+                }
+
+                IVsNavInfo navInfo = null;
+                if (symbol != null)
+                {
+                    navInfo = libraryService.NavInfoFactory.CreateForSymbol(symbol, document.Project, semanticModel.Compilation, useExpandedHierarchy: true);
+                }
+
+                if (navInfo == null)
+                {
+                    navInfo = libraryService.NavInfoFactory.CreateForProject(document.Project);
+                }
+
+                if (navInfo == null)
+                {
+                    return true;
+                }
+
+                var navigationTool = _serviceProvider.GetService<SVsClassView, IVsNavigationTool>();
+                navigationTool.NavigateToNavInfo(navInfo);
                 return true;
             }
-
-            var syntaxFactsService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
-            if (syntaxFactsService == null)
-            {
-                return true;
-            }
-
-            var libraryService = document.Project.LanguageServices.GetService<ILibraryService>();
-            if (libraryService == null)
-            {
-                return true;
-            }
-
-            var semanticModel = document
-                .GetSemanticModelAsync(context.WaitContext.CancellationToken)
-                .WaitAndGetResult(context.WaitContext.CancellationToken);
-
-            var root = semanticModel.SyntaxTree
-                .GetRootAsync(context.WaitContext.CancellationToken)
-                .WaitAndGetResult(context.WaitContext.CancellationToken);
-
-            var memberDeclaration = syntaxFactsService.GetContainingMemberDeclaration(root, caretPosition);
-
-            var symbol = memberDeclaration != null
-                ? semanticModel.GetDeclaredSymbol(memberDeclaration, context.WaitContext.CancellationToken)
-                : null;
-
-            while (symbol != null && !IsValidSymbolToSynchronize(symbol))
-            {
-                symbol = symbol.ContainingSymbol;
-            }
-
-            IVsNavInfo navInfo = null;
-            if (symbol != null)
-            {
-                navInfo = libraryService.NavInfoFactory.CreateForSymbol(symbol, document.Project, semanticModel.Compilation, useExpandedHierarchy: true);
-            }
-
-            if (navInfo == null)
-            {
-                navInfo = libraryService.NavInfoFactory.CreateForProject(document.Project);
-            }
-
-            if (navInfo == null)
-            {
-                return true;
-            }
-
-            var navigationTool = _serviceProvider.GetService<SVsClassView, IVsNavigationTool>();
-            navigationTool.NavigateToNavInfo(navInfo);
-            return true;
         }
 
         private static bool IsValidSymbolToSynchronize(ISymbol symbol) =>

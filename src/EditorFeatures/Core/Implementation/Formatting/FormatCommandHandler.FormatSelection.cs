@@ -45,31 +45,31 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Formatting_currently_selected_text;
-
-            var buffer = args.SubjectBuffer;
-
-            // we only support single selection for now
-            var selection = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer);
-            if (selection.Count != 1)
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_currently_selected_text))
             {
-                return false;
+                var buffer = args.SubjectBuffer;
+
+                // we only support single selection for now
+                var selection = args.TextView.Selection.GetSnapshotSpansOnBuffer(buffer);
+                if (selection.Count != 1)
+                {
+                    return false;
+                }
+
+                var formattingSpan = selection[0].Span.ToTextSpan();
+
+                Format(args.TextView, document, formattingSpan, context.WaitContext.CancellationToken);
+
+                // make behavior same as dev12. 
+                // make sure we set selection back and set caret position at the end of selection
+                // we can delete this code once razor side fixes a bug where it depends on this behavior (dev12) on formatting.
+                var currentSelection = selection[0].TranslateTo(args.SubjectBuffer.CurrentSnapshot, SpanTrackingMode.EdgeExclusive);
+                args.TextView.SetSelection(currentSelection);
+                args.TextView.TryMoveCaretToAndEnsureVisible(currentSelection.End, ensureSpanVisibleOptions: EnsureSpanVisibleOptions.MinimumScroll);
+
+                // We don't call nextHandler, since we have handled this command.
+                return true;
             }
-
-            var formattingSpan = selection[0].Span.ToTextSpan();
-
-            Format(args.TextView, document, formattingSpan, context.WaitContext.CancellationToken);
-
-            // make behavior same as dev12. 
-            // make sure we set selection back and set caret position at the end of selection
-            // we can delete this code once razor side fixes a bug where it depends on this behavior (dev12) on formatting.
-            var currentSelection = selection[0].TranslateTo(args.SubjectBuffer.CurrentSnapshot, SpanTrackingMode.EdgeExclusive);
-            args.TextView.SetSelection(currentSelection);
-            args.TextView.TryMoveCaretToAndEnsureVisible(currentSelection.End, ensureSpanVisibleOptions: EnsureSpanVisibleOptions.MinimumScroll);
-
-            // We don't call nextHandler, since we have handled this command.
-            return true;
         }
     }
 }

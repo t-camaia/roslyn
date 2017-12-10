@@ -24,9 +24,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 
         public void ExecuteCommand(PasteCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Formatting_pasted_text;
-            ExecuteCommandWorker(args, nextHandler, context.WaitContext.CancellationToken);
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_pasted_text))
+            {
+                ExecuteCommandWorker(args, nextHandler, context.WaitContext.CancellationToken);
+            }
         }
 
         private void ExecuteCommandWorker(PasteCommandArgs args, Action nextHandler, CancellationToken cancellationToken)

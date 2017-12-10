@@ -90,47 +90,48 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
             var message = operation == Operation.Comment ? EditorFeaturesResources.Commenting_currently_selected_text
                                                          : EditorFeaturesResources.Uncommenting_currently_selected_text;
 
-            context.WaitContext.AllowCancellation = false;
-            context.WaitContext.Description = message;
-
-            var document = subjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null)
+            using (context.WaitContext.AddScope(allowCancellation: false, message))
             {
-                return true;
-            }
 
-            var service = GetService(document);
-            if (service == null)
-            {
-                return true;
-            }
+                var document = subjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
+                if (document == null)
+                {
+                    return true;
+                }
 
-            var trackingSpans = new List<ITrackingSpan>();
-            var textChanges = new List<TextChange>();
+                var service = GetService(document);
+                if (service == null)
+                {
+                    return true;
+                }
 
-            CollectEdits(
-                document, service, textView.Selection.GetSnapshotSpansOnBuffer(subjectBuffer),
-                textChanges, trackingSpans, operation, context.WaitContext.CancellationToken);
+                var trackingSpans = new List<ITrackingSpan>();
+                var textChanges = new List<TextChange>();
 
-            using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
-            {
-                document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, context.WaitContext.CancellationToken);
-                transaction.Complete();
-            }
+                CollectEdits(
+                    document, service, textView.Selection.GetSnapshotSpansOnBuffer(subjectBuffer),
+                    textChanges, trackingSpans, operation, context.WaitContext.CancellationToken);
 
-            if (operation == Operation.Uncomment)
-            {
                 using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
                 {
-                    Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, context.WaitContext.CancellationToken);
+                    document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, context.WaitContext.CancellationToken);
                     transaction.Complete();
                 }
-            }
 
-            if (trackingSpans.Any())
-            {
-                // TODO, this doesn't currently handle block selection
-                textView.SetSelection(trackingSpans.First().GetSpan(subjectBuffer.CurrentSnapshot));
+                if (operation == Operation.Uncomment)
+                {
+                    using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
+                    {
+                        Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, context.WaitContext.CancellationToken);
+                        transaction.Complete();
+                    }
+                }
+
+                if (trackingSpans.Any())
+                {
+                    // TODO, this doesn't currently handle block selection
+                    textView.SetSelection(trackingSpans.First().GetSpan(subjectBuffer.CurrentSnapshot));
+                }
             }
 
             return true;

@@ -59,14 +59,14 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         bool VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
         {
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = InteractiveEditorFeaturesResources.Executing_selection_in_Interactive_Window;
-
-            var window = OpenInteractiveWindow(focus: false);
-            string submission = GetSelectedText(args, context.WaitContext.CancellationToken);
-            if (!String.IsNullOrWhiteSpace(submission))
+            using (context.WaitContext.AddScope(allowCancellation: true, InteractiveEditorFeaturesResources.Executing_selection_in_Interactive_Window))
             {
-                window.SubmitAsync(new string[] { submission });
+                var window = OpenInteractiveWindow(focus: false);
+                string submission = GetSelectedText(args, context.WaitContext.CancellationToken);
+                if (!String.IsNullOrWhiteSpace(submission))
+                {
+                    window.SubmitAsync(new string[] { submission });
+                }
             }
 
             return true;

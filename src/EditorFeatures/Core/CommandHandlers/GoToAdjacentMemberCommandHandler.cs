@@ -88,11 +88,12 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             }
 
             int? targetPosition = null;
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Navigating;
 
-            var task = GetTargetPositionAsync(document, caretPoint.Value.Position, next, context.WaitContext.CancellationToken);
-            targetPosition = task.WaitAndGetResult(context.WaitContext.CancellationToken);
+            using (context.WaitContext.AddScope(allowCancellation: true, description: EditorFeaturesResources.Navigating))
+            {
+                var task = GetTargetPositionAsync(document, caretPoint.Value.Position, next, context.WaitContext.CancellationToken);
+                targetPosition = task.WaitAndGetResult(context.WaitContext.CancellationToken);
+            }
 
             if (targetPosition != null)
             {

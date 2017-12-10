@@ -62,16 +62,16 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
         {
             string errorMessage = null;
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Navigating_to_definition;
-
-            if (goToDefinitionService != null &&
-                goToDefinitionService.TryGoToDefinition(document, caretPosition, context.WaitContext.CancellationToken))
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Navigating_to_definition))
             {
-                return true;
-            }
+                if (goToDefinitionService != null &&
+                    goToDefinitionService.TryGoToDefinition(document, caretPosition, context.WaitContext.CancellationToken))
+                {
+                    return true;
+                }
 
-            errorMessage = EditorFeaturesResources.Cannot_navigate_to_the_symbol_under_the_caret;
+                errorMessage = EditorFeaturesResources.Cannot_navigate_to_the_symbol_under_the_caret;
+            }
 
             if (errorMessage != null)
             {

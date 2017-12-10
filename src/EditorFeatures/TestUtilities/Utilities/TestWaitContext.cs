@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Shared.Utilities;
@@ -118,7 +120,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
         }
     }
 
-    public class TestCommandExecutionContext : CommandExecutionContext
+    internal class TestCommandExecutionContext : CommandExecutionContext
     {
         public TestCommandExecutionContext()
             : this(new TestWaitableUIOperationContext())
@@ -131,21 +133,23 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
         }
     }
 
-    public sealed class TestWaitableUIOperationContext : VisualStudio.Utilities.IWaitableUIOperationContext
+    internal class TestWaitableUIOperationContext : VisualStudio.Utilities.IWaitableUIOperationContext
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly int _maxUpdates;
         private int _updates;
-        private readonly VisualStudio.Utilities.IProgressTracker _progressTracker;
+        private List<TestWaitableUIOperationScope> _scopes = new List<TestWaitableUIOperationScope>();
 
-        public TestWaitableUIOperationContext(int maxUpdates = int.MaxValue)
+        public TestWaitableUIOperationContext(int maxUpdates)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _maxUpdates = maxUpdates;
-            _progressTracker = new PlatformProgressTracker((_1, _2) => UpdateProgress());
         }
 
-        VisualStudio.Utilities.IProgressTracker VisualStudio.Utilities.IWaitableUIOperationContext.ProgressTracker => _progressTracker;
+        public TestWaitableUIOperationContext()
+            : this(int.MaxValue)
+        {
+        }
 
         public VisualStudio.Utilities.PropertyCollection Properties => new VisualStudio.Utilities.PropertyCollection();
 
@@ -159,6 +163,12 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
             get { return _cancellationTokenSource.Token; }
         }
 
+        public IEnumerable<VisualStudio.Utilities.IWaitableUIOperationScope> Scopes => _scopes;
+
+        public bool AllowCancellation => _scopes.All(s => s.AllowCancellation);
+
+        public string Description => string.Join("", _scopes.Select(s => s.Description));
+
         private void UpdateProgress()
         {
             var result = Interlocked.Increment(ref _updates);
@@ -168,32 +178,45 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
             }
         }
 
-        public bool AllowCancellation
-        {
-            get
-            {
-                return false;
-            }
-
-            set
-            {
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return "";
-            }
-
-            set
-            {
-            }
-        }
-
         public void Dispose()
         {
+        }
+
+        public VisualStudio.Utilities.IWaitableUIOperationScope AddScope(bool allowCancellation, string description)
+        {
+            var scope = new TestWaitableUIOperationScope(this, allowCancellation, description);
+            _scopes.Add(scope);
+            return scope;
+        }
+
+        private void RemoveScope(TestWaitableUIOperationScope scope)
+        {
+            _scopes.Remove(scope);
+        }
+
+        private class TestWaitableUIOperationScope : VisualStudio.Utilities.IWaitableUIOperationScope
+        {
+            private readonly TestWaitableUIOperationContext _context;
+            public TestWaitableUIOperationScope(TestWaitableUIOperationContext context, bool allowCancellation, string description)
+            {
+                this.AllowCancellation = allowCancellation;
+                this.Description = description;
+                _context = context;
+                this.ProgressTracker = new PlatformProgressTracker();
+            }
+
+            public VisualStudio.Utilities.IWaitableUIOperationContext Context => _context;
+
+            public bool AllowCancellation { get; set; }
+
+            public string Description { get; set; }
+
+            public VisualStudio.Utilities.IProgressTracker ProgressTracker { get; }
+
+            public void Dispose()
+            {
+                _context.RemoveScope(this);
+            }
         }
     }
 }

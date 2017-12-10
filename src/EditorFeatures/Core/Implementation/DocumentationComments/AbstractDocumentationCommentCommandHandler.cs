@@ -574,12 +574,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
         {
             var originalCaretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Inserting_documentation_comment;
-
-            if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.CancellationToken))
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Inserting_documentation_comment))
             {
-                nextHandler();
+                if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.CancellationToken))
+                {
+                    nextHandler();
+                }
             }
         }
 

@@ -42,13 +42,15 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Formatting_document;
+            var result = false;
+            using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_document))
+            {
+                Format(args.TextView, document, null, context.WaitContext.CancellationToken);
+                result = true;
+            }
 
-            Format(args.TextView, document, null, context.WaitContext.CancellationToken);
-            
             // We don't call nextHandler, since we have handled this command.
-            return true;
+            return result;
         }
     }
 }

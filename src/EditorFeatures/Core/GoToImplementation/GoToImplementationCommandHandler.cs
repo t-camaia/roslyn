@@ -85,20 +85,21 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
                 // We have all the cheap stuff, so let's do expensive stuff now
                 string messageToShow = null;
 
-            context.WaitContext.AllowCancellation = true;
-            context.WaitContext.Description = EditorFeaturesResources.Locating_implementations;
-                if (canUseStreamingWindow)
-                        {
-                            StreamingGoToImplementation(
-                                document, caretPosition,
-                                streamingService, streamingPresenter,
-                                context.WaitContext.CancellationToken, out messageToShow);
-                        }
-                        else
-                        {
-                            synchronousService.TryGoToImplementation(
-                                document, caretPosition, context.WaitContext.CancellationToken, out messageToShow);
-                        }
+                using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Locating_implementations))
+                {
+                    if (canUseStreamingWindow)
+                    {
+                        StreamingGoToImplementation(
+                            document, caretPosition,
+                            streamingService, streamingPresenter,
+                            context.WaitContext.CancellationToken, out messageToShow);
+                    }
+                    else
+                    {
+                        synchronousService.TryGoToImplementation(
+                            document, caretPosition, context.WaitContext.CancellationToken, out messageToShow);
+                    }
+                }
 
                 if (messageToShow != null)
                 {

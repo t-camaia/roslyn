@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(BlockCommentEditingCommandHandler))]
     [Order(After = PredefinedCommandHandlerNames.Completion)]
-    internal class BlockCommentEditingCommandHandler : ModernAbstractBlockCommentEditingCommandHandler
+    internal class BlockCommentEditingCommandHandler : PlatformAbstractBlockCommentEditingCommandHandler
     {
         [ImportingConstructor]
         public BlockCommentEditingCommandHandler(

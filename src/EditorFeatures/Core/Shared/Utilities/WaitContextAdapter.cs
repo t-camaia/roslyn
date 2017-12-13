@@ -6,6 +6,14 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
 {
+    /// <summary>
+    /// An adapter between Roslyn's IWaitContext and editor's IWaitableUIOperationScope, which are basically 
+    /// represent the same abstraction. The only place where it's needed so far is FindReferencesCommandHandler,
+    /// which operates within IWaitableUIOperationScope, but calls to <see cref="IFindReferencesService"/>, which
+    /// requires Roslyn's IWaitContext.
+    /// Going forward this adapter can be deleted once Roslyn's IWaitContext/Indicator is retired in favor of editor's 
+    /// IWaitableUIOperationExecutor/Context.
+    /// </summary>
     internal class WaitContextAdapter : IWaitContext
     {
         private readonly IWaitableUIOperationScope _platformWaitScope;

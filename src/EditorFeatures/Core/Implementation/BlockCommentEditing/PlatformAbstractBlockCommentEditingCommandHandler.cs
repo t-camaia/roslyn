@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.Text.Operations;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
 {
-    internal abstract class ModernAbstractBlockCommentEditingCommandHandler : BaseAbstractBlockCommentEditingCommandHandler, 
+    internal abstract class PlatformAbstractBlockCommentEditingCommandHandler : BaseAbstractBlockCommentEditingCommandHandler, 
         VisualStudio.Commanding.ICommandHandler<ReturnKeyCommandArgs>
     {
-        protected ModernAbstractBlockCommentEditingCommandHandler(
+        protected PlatformAbstractBlockCommentEditingCommandHandler(
             ITextUndoHistoryRegistry undoHistoryRegistry,
             IEditorOperationsFactoryService editorOperationsFactoryService)
             : base (undoHistoryRegistry, editorOperationsFactoryService)

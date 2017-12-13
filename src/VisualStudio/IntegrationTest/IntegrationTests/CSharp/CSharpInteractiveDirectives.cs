@@ -17,8 +17,8 @@ namespace Roslyn.VisualStudio.IntegrationTests.CSharp
         [Fact]
         public void VerifyHostCommandsCompletionList()
         {
-            VisualStudio.Workspace.SetUseSuggestionMode(true);
             VisualStudio.InteractiveWindow.InsertCode("#");
+            VisualStudio.Workspace.SetUseSuggestionMode(true);
             VisualStudio.InteractiveWindow.InvokeCompletionList();
 
             VisualStudio.InteractiveWindow.Verify.CompletionItemsExist("cls",

@@ -8,10 +8,10 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
     {
         private readonly VisualStudio.Utilities.IProgressTracker _platformProgressTracker;
 
-        public ProgressTrackerAdapter(VisualStudio.Utilities.IProgressTracker platformprogressTracker)
+        public ProgressTrackerAdapter(VisualStudio.Utilities.IProgressTracker platformProgressTracker)
         {
-            Requires.NotNull(platformprogressTracker, nameof(platformprogressTracker));
-            _platformProgressTracker = platformprogressTracker;
+            Requires.NotNull(platformProgressTracker, nameof(platformProgressTracker));
+            _platformProgressTracker = platformProgressTracker;
         }
 
         public int CompletedItems => _platformProgressTracker.CompletedItems;

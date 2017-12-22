@@ -85,7 +85,7 @@ End Module</code>
                     workspace.ExportProvider.GetExportedValue(Of IEditorOperationsFactoryService))
                 Dim textView = doc.GetTextView()
                 Dim textBuffer = doc.GetTextBuffer()
-                commandHandler.ExecuteCommand(textView, textBuffer, operation, New TestCommandExecutionContext())
+                commandHandler.ExecuteCommand(textView, textBuffer, operation, TestCommandExecutionContext.Create())
 
                 Assert.Equal(expected, doc.TextBuffer.CurrentSnapshot.GetText())
             End Using

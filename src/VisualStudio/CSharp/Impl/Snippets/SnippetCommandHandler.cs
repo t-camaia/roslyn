@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         protected override AbstractSnippetExpansionClient GetSnippetExpansionClient(ITextView textView, ITextBuffer subjectBuffer)

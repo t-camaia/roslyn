@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         bool VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs>.GetCommandState(CopyToInteractiveCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         bool VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs>.ExecuteCommand(CopyToInteractiveCommandArgs args, CommandExecutionContext context)

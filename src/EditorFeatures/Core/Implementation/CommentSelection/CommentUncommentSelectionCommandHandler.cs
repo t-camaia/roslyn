@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public VisualStudio.Commanding.CommandState GetCommandState(CommentSelectionCommandArgs args)

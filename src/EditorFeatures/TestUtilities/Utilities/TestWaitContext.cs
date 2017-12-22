@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Shared.Utilities;
-using Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
 {

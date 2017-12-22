@@ -52,7 +52,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
         [ImportingConstructor]
         public EventHookupCommandHandler(
             IInlineRenameService inlineRenameService,
+#pragma warning disable CS0618 // Type or member is obsolete
             IQuickInfoBroker quickInfoBroker,
+#pragma warning restore CS0618 // Type or member is obsolete
             [Import(AllowDefault = true)] IHACK_EventHookupDismissalOnBufferChangePreventerService prematureDismissalPreventer,
             [ImportMany] IEnumerable<Lazy<IAsynchronousOperationListener, FeatureMetadata>> asyncListeners)
         {

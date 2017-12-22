@@ -85,7 +85,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.IntelliSense
 
             DirectCast(controller, IChainedCommandHandler(Of TypeCharCommandArgs)).ExecuteCommand(
                 New TypeCharCommandArgs(CreateMock(Of ITextView), CreateMock(Of ITextBuffer), " "c),
-                Sub() GetMocks(controller).Buffer.Insert(0, " "), New TestCommandExecutionContext())
+                Sub() GetMocks(controller).Buffer.Insert(0, " "), TestCommandExecutionContext.Create())
 
             Dim handled = controller.TryHandleUpKey() ' this will block on the model being updated which should dismiss the session
 
@@ -151,7 +151,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.IntelliSense
 
                              dispatcher.Invoke(Sub() DirectCast(controller, IChainedCommandHandler(Of TypeCharCommandArgs)).ExecuteCommand(
                                  New TypeCharCommandArgs(CreateMock(Of ITextView), CreateMock(Of ITextBuffer), " "c),
-                                 Sub() GetMocks(controller).Buffer.Insert(0, " "), New TestCommandExecutionContext()))
+                                 Sub() GetMocks(controller).Buffer.Insert(0, " "), TestCommandExecutionContext.Create()))
 
                              Dim handled = dispatcher.InvokeAsync(Function() controller.TryHandleUpKey()) ' Send the controller an up key, which should block on the computation
                              checkpoint.Release() ' Allow slowprovider to finish
@@ -205,7 +205,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.IntelliSense
 
             DirectCast(controller, IChainedCommandHandler(Of TypeCharCommandArgs)).ExecuteCommand(
                 New TypeCharCommandArgs(CreateMock(Of ITextView), CreateMock(Of ITextBuffer), ")"c),
-                Sub() GetMocks(controller).Buffer.Insert(0, ")"), New TestCommandExecutionContext())
+                Sub() GetMocks(controller).Buffer.Insert(0, ")"), TestCommandExecutionContext.Create())
             controller.WaitForController()
 
             ' GetItemsAsync is called once initially, and then once as a result of handling the typechar command
@@ -219,7 +219,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.IntelliSense
 
             DirectCast(controller, IChainedCommandHandler(Of TypeCharCommandArgs)).ExecuteCommand(
                 New TypeCharCommandArgs(CreateMock(Of ITextView), CreateMock(Of ITextBuffer), "a"c),
-                Sub() GetMocks(controller).Buffer.Insert(0, "a"), New TestCommandExecutionContext())
+                Sub() GetMocks(controller).Buffer.Insert(0, "a"), TestCommandExecutionContext.Create())
 
             GetMocks(controller).DocumentProvider.Verify(Function(p) p.GetDocumentAsync(It.IsAny(Of ITextSnapshot), It.IsAny(Of CancellationToken)), Times.Never)
         End Sub
@@ -291,7 +291,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.IntelliSense
 
             If triggerSession Then
                 DirectCast(controller, IChainedCommandHandler(Of InvokeSignatureHelpCommandArgs)).ExecuteCommand(
-                    New InvokeSignatureHelpCommandArgs(view.Object, buffer), Nothing, New TestCommandExecutionContext())
+                    New InvokeSignatureHelpCommandArgs(view.Object, buffer), Nothing, TestCommandExecutionContext.Create())
                 If waitForPresentation Then
                     controller.WaitForController()
                 End If

@@ -2471,7 +2471,7 @@ class C
                     disposableView.TextView.Caret.MoveTo(New SnapshotPoint(disposableView.TextView.TextBuffer.CurrentSnapshot, 0))
 
                     Dim editorOperations = editorOperationsFactory.GetEditorOperations(disposableView.TextView)
-                    state.CompletionCommandHandler.ExecuteCommand(New DeleteKeyCommandArgs(disposableView.TextView, state.SubjectBuffer), Sub() editorOperations.Delete(), New TestCommandExecutionContext())
+                    state.CompletionCommandHandler.ExecuteCommand(New DeleteKeyCommandArgs(disposableView.TextView, state.SubjectBuffer), Sub() editorOperations.Delete(), TestCommandExecutionContext.Create())
 
                     Await state.AssertNoCompletionSession()
                 End Using

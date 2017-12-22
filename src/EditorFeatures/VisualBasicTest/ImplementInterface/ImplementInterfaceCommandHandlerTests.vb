@@ -21,7 +21,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.ImplementInterface
                 Dim commandHandler = MoveCaretAndCreateCommandHandler(workspace)
                 Dim view = workspace.Documents.Single().GetTextView()
 
-                commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() nextHandler(view, workspace), New TestCommandExecutionContext())
+                commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() nextHandler(view, workspace), TestCommandExecutionContext.Create())
 
                 Dim text = view.TextBuffer.CurrentSnapshot.AsText().ToString()
 
@@ -66,7 +66,7 @@ End Interface")
 
                 Dim nextHandlerCalled = False
                 Dim view = workspace.Documents.Single().GetTextView()
-                commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() nextHandlerCalled = True, New TestCommandExecutionContext())
+                commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() nextHandlerCalled = True, TestCommandExecutionContext.Create())
                 Assert.True(nextHandlerCalled, "Next handler wasn't called, which means the feature did run")
             End Using
         End Sub

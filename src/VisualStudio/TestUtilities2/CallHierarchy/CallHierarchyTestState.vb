@@ -119,7 +119,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.CallHierarchy
 
         Friend Function GetRoot() As CallHierarchyItem
             Dim args = New ViewCallHierarchyCommandArgs(_textView, _subjectBuffer)
-            _commandHandler.ExecuteCommand(args, New TestCommandExecutionContext())
+            _commandHandler.ExecuteCommand(args, TestCommandExecutionContext.Create())
             Return _presenter.PresentedRoot
         End Function
 

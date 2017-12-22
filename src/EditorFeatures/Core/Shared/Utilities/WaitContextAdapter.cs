@@ -38,14 +38,8 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
             set => _platformWaitScope.Description = value;
         }
 
-        public CodeAnalysis.Shared.Utilities.IProgressTracker ProgressTracker
-        {
-            get
-            {
-                return _platformWaitScope.ProgressTracker != null ? new ProgressTrackerAdapter(_platformWaitScope.ProgressTracker) : null;
-            }
-        }
-
+        public CodeAnalysis.Shared.Utilities.IProgressTracker ProgressTracker => new ProgressTrackerAdapter(_platformWaitScope);
+        
         public void Dispose()
         {
             _platformWaitScope.Dispose();

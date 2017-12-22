@@ -74,7 +74,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.EndConstructGeneration
         End Sub
 
         Public Function GetCommandState_AutomaticLineEnderCommandHandler(args As AutomaticLineEnderCommandArgs, nextHandler As Func(Of Microsoft.VisualStudio.Commanding.CommandState)) As Microsoft.VisualStudio.Commanding.CommandState Implements IChainedCommandHandler(Of AutomaticLineEnderCommandArgs).GetCommandState
-            Return Microsoft.VisualStudio.Commanding.CommandState.CommandIsAvailable
+            Return Microsoft.VisualStudio.Commanding.CommandState.Available
         End Function
 
         Public Sub ExecuteCommand_AutomaticLineEnderCommandHandler(args As AutomaticLineEnderCommandArgs, nextHandler As Action, context As CommandExecutionContext) Implements IChainedCommandHandler(Of AutomaticLineEnderCommandArgs).ExecuteCommand

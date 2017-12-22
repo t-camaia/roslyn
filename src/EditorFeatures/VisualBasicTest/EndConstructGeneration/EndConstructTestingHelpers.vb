@@ -237,7 +237,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.EndConstructGenera
                                     workspace.ExportProvider.GetExportedValue(Of ITextUndoHistoryRegistry)())
 
                 Dim operations = factory.GetEditorOperations(view)
-                endConstructor.ExecuteCommand_ReturnKeyCommandHandler(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() operations.InsertNewLine(), New TestCommandExecutionContext())
+                endConstructor.ExecuteCommand_ReturnKeyCommandHandler(New ReturnKeyCommandArgs(view, view.TextBuffer), Sub() operations.InsertNewLine(), TestCommandExecutionContext.Create())
 
                 Assert.Equal(after, view.TextSnapshot.GetText())
 

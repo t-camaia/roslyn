@@ -204,7 +204,7 @@ End Class</text>
 
             Dim commandHandler As IChainedCommandHandler(Of ReturnKeyCommandArgs) =
                 New ImplementAbstractClassCommandHandler(workspace.GetService(Of IEditorOperationsFactoryService))
-            commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), nextHandler, New TestCommandExecutionContext())
+            commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), nextHandler, TestCommandExecutionContext.Create())
 
             Dim text = view.TextBuffer.CurrentSnapshot.AsText().ToString()
 

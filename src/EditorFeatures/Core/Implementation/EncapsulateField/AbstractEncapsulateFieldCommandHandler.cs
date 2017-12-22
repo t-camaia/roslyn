@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
                 return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis.Editor.PlatformCommands;
-using Microsoft.VisualStudio.Commanding;
+using Microsoft.VisualStudio.Editor.Commanding;
 using Microsoft.VisualStudio.LanguageServices;
 
 namespace Microsoft.VisualStudio.Editor.Implementation

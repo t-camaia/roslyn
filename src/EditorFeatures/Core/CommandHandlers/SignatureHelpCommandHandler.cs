@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         {
             AssertIsForeground();
             return TryGetControllerCommandHandler(args, out var commandHandler)
-                ? CommandHandlerUtils.GetCommandState(commandHandler, args, nextHandler)
+                ? commandHandler.GetCommandState(args, nextHandler)
                 : nextHandler();
         }
 
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             }
             else
             {
-                CommandHandlerUtils.ExecuteCommand(commandHandler, args, nextHandler, context);
+                commandHandler.ExecuteCommand(args, nextHandler, context);
             }
         }
 

@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 return nextHandler();
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public void ExecuteCommand(RenameCommandArgs args, Action nextHandler, CommandExecutionContext context)

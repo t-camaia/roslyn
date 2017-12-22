@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             if (_renameService.ActiveSession != null)
             {
-                return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+                return VisualStudio.Commanding.CommandState.Available;
             }
 
             return nextHandler();

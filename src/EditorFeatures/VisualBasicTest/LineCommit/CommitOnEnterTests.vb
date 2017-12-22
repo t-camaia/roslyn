@@ -249,7 +249,7 @@ rem Hello World$$|]
                                                        </Project>
                                                    </Workspace>)
 
-                testData.CommandHandler.ExecuteCommand(New ReturnKeyCommandArgs(testData.View, testData.Buffer), Sub() testData.EditorOperations.InsertNewLine(), New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New ReturnKeyCommandArgs(testData.View, testData.Buffer), Sub() testData.EditorOperations.InsertNewLine(), TestCommandExecutionContext.Create())
                 testData.UndoHistory.Undo(count:=1)
 
                 Assert.Equal(0, testData.View.Caret.Position.BufferPosition.GetContainingLine().LineNumber)
@@ -350,7 +350,7 @@ End Module
         Private Sub AssertCommitsStatement(test As XElement, expectCommit As Boolean, Optional usedSemantics As Boolean = True)
             Using testData = CommitTestData.Create(test)
                 Dim lineNumber = testData.View.Caret.Position.BufferPosition.GetContainingLine().LineNumber
-                testData.CommandHandler.ExecuteCommand(New ReturnKeyCommandArgs(testData.View, testData.Buffer), Sub() testData.EditorOperations.InsertNewLine(), New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New ReturnKeyCommandArgs(testData.View, testData.Buffer), Sub() testData.EditorOperations.InsertNewLine(), TestCommandExecutionContext.Create())
                 testData.AssertHadCommit(expectCommit)
                 If expectCommit Then
                     testData.AssertUsedSemantics(usedSemantics)

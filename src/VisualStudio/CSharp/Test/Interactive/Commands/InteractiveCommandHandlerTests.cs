@@ -177,7 +177,7 @@ $@"#define DEF
             using (var workspace = InteractiveWindowCommandHandlerTestState.CreateTestState(code))
             {
                 PrepareSubmissionBuffer(submissionBuffer, workspace);
-                Assert.Equal(VisualStudio.Commanding.CommandState.CommandIsAvailable, (VisualStudio.Commanding.CommandState)workspace.GetStateForExecuteInInteractive());
+                Assert.Equal(VisualStudio.Commanding.CommandState.Available, (VisualStudio.Commanding.CommandState)workspace.GetStateForExecuteInInteractive());
 
                 workspace.Evaluator.OnExecute += appendSubmission;
                 workspace.ExecuteInInteractive();

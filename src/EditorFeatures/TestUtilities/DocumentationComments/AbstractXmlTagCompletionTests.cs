@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
                 var args = new TypeCharCommandArgs(view, view.TextBuffer, typeChar);
                 var nextHandler = CreateInsertTextHandler(view, typeChar.ToString());
 
-                commandHandler.ExecuteCommand(args, nextHandler, new TestCommandExecutionContext());
+                commandHandler.ExecuteCommand(args, nextHandler, TestCommandExecutionContext.Create());
                 MarkupTestFile.GetPosition(expectedMarkup, out var expectedCode, out int expectedPosition);
 
                 Assert.Equal(expectedCode, view.TextSnapshot.GetText());

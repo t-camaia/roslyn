@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         { 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
-            return IsAvailable(document, caretPoint) ? VisualStudio.Commanding.CommandState.CommandIsAvailable : VisualStudio.Commanding.CommandState.Undetermined;
+            return IsAvailable(document, caretPoint) ? VisualStudio.Commanding.CommandState.Available : VisualStudio.Commanding.CommandState.Undetermined;
         }
 
         private static bool IsAvailable(Document document, SnapshotPoint? caretPoint)

@@ -64,13 +64,13 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Interactive.Commands
         public void SendCopyToInteractive()
         {
             var copyToInteractiveArgs = new CopyToInteractiveCommandArgs(TextView, SubjectBuffer);
-            CopyToInteractiveCommandHandler.ExecuteCommand(copyToInteractiveArgs, new TestCommandExecutionContext());
+            CopyToInteractiveCommandHandler.ExecuteCommand(copyToInteractiveArgs, TestCommandExecutionContext.Create());
         }
 
         public void ExecuteInInteractive()
         {
             var executeInInteractiveArgs = new ExecuteInInteractiveCommandArgs(TextView, SubjectBuffer);
-            ExecuteInInteractiveCommandHandler.ExecuteCommand(executeInInteractiveArgs, new TestCommandExecutionContext());
+            ExecuteInInteractiveCommandHandler.ExecuteCommand(executeInInteractiveArgs, TestCommandExecutionContext.Create());
         }
 
         public VisualStudio.Commanding.CommandState GetStateForExecuteInInteractive()

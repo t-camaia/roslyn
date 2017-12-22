@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.AutomaticCompletion
                 commandHandler.ExecuteCommand(new AutomaticLineEnderCommandArgs(view, buffer),
                                                     assertNextHandlerInvoked
                                                         ? () => { nextHandlerInvoked = true; }
-                : CreateNextHandler(workspace), new TestCommandExecutionContext());
+                : CreateNextHandler(workspace), TestCommandExecutionContext.Create());
 
                 Test(view, buffer, expected);
 

@@ -592,11 +592,11 @@ class C
                 End Using
 
                 ' Delete Goo and type "as"
-                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "a"c), Sub() editorOperations.InsertText("a"), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "s"c), Sub() editorOperations.InsertText("s"), New Utilities.TestCommandExecutionContext())
+                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New BackspaceKeyCommandArgs(view, view.TextBuffer), Sub() editorOperations.Backspace(), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "a"c), Sub() editorOperations.InsertText("a"), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "s"c), Sub() editorOperations.InsertText("s"), Utilities.TestCommandExecutionContext.Create())
 
                 Using resolvedConflictWorkspace = CreateWorkspaceWithWaiter(
                     <Workspace>
@@ -1090,7 +1090,7 @@ End Class
                 view.Caret.MoveTo(New SnapshotPoint(view.TextBuffer.CurrentSnapshot, workspace.Documents.Single(Function(d) d.CursorPosition.HasValue).CursorPosition.Value))
                 commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "e"c),
                                               Sub() editorOperations.InsertText("e"),
-                                              New Utilities.TestCommandExecutionContext())
+                                              Utilities.TestCommandExecutionContext.Create())
 
                 ' Verify fixup/resolved conflict span.
                 Using resolvedConflictWorkspace = CreateWorkspaceWithWaiter(
@@ -1114,7 +1114,7 @@ End Class
                 ' Make another edit to change "New" to "Nexw" so that we have no more conflicts or escaping.
                 commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "x"c),
                                               Sub() editorOperations.InsertText("x"),
-                                              New Utilities.TestCommandExecutionContext())
+                                              Utilities.TestCommandExecutionContext.Create())
 
                 ' Verify resolved escaping conflict spans.
                 Using resolvedConflictWorkspace = CreateWorkspaceWithWaiter(
@@ -1172,9 +1172,9 @@ End Class
 
                 ' Type few characters.
                 view.Caret.MoveTo(New SnapshotPoint(view.TextBuffer.CurrentSnapshot, workspace.Documents.Single(Function(d) d.CursorPosition.HasValue).CursorPosition.Value))
-                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "e"c), Sub() editorOperations.InsertText("e"), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "f"c), Sub() editorOperations.InsertText("f"), New Utilities.TestCommandExecutionContext())
-                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "g"c), Sub() editorOperations.InsertText("g"), New Utilities.TestCommandExecutionContext())
+                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "e"c), Sub() editorOperations.InsertText("e"), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "f"c), Sub() editorOperations.InsertText("f"), Utilities.TestCommandExecutionContext.Create())
+                commandHandler.ExecuteCommand(New TypeCharCommandArgs(view, view.TextBuffer, "g"c), Sub() editorOperations.InsertText("g"), Utilities.TestCommandExecutionContext.Create())
 
                 session.Commit()
                 Dim selectionLength = view.Selection.End.Position - view.Selection.Start.Position

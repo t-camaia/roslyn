@@ -49,8 +49,8 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
         {
             return GetCommandHandler(args.SubjectBuffer) == null
-                ? VisualStudio.Commanding.CommandState.CommandIsUnavailable
-                : VisualStudio.Commanding.CommandState.CommandIsAvailable;
+                ? VisualStudio.Commanding.CommandState.Unavailable
+                : VisualStudio.Commanding.CommandState.Available;
         }
     }
 }

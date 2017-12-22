@@ -33,7 +33,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.EventHookup
             HACK_SetShimQuickInfoSessionWorker(textView, null);
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         private void HACK_SetShimQuickInfoSessionWorker(ITextView textView, IQuickInfoSession quickInfoSession)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             var properties = textView.Properties.PropertyList;
             var shimController = properties.Single(p => p.Value != null && p.Value.GetType().Name == "ShimQuickInfoController").Value;
@@ -41,11 +43,13 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.EventHookup
             sessionField.SetValue(shimController, quickInfoSession);
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         /// <summary>
         /// The Properties property must contain an IVsTextTipData (which is never used), but no 
         /// other methods need to be implemented.
         /// </summary>
         private class HACK_QuickInfoSession : IQuickInfoSession
+#pragma warning restore CS0618 // Type or member is obsolete
         {
 #pragma warning disable 67
             public event EventHandler Dismissed;

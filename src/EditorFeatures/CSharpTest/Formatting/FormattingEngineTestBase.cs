@@ -194,7 +194,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Formatting
                 var commandHandler = new FormatCommandHandler(workspace.GetService<ITextUndoHistoryRegistry>(), editorOperationsFactoryService.Object);
 
                 var commandArgs = new FormatDocumentCommandArgs(view, view.TextBuffer);
-                commandHandler.ExecuteCommand(commandArgs, () => { }, new TestCommandExecutionContext());
+                commandHandler.ExecuteCommand(commandArgs, () => { }, TestCommandExecutionContext.Create());
                 MarkupTestFile.GetPosition(expectedWithMarker, out var expected, out int expectedPosition);
 
                 Assert.Equal(expected, view.TextSnapshot.GetText());
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Formatting
                 {
                     var commandHandler = new FormatCommandHandler(null, null);
                     var commandArgs = new PasteCommandArgs(view, view.TextBuffer);
-                    commandHandler.ExecuteCommand(commandArgs, () => { }, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, () => { }, TestCommandExecutionContext.Create());
                 }
                 else
                 {
@@ -234,7 +234,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Formatting
                     editorOperationsFactory.Setup(x => x.GetEditorOperations(testDocument.GetTextView())).Returns(editorOperations.Object);
                     var commandHandler = new FormatCommandHandler(textUndoHistory.Object, editorOperationsFactory.Object);
                     var commandArgs = new ReturnKeyCommandArgs(view, view.TextBuffer);
-                    commandHandler.ExecuteCommand(commandArgs, () => { }, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, () => { }, TestCommandExecutionContext.Create());
                 }
 
                 MarkupTestFile.GetPosition(expectedWithMarker, out var expected, out int expectedPosition);

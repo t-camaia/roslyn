@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
 
         public VisualStudio.Commanding.CommandState GetCommandState(ViewCallHierarchyCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
     }
 }

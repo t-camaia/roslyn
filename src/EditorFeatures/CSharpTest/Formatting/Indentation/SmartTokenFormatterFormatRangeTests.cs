@@ -3289,7 +3289,7 @@ class Program{
 
                 var commandHandler = new FormatCommandHandler(textUndoHistory.Object, editorOperationsFactory.Object);
                 var typedChar = subjectDocument.GetTextBuffer().CurrentSnapshot.GetText(subjectDocument.CursorPosition.Value - 1, 1);
-                commandHandler.ExecuteCommand(new TypeCharCommandArgs(subjectDocument.GetTextView(), subjectDocument.TextBuffer, typedChar[0]), () => { }, new TestCommandExecutionContext());
+                commandHandler.ExecuteCommand(new TypeCharCommandArgs(subjectDocument.GetTextView(), subjectDocument.TextBuffer, typedChar[0]), () => { }, TestCommandExecutionContext.Create());
 
                 var newSnapshot = subjectDocument.TextBuffer.CurrentSnapshot;
 

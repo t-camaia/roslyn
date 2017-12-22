@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Editor.ReferenceHighlighting
             using (var tagAggregator = _tagAggregatorFactory.CreateTagAggregator<NavigableHighlightTag>(args.TextView))
             {
                 var tagUnderCursor = FindTagUnderCaret(tagAggregator, args.TextView);
-                return tagUnderCursor == null ? VisualStudio.Commanding.CommandState.CommandIsUnavailable : VisualStudio.Commanding.CommandState.CommandIsAvailable;
+                return tagUnderCursor == null ? VisualStudio.Commanding.CommandState.Unavailable : VisualStudio.Commanding.CommandState.Available;
             }
         }
 

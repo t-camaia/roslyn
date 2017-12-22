@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
                 return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public bool ExecuteCommand(RemoveParametersCommandArgs args, CommandExecutionContext context)

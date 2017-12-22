@@ -50,7 +50,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=True, isLineCopy:=False, isBoxCopy:=False)
 
-                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()))
+                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), TestCommandExecutionContext.Create()))
 
                 Assert.Equal("a" & vbCrLf & "bc123", textView.TextBuffer.CurrentSnapshot.GetText())
             End Using
@@ -84,7 +84,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=False, isLineCopy:=False, isBoxCopy:=False)
 
-                If Not handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()) Then
+                If Not handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), TestCommandExecutionContext.Create()) Then
                     editorOperations.InsertText("p")
                 End If
 
@@ -124,7 +124,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=True, isLineCopy:=True, isBoxCopy:=False)
 
-                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()))
+                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), TestCommandExecutionContext.Create()))
 
                 Assert.Equal("line1" & vbCrLf & "InsertedLine" & vbCrLf & "    line2", textView.TextBuffer.CurrentSnapshot.GetText())
             End Using
@@ -167,7 +167,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=True, isLineCopy:=False, isBoxCopy:=True)
 
-                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()))
+                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), TestCommandExecutionContext.Create()))
 
                 Assert.Equal("lineBoxLine11" & vbCrLf & "    BoxLine2line2", textView.TextBuffer.CurrentSnapshot.GetText())
             End Using
@@ -212,7 +212,7 @@ Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
 
                 CopyToClipboard(clipboard, text, json, includeRepl:=True, isLineCopy:=False, isBoxCopy:=True)
 
-                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), New TestCommandExecutionContext()))
+                Assert.True(handler.ExecuteCommand(New PasteCommandArgs(textView, textView.TextBuffer), TestCommandExecutionContext.Create()))
 
                 Assert.Equal("BoxLine1" & vbCrLf & "BoxLine2" & vbCrLf & "line1" & vbCrLf & "    line2", textView.TextBuffer.CurrentSnapshot.GetText())
             End Using

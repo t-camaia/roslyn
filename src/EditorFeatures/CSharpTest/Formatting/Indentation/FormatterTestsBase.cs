@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Formatting.Indentation
             var indentationLineFromBuffer = snapshot.GetLineFromPosition(point);
 
             var commandHandler = new SmartTokenFormatterCommandHandler(textUndoHistory.Object, editorOperationsFactory.Object);
-            commandHandler.ExecuteCommand(new ReturnKeyCommandArgs(textView, subjectDocument.TextBuffer), () => { }, new TestCommandExecutionContext());
+            commandHandler.ExecuteCommand(new ReturnKeyCommandArgs(textView, subjectDocument.TextBuffer), () => { }, TestCommandExecutionContext.Create());
             var newSnapshot = subjectDocument.TextBuffer.CurrentSnapshot;
 
             int? actualIndentation;

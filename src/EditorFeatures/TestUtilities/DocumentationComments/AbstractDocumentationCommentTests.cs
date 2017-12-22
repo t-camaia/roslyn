@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Utilities;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
 using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
@@ -36,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
                     var commandArgs = new TypeCharCommandArgs(view, view.TextBuffer, DocumentationCommentCharacter);
                     var nextHandler = CreateInsertTextHandler(view, DocumentationCommentCharacter.ToString());
 
-                    CommandHandlerUtils.ExecuteCommand(commandHandler, commandArgs, nextHandler, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, nextHandler, TestCommandExecutionContext.Create());
                 });
         }
 
@@ -51,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
 
                     var commandArgs = new ReturnKeyCommandArgs(view, view.TextBuffer);
                     var nextHandler = CreateInsertTextHandler(view, "\r\n");
-                    CommandHandlerUtils.ExecuteCommand(commandHandler, commandArgs, nextHandler, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, nextHandler, TestCommandExecutionContext.Create());
                 });
         }
 
@@ -65,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
                     var commandArgs = new InsertCommentCommandArgs(view, view.TextBuffer);
                     Action nextHandler = delegate { };
 
-                    CommandHandlerUtils.ExecuteCommand(commandHandler, commandArgs, nextHandler, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, nextHandler, TestCommandExecutionContext.Create());
                 });
         }
 
@@ -83,7 +84,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
                         editorOperations.OpenLineAbove();
                     }
 
-                    CommandHandlerUtils.ExecuteCommand(commandHandler, commandArgs, nextHandler, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, nextHandler, TestCommandExecutionContext.Create());
                 });
         }
 
@@ -101,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
                         editorOperations.OpenLineBelow();
                     }
 
-                    CommandHandlerUtils.ExecuteCommand(commandHandler, commandArgs, nextHandler, new TestCommandExecutionContext());
+                    commandHandler.ExecuteCommand(commandArgs, nextHandler, TestCommandExecutionContext.Create());
                 });
         }
 

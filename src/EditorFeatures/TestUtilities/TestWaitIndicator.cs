@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Shared.Utilities;
 using VisualStudioIndicator = Microsoft.VisualStudio.Language.Intellisense.Utilities;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
 {
     [Export(typeof(IWaitIndicator))]
@@ -109,3 +110,4 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
         }
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete

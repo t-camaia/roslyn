@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
             // Because this is expensive to compute, we just always say yes as long as the language allows it.
             var (document, implService, findUsagesService) = GetDocumentAndServices(args.SubjectBuffer.CurrentSnapshot);
             return implService != null || findUsagesService != null
-                ? VisualStudio.Commanding.CommandState.CommandIsAvailable
+                ? VisualStudio.Commanding.CommandState.Available
                 : VisualStudio.Commanding.CommandState.Undetermined;
         }
 

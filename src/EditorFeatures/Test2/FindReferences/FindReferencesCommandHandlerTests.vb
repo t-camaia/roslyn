@@ -43,7 +43,7 @@ class C
 
                 Dim document = workspace.CurrentSolution.GetDocument(testDocument.Id)
                 commandHandler.ExecuteCommand(
-                    New FindReferencesCommandArgs(view, textBuffer), New Utilities.TestCommandExecutionContext())
+                    New FindReferencesCommandArgs(view, textBuffer), Utilities.TestCommandExecutionContext.Create())
 
                 ' Wait for the find refs to be done.
                 Await waiter.CreateWaitTask()

@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         public bool ExecuteCommand(ReturnKeyCommandArgs args, CommandExecutionContext context)
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         public bool ExecuteCommand(EscapeKeyCommandArgs args, CommandExecutionContext context)
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         public bool ExecuteCommand(BackTabKeyCommandArgs args, CommandExecutionContext context)
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         public bool ExecuteCommand(InsertSnippetCommandArgs args, CommandExecutionContext context)
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                 return CommandState.Undetermined;
             }
 
-            return CommandState.CommandIsAvailable;
+            return CommandState.Available;
         }
 
         protected bool TryHandleTypedSnippet(ITextView textView, ITextBuffer subjectBuffer)

@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.BlockCommentEditing
                 var args = new ReturnKeyCommandArgs(view, view.TextBuffer);
                 var nextHandler = CreateInsertTextHandler(view, "\r\n");
 
-                if (!commandHandler.ExecuteCommand(args, new TestCommandExecutionContext()))
+                if (!commandHandler.ExecuteCommand(args, TestCommandExecutionContext.Create()))
                 {
                     nextHandler();
                 }

@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return nextHandler();
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public void ExecuteReturnOrTypeCommand(EditorCommandArgs args, Action nextHandler, CancellationToken cancellationToken)

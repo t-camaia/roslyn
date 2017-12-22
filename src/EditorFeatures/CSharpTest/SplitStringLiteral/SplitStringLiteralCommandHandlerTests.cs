@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SplitStringLiteral
                     undoHistoryRegistry,
                     workspace.GetService<IEditorOperationsFactoryService>());
                 
-                if (!commandHandler.ExecuteCommand(new VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs(view, view.TextBuffer), new TestCommandExecutionContext()))
+                if (!commandHandler.ExecuteCommand(new VisualStudio.Text.Editor.Commanding.Commands.ReturnKeyCommandArgs(view, view.TextBuffer), TestCommandExecutionContext.Create()))
                 {
                     callback();
                 }

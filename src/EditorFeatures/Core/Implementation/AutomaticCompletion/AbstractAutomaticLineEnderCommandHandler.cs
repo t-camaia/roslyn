@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 
         public VisualStudio.Commanding.CommandState GetCommandState(AutomaticLineEnderCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
         {
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public void ExecuteCommand(AutomaticLineEnderCommandArgs args, Action nextHandler, CommandExecutionContext context)

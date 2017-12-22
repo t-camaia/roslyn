@@ -548,13 +548,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             var caretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
             if (caretPosition < 0)
             {
-                return VisualStudio.Commanding.CommandState.CommandIsUnavailable;
+                return VisualStudio.Commanding.CommandState.Unavailable;
             }
 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return VisualStudio.Commanding.CommandState.CommandIsUnavailable;
+                return VisualStudio.Commanding.CommandState.Unavailable;
             }
 
             TMemberNode targetMember = null;
@@ -566,8 +566,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             });
 
             return targetMember != null
-                ? VisualStudio.Commanding.CommandState.CommandIsAvailable
-                : VisualStudio.Commanding.CommandState.CommandIsUnavailable;
+                ? VisualStudio.Commanding.CommandState.Available
+                : VisualStudio.Commanding.CommandState.Unavailable;
         }
 
         public void ExecuteCommand(InsertCommentCommandArgs args, Action nextHandler, CommandExecutionContext context)

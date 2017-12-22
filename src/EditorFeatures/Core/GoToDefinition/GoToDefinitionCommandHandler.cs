@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
         {
             var (document, service) = GetDocumentAndService(args.SubjectBuffer.CurrentSnapshot);
             return service != null
-                ? VisualStudio.Commanding.CommandState.CommandIsAvailable
+                ? VisualStudio.Commanding.CommandState.Available
                 : VisualStudio.Commanding.CommandState.Undetermined;
         }
 

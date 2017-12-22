@@ -296,7 +296,7 @@ End Module
                 testData.EditorOperations.InsertText("_")
                 testData.CommandHandler.ExecuteCommand(New ReturnKeyCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertNewLine(),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
 
                 ' So far we should have had no commit
                 testData.AssertHadCommit(False)
@@ -826,7 +826,7 @@ End Module|]</Document>
                 Dim view = document.GetTextView()
                 view.Selection.Select(snapshotspan, isReversed:=False)
                 Dim selArgs = New FormatSelectionCommandArgs(view, document.GetTextBuffer())
-                testData.CommandHandler.ExecuteCommand(selArgs, Sub() Return, New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(selArgs, Sub() Return, TestCommandExecutionContext.Create())
             End Using
         End Sub
 

@@ -260,7 +260,7 @@ End Module
 
             Return Sub()
                        endConstructor.ExecuteCommand_AutomaticLineEnderCommandHandler(
-                           New AutomaticLineEnderCommandArgs(view, buffer), Sub() Exit Sub, New TestCommandExecutionContext())
+                           New AutomaticLineEnderCommandArgs(view, buffer), Sub() Exit Sub, TestCommandExecutionContext.Create())
                    End Sub
         End Function
 

@@ -4,16 +4,11 @@ using Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
 {
-    internal class TestCommandExecutionContext : CommandExecutionContext
+    internal class TestCommandExecutionContext
     {
-        public TestCommandExecutionContext()
-            : this(new TestWaitableUIOperationContext())
+        public static CommandExecutionContext Create()
         {
-        }
-
-        public TestCommandExecutionContext(VisualStudio.Utilities.IWaitableUIOperationContext waitContext) 
-            : base(waitContext)
-        {
+            return new CommandExecutionContext(new TestWaitableUIOperationContext());
         }
     }
 }

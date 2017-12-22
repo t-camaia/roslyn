@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             AssertIsForeground();
             if (EventHookupSessionManager.CurrentSession != null)
             {
-                return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+                return VisualStudio.Commanding.CommandState.Available;
             }
             else
             {

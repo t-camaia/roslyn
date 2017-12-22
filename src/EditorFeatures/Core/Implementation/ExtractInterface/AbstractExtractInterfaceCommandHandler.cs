@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
                 return VisualStudio.Commanding.CommandState.Undetermined;
             }
 
-            return VisualStudio.Commanding.CommandState.CommandIsAvailable;
+            return VisualStudio.Commanding.CommandState.Available;
         }
 
         public bool ExecuteCommand(ExtractInterfaceCommandArgs args, CommandExecutionContext context)

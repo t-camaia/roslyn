@@ -19,7 +19,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.LineCommit
 
                 testData.CommandHandler.ExecuteCommand(New PasteCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertText("  imports  system" & vbCrLf & "  imports system.text"),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 Assert.Equal("Imports System", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(0).GetText())
             End Using
         End Sub
@@ -46,10 +46,10 @@ End Class
 
                 testData.CommandHandler.ExecuteCommand(New PasteCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertText("t"),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 testData.CommandHandler.ExecuteCommand(New SaveCommandArgs(testData.View, testData.Buffer),
                                                        Sub() Exit Sub,
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 testData.AssertHadCommit(True)
                 ' The code cleanup should not add parens after the Int, so no exception.
             End Using
@@ -70,7 +70,7 @@ End Class
                 testData.Workspace.Options = testData.Workspace.Options.WithChangedOption(FeatureOnOffOptions.PrettyListing, LanguageNames.VisualBasic, False)
                 testData.CommandHandler.ExecuteCommand(New PasteCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertText("Class Program" & vbCrLf & "    Sub M(abc As Integer)" & vbCrLf & "        Dim a  = 7" & vbCrLf & "    End Sub" & vbCrLf & "End Class"),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 Assert.Equal("        Dim a  = 7", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(2).GetText())
             End Using
         End Sub
@@ -88,7 +88,7 @@ End Class
 
                 testData.CommandHandler.ExecuteCommand(New PasteCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertText("  imports  system"),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 Assert.Equal("  imports  system", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(0).GetText())
             End Using
         End Sub
@@ -104,7 +104,7 @@ End Class
                                                    </Workspace>)
 
                 testData.Buffer.Insert(0, "  imports  system")
-                testData.CommandHandler.ExecuteCommand(New SaveCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New SaveCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, TestCommandExecutionContext.Create())
                 Assert.Equal("Imports System", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(0).GetText())
             End Using
         End Sub
@@ -125,7 +125,7 @@ End Class
                                                    </Workspace>)
                 testData.Workspace.Options = testData.Workspace.Options.WithChangedOption(FeatureOnOffOptions.PrettyListing, LanguageNames.VisualBasic, False)
                 testData.Buffer.Insert(57, "    ")
-                testData.CommandHandler.ExecuteCommand(New SaveCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New SaveCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, TestCommandExecutionContext.Create())
                 Assert.Equal("        Dim a     = 7", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(3).GetText())
             End Using
         End Sub
@@ -148,7 +148,7 @@ End Module
                                                        </Project>
                                                    </Workspace>)
 
-                testData.CommandHandler.ExecuteCommand(New FormatDocumentCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New FormatDocumentCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, TestCommandExecutionContext.Create())
                 Assert.Equal("        goo()", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(2).GetText())
             End Using
         End Sub
@@ -170,7 +170,7 @@ End Module
 
                 ' Turn off pretty listing
                 testData.Workspace.Options = testData.Workspace.Options.WithChangedOption(FeatureOnOffOptions.PrettyListing, LanguageNames.VisualBasic, False)
-                testData.CommandHandler.ExecuteCommand(New FormatDocumentCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, New TestCommandExecutionContext())
+                testData.CommandHandler.ExecuteCommand(New FormatDocumentCommandArgs(testData.View, testData.Buffer), Sub() Exit Sub, TestCommandExecutionContext.Create())
                 Assert.Equal("    Sub Main()", testData.Buffer.CurrentSnapshot.GetLineFromLineNumber(1).GetText())
             End Using
         End Sub
@@ -194,7 +194,7 @@ End Module</Document>
 
                 testData.CommandHandler.ExecuteCommand(New PasteCommandArgs(testData.View, testData.Buffer),
                                                        Sub() testData.EditorOperations.InsertText("Console.WriteLine(""Hello World"),
-                                                       New TestCommandExecutionContext())
+                                                       TestCommandExecutionContext.Create())
                 Assert.Equal(testData.Buffer.CurrentSnapshot.GetText(),
 <Document>Module Module1
     Sub Main()

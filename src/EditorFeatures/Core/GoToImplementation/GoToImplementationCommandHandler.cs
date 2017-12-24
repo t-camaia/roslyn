@@ -87,17 +87,18 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
 
                 using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Locating_implementations))
                 {
+                    var userCancellationToken = context.WaitContext.UserCancellationToken;
                     if (canUseStreamingWindow)
                     {
                         StreamingGoToImplementation(
                             document, caretPosition,
                             streamingService, streamingPresenter,
-                            context.WaitContext.CancellationToken, out messageToShow);
+                            userCancellationToken, out messageToShow);
                     }
                     else
                     {
                         synchronousService.TryGoToImplementation(
-                            document, caretPosition, context.WaitContext.CancellationToken, out messageToShow);
+                            document, caretPosition, userCancellationToken, out messageToShow);
                     }
                 }
 

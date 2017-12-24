@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             using (context.WaitContext.AddScope(allowCancellation: true, InteractiveEditorFeaturesResources.Executing_selection_in_Interactive_Window))
             {
                 var window = OpenInteractiveWindow(focus: false);
-                string submission = GetSelectedText(args, context.WaitContext.CancellationToken);
+                string submission = GetSelectedText(args, context.WaitContext.UserCancellationToken);
                 if (!String.IsNullOrWhiteSpace(submission))
                 {
                     window.SubmitAsync(new string[] { submission });

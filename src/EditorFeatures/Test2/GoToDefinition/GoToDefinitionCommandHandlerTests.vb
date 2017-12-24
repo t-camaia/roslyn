@@ -103,7 +103,7 @@ class C
 
                 Dim goToDefService = New CSharpGoToDefinitionService(presenters)
 
-                Dim waitContext = New TestWaitableUIOperationContext(updatesBeforeCancel)
+                Dim waitContext = New TestUIThreadOperationContext(updatesBeforeCancel)
                 Dim commandHandler = New GoToDefinitionCommandHandler()
 
                 commandHandler.TryExecuteCommand(document, cursorPosition, goToDefService, New CommandExecutionContext(waitContext))

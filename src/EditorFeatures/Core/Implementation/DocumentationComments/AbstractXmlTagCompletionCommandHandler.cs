@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
                     return;
                 }
 
-                TryCompleteTag(args.TextView, args.SubjectBuffer, document, position.Value, context.WaitContext.CancellationToken);
+                TryCompleteTag(args.TextView, args.SubjectBuffer, document, position.Value, context.WaitContext.UserCancellationToken);
             }
         }
 

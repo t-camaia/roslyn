@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
                 document,
                 caretPoint.Value.Position,
                 (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
-                context.WaitContext.CancellationToken);
+                context.WaitContext.UserCancellationToken);
 
             if (result == null || !result.Succeeded)
             {

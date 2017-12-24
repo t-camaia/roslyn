@@ -16,15 +16,15 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
     /// </summary>
     internal class WaitContextAdapter : IWaitContext
     {
-        private readonly IWaitableUIOperationScope _platformWaitScope;
+        private readonly IUIThreadOperationScope _platformWaitScope;
 
-        public WaitContextAdapter(IWaitableUIOperationScope waitableScope)
+        public WaitContextAdapter(IUIThreadOperationScope waitableScope)
         {
             Requires.NotNull(waitableScope, nameof(waitableScope));
             _platformWaitScope = waitableScope;
         }
 
-        public CancellationToken CancellationToken => _platformWaitScope.Context.CancellationToken;
+        public CancellationToken CancellationToken => _platformWaitScope.Context.UserCancellationToken;
 
         public bool AllowCancel
         {

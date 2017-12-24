@@ -107,14 +107,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
 
                 var trackingSpans = new List<ITrackingSpan>();
                 var textChanges = new List<TextChange>();
-
+                var userCancellationToken = context.WaitContext.UserCancellationToken;
                 CollectEdits(
                     document, service, textView.Selection.GetSnapshotSpansOnBuffer(subjectBuffer),
-                    textChanges, trackingSpans, operation, context.WaitContext.CancellationToken);
+                    textChanges, trackingSpans, operation, userCancellationToken);
 
                 using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
                 {
-                    document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, context.WaitContext.CancellationToken);
+                    document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, userCancellationToken);
                     transaction.Complete();
                 }
 
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 {
                     using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
                     {
-                        Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, context.WaitContext.CancellationToken);
+                        Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, userCancellationToken);
                         transaction.Complete();
                     }
                 }

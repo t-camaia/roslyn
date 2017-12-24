@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
             using (Logger.LogBlock(
                 FunctionId.CommandHandler_FindAllReference,
                 KeyValueLogMessage.Create(LogType.UserAction, m => m["type"] = "legacy"),
-                context.WaitContext.CancellationToken))
+                context.WaitContext.UserCancellationToken))
             {
                 if (!service.TryFindReferences(document, caretPosition, new WaitContextAdapter(waitScope)))
                 {

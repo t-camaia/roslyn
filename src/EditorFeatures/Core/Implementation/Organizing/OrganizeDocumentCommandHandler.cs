@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
         {
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Organizing_document))
             {
-                this.Organize(args.SubjectBuffer, context.WaitContext.CancellationToken);
+                this.Organize(args.SubjectBuffer, context.WaitContext.UserCancellationToken);
             }
 
             return true;
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
         {
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Organizing_document))
             {
-                this.SortAndRemoveUnusedImports(args.SubjectBuffer, context.WaitContext.CancellationToken);
+                this.SortAndRemoveUnusedImports(args.SubjectBuffer, context.WaitContext.UserCancellationToken);
             }
 
             return true;

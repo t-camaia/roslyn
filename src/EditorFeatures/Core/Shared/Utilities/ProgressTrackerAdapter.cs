@@ -8,11 +8,11 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
 {
     internal class ProgressTrackerAdapter : IProgressTracker
     {
-        private IWaitableUIOperationScope _platformWaitScope;
+        private IUIThreadOperationScope _platformWaitScope;
         private int _completedItems;
         private int _totalItems;
 
-        public ProgressTrackerAdapter(IWaitableUIOperationScope platformWaitScope)
+        public ProgressTrackerAdapter(IUIThreadOperationScope platformWaitScope)
         {
             Requires.NotNull(platformWaitScope, nameof(platformWaitScope));
             _platformWaitScope = platformWaitScope;

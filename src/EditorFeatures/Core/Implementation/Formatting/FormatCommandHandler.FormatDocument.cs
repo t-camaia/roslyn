@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             var result = false;
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_document))
             {
-                Format(args.TextView, document, null, context.WaitContext.CancellationToken);
+                Format(args.TextView, document, null, context.WaitContext.UserCancellationToken);
                 result = true;
             }
 

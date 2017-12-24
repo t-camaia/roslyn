@@ -124,7 +124,9 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
 
         public static ExportProvider CreateExportProvider(ComposableCatalog catalog)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var configuration = CompositionConfiguration.Create(catalog.WithDesktopSupport().WithCompositionService());
+#pragma warning restore CS0618 // Type or member is obsolete
             var runtimeComposition = RuntimeComposition.CreateRuntimeComposition(configuration);
             return runtimeComposition.CreateExportProviderFactory().CreateExportProvider();
         }

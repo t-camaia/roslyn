@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 
             using (context.WaitContext.AddScope(allowCancellation: false, EditorFeaturesResources.Automatically_completing))
             {
-                var w = context.WaitContext;
+                var userCancellationToken = context.WaitContext.UserCancellationToken;
 
                 // caret is not on the subject buffer. nothing we can do
                 var position = args.TextView.GetCaretPoint(args.SubjectBuffer);
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 }
 
                 var subjectLineWhereCaretIsOn = position.Value.GetContainingLine();
-                var insertionPoint = GetInsertionPoint(document, subjectLineWhereCaretIsOn, w.CancellationToken);
+                var insertionPoint = GetInsertionPoint(document, subjectLineWhereCaretIsOn, userCancellationToken);
                 if (!insertionPoint.HasValue)
                 {
                     NextAction(operations, nextHandler);
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 }
 
                 // special cases where we treat this command simply as Return.
-                if (TreatAsReturn(document, position.Value.Position, w.CancellationToken))
+                if (TreatAsReturn(document, position.Value.Position, userCancellationToken))
                 {
                     // leave it to the VS editor to handle this command.
                     // VS editor's default implementation of SmartBreakLine is simply BreakLine, which inserts
@@ -117,10 +117,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                     args.TextView.TryMoveCaretToAndEnsureVisible(subjectLineWhereCaretIsOn.End);
 
                     // okay, now insert ending if we need to
-                    var newDocument = InsertEndingIfRequired(document, insertionPoint.Value, position.Value, w.CancellationToken);
+                    var newDocument = InsertEndingIfRequired(document, insertionPoint.Value, position.Value, userCancellationToken);
 
                     // format the document and apply the changes to the workspace
-                    FormatAndApply(newDocument, insertionPoint.Value, w.CancellationToken);
+                    FormatAndApply(newDocument, insertionPoint.Value, userCancellationToken);
 
                     // now, insert new line
                     NextAction(operations, nextHandler);

@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Finding_token_to_rename))
             {
-                ExecuteRenameWorker(args, context.WaitContext.CancellationToken);
+                ExecuteRenameWorker(args, context.WaitContext.UserCancellationToken);
             }
         }
 

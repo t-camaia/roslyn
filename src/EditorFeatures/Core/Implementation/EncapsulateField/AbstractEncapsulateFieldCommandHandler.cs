@@ -55,12 +55,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
             }
         }
 
-        private bool Execute(EncapsulateFieldCommandArgs args, IWaitableUIOperationScope waitScope)
+        private bool Execute(EncapsulateFieldCommandArgs args, IUIThreadOperationScope waitScope)
         {
             using (var token = _listener.BeginAsyncOperation("EncapsulateField"))
             {
                 var text = args.TextView.TextBuffer.CurrentSnapshot.AsText();
-                var cancellationToken = waitScope.Context.CancellationToken;
+                var cancellationToken = waitScope.Context.UserCancellationToken;
                 if (!Workspace.TryGetWorkspace(text.Container, out var workspace))
                 {
                     return false;

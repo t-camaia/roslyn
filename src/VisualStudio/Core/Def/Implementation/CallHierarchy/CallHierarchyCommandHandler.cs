@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
         {
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Computing_Call_Hierarchy_Information))
             {
-                var cancellationToken = context.WaitContext.CancellationToken;
+                var cancellationToken = context.WaitContext.UserCancellationToken;
                 var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
                 if (document == null)
                 {

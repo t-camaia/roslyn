@@ -65,18 +65,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
                     return true;
                 }
 
+                var userCancellationToken = context.WaitContext.UserCancellationToken;
                 var semanticModel = document
-                    .GetSemanticModelAsync(context.WaitContext.CancellationToken)
-                    .WaitAndGetResult(context.WaitContext.CancellationToken);
+                    .GetSemanticModelAsync(userCancellationToken)
+                    .WaitAndGetResult(userCancellationToken);
 
                 var root = semanticModel.SyntaxTree
-                    .GetRootAsync(context.WaitContext.CancellationToken)
-                    .WaitAndGetResult(context.WaitContext.CancellationToken);
+                    .GetRootAsync(userCancellationToken)
+                    .WaitAndGetResult(userCancellationToken);
 
                 var memberDeclaration = syntaxFactsService.GetContainingMemberDeclaration(root, caretPosition);
 
                 var symbol = memberDeclaration != null
-                    ? semanticModel.GetDeclaredSymbol(memberDeclaration, context.WaitContext.CancellationToken)
+                    ? semanticModel.GetDeclaredSymbol(memberDeclaration, userCancellationToken)
                     : null;
 
                 while (symbol != null && !IsValidSymbolToSynchronize(symbol))

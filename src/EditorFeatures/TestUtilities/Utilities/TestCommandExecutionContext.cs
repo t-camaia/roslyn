@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
     {
         public static CommandExecutionContext Create()
         {
-            return new CommandExecutionContext(new TestWaitableUIOperationContext());
+            return new CommandExecutionContext(new TestUIThreadOperationContext());
         }
     }
 }

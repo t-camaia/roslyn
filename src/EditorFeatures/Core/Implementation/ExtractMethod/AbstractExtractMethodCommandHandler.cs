@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Applying_Extract_Method_refactoring))
             {
-                return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.CancellationToken);
+                return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.UserCancellationToken);
             }
         }
 

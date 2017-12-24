@@ -576,7 +576,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Inserting_documentation_comment))
             {
-                if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.CancellationToken))
+                if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.UserCancellationToken))
                 {
                     nextHandler();
                 }

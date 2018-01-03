@@ -153,6 +153,7 @@ namespace Microsoft.CodeAnalysis.ErrorReporting
             s_reportedException = exception;
             s_reportedExceptionMessage = exception.ToString();
 
+
             handler?.Invoke(exception);
         }
     }

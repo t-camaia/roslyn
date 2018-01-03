@@ -48,7 +48,7 @@ function Publish-NuGet([string]$packageDir, [string]$uploadUrl) {
             }
 
             if (-not $test) {
-                Exec-Console $dotnet "nuget push $nupkg --source $uploadUrl --apiKey $apiKey -v q"
+                Exec-Console $dotnet "nuget push $nupkg --source $uploadUrl --api-key $apiKey"
             }
         }
     } 
@@ -147,7 +147,7 @@ function Normalize-BranchName([string]$branchName) {
 
 try {
     . (Join-Path $PSScriptRoot "..\..\..\build\scripts\build-utils.ps1")
-    $dotnet = Ensure-DotnetExe
+    $dotnet = Ensure-DotnetSdk
     $nugetDir = Join-Path $configDir "NuGet"
 
     if ($configDir -eq "") {

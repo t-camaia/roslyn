@@ -3,23 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis.Editor.CSharp.EventHookup;
-using Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup;
-using Microsoft.CodeAnalysis.Editor.Implementation.Commands;
 using Microsoft.CodeAnalysis.Editor.UnitTests;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Extensions;
 using Microsoft.CodeAnalysis.Options;
-using Xunit;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Primitives;
+using Microsoft.CodeAnalysis.Shared.TestHooks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.CodeAnalysis.Shared.TestHooks;
 using Roslyn.Utilities;
+using Xunit;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup
 {

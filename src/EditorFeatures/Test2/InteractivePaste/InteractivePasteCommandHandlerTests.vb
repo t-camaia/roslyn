@@ -2,12 +2,12 @@
 
 Imports System.Text
 Imports System.Windows
-Imports Microsoft.VisualStudio.InteractiveWindow
-Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.CodeAnalysis.Editor.CommandHandlers
-Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
-Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
+Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
+Imports Microsoft.VisualStudio.InteractiveWindow
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
+Imports Microsoft.VisualStudio.Text.Operations
 
 Namespace Microsoft.CodeAnalysis.Editor.UnitTests.InteractivePaste
     Public Class InteractivePasteCommandhandlerTests

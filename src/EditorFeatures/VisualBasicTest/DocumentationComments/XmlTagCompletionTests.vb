@@ -3,10 +3,9 @@
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.DocumentationComments
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 Imports Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
-Imports Microsoft.VisualStudio.Text.Operations
-Imports Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
-Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Commanding
+Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
+Imports Microsoft.VisualStudio.Text.Operations
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.DocumentationComments
     Public Class XmlTagCompletionTests

@@ -12,36 +12,37 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
 {
-    internal abstract class AbstractChangeSignatureCommandHandler : VisualStudio.Commanding.ICommandHandler<ReorderParametersCommandArgs>,
-        VisualStudio.Commanding.ICommandHandler<RemoveParametersCommandArgs>
+    internal abstract class AbstractChangeSignatureCommandHandler : VSCommanding.ICommandHandler<ReorderParametersCommandArgs>,
+        VSCommanding.ICommandHandler<RemoveParametersCommandArgs>
     {
         public string DisplayName => EditorFeaturesResources.Change_Signature_Command_Handler_Name;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ReorderParametersCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(ReorderParametersCommandArgs args)
             => GetCommandState(args.SubjectBuffer);
 
-        public VisualStudio.Commanding.CommandState GetCommandState(RemoveParametersCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(RemoveParametersCommandArgs args)
             => GetCommandState(args.SubjectBuffer);
 
-        private static VisualStudio.Commanding.CommandState GetCommandState(ITextBuffer subjectBuffer)
+        private static VSCommanding.CommandState GetCommandState(ITextBuffer subjectBuffer)
         {
             var document = subjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null ||
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
         public bool ExecuteCommand(RemoveParametersCommandArgs args, CommandExecutionContext context)

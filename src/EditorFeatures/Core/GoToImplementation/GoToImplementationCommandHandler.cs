@@ -16,13 +16,14 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToImplementation)]
-    internal partial class GoToImplementationCommandHandler : VisualStudio.Commanding.ICommandHandler<GoToImplementationCommandArgs>
+    internal partial class GoToImplementationCommandHandler : VSCommanding.ICommandHandler<GoToImplementationCommandArgs>
     {
         private readonly IEnumerable<Lazy<IStreamingFindUsagesPresenter>> _streamingPresenters;
 
@@ -43,13 +44,13 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
                     document?.GetLanguageService<IFindUsagesService>());
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(GoToImplementationCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(GoToImplementationCommandArgs args)
         {
             // Because this is expensive to compute, we just always say yes as long as the language allows it.
             var (document, implService, findUsagesService) = GetDocumentAndServices(args.SubjectBuffer.CurrentSnapshot);
             return implService != null || findUsagesService != null
-                ? VisualStudio.Commanding.CommandState.Available
-                : VisualStudio.Commanding.CommandState.Unspecified;
+                ? VSCommanding.CommandState.Available
+                : VSCommanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(GoToImplementationCommandArgs args, CommandExecutionContext context)

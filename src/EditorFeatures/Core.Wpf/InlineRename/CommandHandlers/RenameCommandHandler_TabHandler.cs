@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
@@ -14,7 +15,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         IChainedCommandHandler<TabKeyCommandArgs>,
         IChainedCommandHandler<BackTabKeyCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(TabKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(TabKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
@@ -49,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             });
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(BackTabKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(BackTabKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }

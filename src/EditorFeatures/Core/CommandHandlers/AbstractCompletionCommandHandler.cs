@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
@@ -43,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return _completionService.TryGetController(args.TextView, args.SubjectBuffer, out controller);
         }
 
-        private bool TryGetControllerCommandHandler<TCommandArgs>(TCommandArgs args, out VisualStudio.Commanding.ICommandHandler commandHandler)
+        private bool TryGetControllerCommandHandler<TCommandArgs>(TCommandArgs args, out VSCommanding.ICommandHandler commandHandler)
             where TCommandArgs : EditorCommandArgs
         {
             AssertIsForeground();
@@ -57,9 +58,9 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return true;
         }
 
-        private VisualStudio.Commanding.CommandState GetCommandStateWorker<TCommandArgs>(
+        private VSCommanding.CommandState GetCommandStateWorker<TCommandArgs>(
             TCommandArgs args,
-            Func<VisualStudio.Commanding.CommandState> nextHandler)
+            Func<VSCommanding.CommandState> nextHandler)
             where TCommandArgs : EditorCommandArgs
         {
             AssertIsForeground();
@@ -85,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             }
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<TabKeyCommandArgs>.GetCommandState(TabKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<TabKeyCommandArgs>.GetCommandState(TabKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -97,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<ToggleCompletionModeCommandArgs>.GetCommandState(ToggleCompletionModeCommandArgs args, System.Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<ToggleCompletionModeCommandArgs>.GetCommandState(ToggleCompletionModeCommandArgs args, System.Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -109,7 +110,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<TypeCharCommandArgs>.GetCommandState(TypeCharCommandArgs args, System.Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<TypeCharCommandArgs>.GetCommandState(TypeCharCommandArgs args, System.Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -121,7 +122,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<ReturnKeyCommandArgs>.GetCommandState(ReturnKeyCommandArgs args, System.Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<ReturnKeyCommandArgs>.GetCommandState(ReturnKeyCommandArgs args, System.Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -133,7 +134,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<InvokeCompletionListCommandArgs>.GetCommandState(InvokeCompletionListCommandArgs args, System.Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<InvokeCompletionListCommandArgs>.GetCommandState(InvokeCompletionListCommandArgs args, System.Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -145,7 +146,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<PageUpKeyCommandArgs>.GetCommandState(PageUpKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<PageUpKeyCommandArgs>.GetCommandState(PageUpKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -157,7 +158,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<PageDownKeyCommandArgs>.GetCommandState(PageDownKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<PageDownKeyCommandArgs>.GetCommandState(PageDownKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -169,7 +170,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<CutCommandArgs>.GetCommandState(CutCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<CutCommandArgs>.GetCommandState(CutCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -181,7 +182,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<PasteCommandArgs>.GetCommandState(PasteCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<PasteCommandArgs>.GetCommandState(PasteCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -193,7 +194,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<CommitUniqueCompletionListItemCommandArgs>.GetCommandState(CommitUniqueCompletionListItemCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<CommitUniqueCompletionListItemCommandArgs>.GetCommandState(CommitUniqueCompletionListItemCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -205,7 +206,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<BackspaceKeyCommandArgs>.GetCommandState(BackspaceKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<BackspaceKeyCommandArgs>.GetCommandState(BackspaceKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -217,7 +218,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<InsertSnippetCommandArgs>.GetCommandState(InsertSnippetCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<InsertSnippetCommandArgs>.GetCommandState(InsertSnippetCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -229,13 +230,13 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        VisualStudio.Commanding.CommandState IChainedCommandHandler<SurroundWithCommandArgs>.GetCommandState(SurroundWithCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<SurroundWithCommandArgs>.GetCommandState(SurroundWithCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(AutomaticLineEnderCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(AutomaticLineEnderCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -283,7 +284,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return controller.TryHandleDownKey();
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(SaveCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(SaveCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -295,7 +296,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(DeleteKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(DeleteKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
@@ -307,7 +308,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             ExecuteCommandWorker(args, nextHandler, context);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(SelectAllCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(SelectAllCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);

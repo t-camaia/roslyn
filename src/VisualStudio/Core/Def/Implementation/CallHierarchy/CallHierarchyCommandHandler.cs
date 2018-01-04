@@ -12,15 +12,16 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [ContentType(ContentTypeNames.VisualBasicContentType)]
     [Name("CallHierarchy")]
     [Order(After = PredefinedCommandHandlerNames.DocumentationComments)]
-    internal class CallHierarchyCommandHandler : VisualStudio.Commanding.ICommandHandler<ViewCallHierarchyCommandArgs>
+    internal class CallHierarchyCommandHandler : VSCommanding.ICommandHandler<ViewCallHierarchyCommandArgs>
     {
         private readonly ICallHierarchyPresenter _presenter;
         private readonly CallHierarchyProvider _provider;
@@ -81,9 +82,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
             }
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ViewCallHierarchyCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(ViewCallHierarchyCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
     }
 }

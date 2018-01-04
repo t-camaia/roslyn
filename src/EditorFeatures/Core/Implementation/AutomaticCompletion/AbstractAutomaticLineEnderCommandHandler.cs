@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 {
@@ -52,9 +53,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
         /// </summary>
         protected abstract bool TreatAsReturn(Document document, int position, CancellationToken cancellationToken);
 
-        public VisualStudio.Commanding.CommandState GetCommandState(AutomaticLineEnderCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(AutomaticLineEnderCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
         public void ExecuteCommand(AutomaticLineEnderCommandArgs args, Action nextHandler, CommandExecutionContext context)

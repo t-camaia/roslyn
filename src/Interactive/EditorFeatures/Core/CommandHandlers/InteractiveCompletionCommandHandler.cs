@@ -3,10 +3,11 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.InteractiveWindow.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(PredefinedInteractiveCommandsContentTypes.InteractiveCommandContentTypeName)]
     [Name(PredefinedCommandHandlerNames.Completion)]
     [Order(After = PredefinedCommandHandlerNames.SignatureHelp)]

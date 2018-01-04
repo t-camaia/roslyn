@@ -3,6 +3,7 @@
 using System;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
@@ -43,17 +44,17 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             _quickInfoCommandHandler = quickInfoCommandHandler;
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(UpKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(UpKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(DownKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(DownKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }

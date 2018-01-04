@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
@@ -17,11 +18,11 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     /// in order to ensure that the interactive command can be exposed without the necessity
     /// to load any of the interactive dll files just to get the command's status.
     /// </summary>
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name("Interactive Command Handler")]
     internal class ExecuteInInteractiveCommandHandler
-        : VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>
+        : VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>
     {
         private readonly IEnumerable<Lazy<IExecuteInInteractiveCommandHandler, ContentTypeMetadata>> _executeInInteractiveHandlers;
 
@@ -41,16 +42,16 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
                 .SingleOrDefault();
         }
 
-        bool VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
+        bool VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
         {
             return GetCommandHandler(args.SubjectBuffer)?.Value.ExecuteCommand(args, context) ?? false;
         }
 
-        VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
+        VSCommanding.CommandState VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
         {
             return GetCommandHandler(args.SubjectBuffer) == null
-                ? VisualStudio.Commanding.CommandState.Unavailable
-                : VisualStudio.Commanding.CommandState.Available;
+                ? VSCommanding.CommandState.Unavailable
+                : VSCommanding.CommandState.Available;
         }
     }
 }

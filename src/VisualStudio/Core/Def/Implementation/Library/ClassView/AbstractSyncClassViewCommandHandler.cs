@@ -2,7 +2,6 @@
 
 using System;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Editor;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.LanguageServices;
@@ -17,7 +16,7 @@ using Roslyn.Utilities;
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassView
 {
     internal abstract class AbstractSyncClassViewCommandHandler : ForegroundThreadAffinitizedObject,
-        Commanding.ICommandHandler<SyncClassViewCommandArgs>
+        ICommandHandler<SyncClassViewCommandArgs>
     {
         private const string ClassView = "Class View";
 
@@ -114,7 +113,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
             symbol.Kind == SymbolKind.NamedType ||
             symbol.Kind == SymbolKind.Property;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(SyncClassViewCommandArgs args)
+        public CommandState GetCommandState(SyncClassViewCommandArgs args)
         {
             return Commanding.CommandState.Unspecified;
         }

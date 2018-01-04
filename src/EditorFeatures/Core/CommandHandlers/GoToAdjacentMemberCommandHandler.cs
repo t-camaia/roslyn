@@ -17,13 +17,14 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Outlining;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToAdjacentMember)]
-    internal class GoToAdjacentMemberCommandHandler : VisualStudio.Commanding.ICommandHandler<GoToNextMemberCommandArgs>, VisualStudio.Commanding.ICommandHandler<GoToPreviousMemberCommandArgs>
+    internal class GoToAdjacentMemberCommandHandler : VSCommanding.ICommandHandler<GoToNextMemberCommandArgs>, VSCommanding.ICommandHandler<GoToPreviousMemberCommandArgs>
     {
         private readonly IOutliningManagerService _outliningManagerService;
 
@@ -35,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             _outliningManagerService = outliningManagerService;
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(GoToNextMemberCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(GoToNextMemberCommandArgs args)
         {
             return GetCommandStateImpl(args);
         }
@@ -45,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return ExecuteCommandImpl(args, next: true, context);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(GoToPreviousMemberCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(GoToPreviousMemberCommandArgs args)
         {
             return GetCommandStateImpl(args);
         }
@@ -55,11 +56,11 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return ExecuteCommandImpl(args, next: false, context);
         }
 
-        private VisualStudio.Commanding.CommandState GetCommandStateImpl(EditorCommandArgs args)
+        private VSCommanding.CommandState GetCommandStateImpl(EditorCommandArgs args)
         { 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
-            return IsAvailable(document, caretPoint) ? VisualStudio.Commanding.CommandState.Available : VisualStudio.Commanding.CommandState.Unspecified;
+            return IsAvailable(document, caretPoint) ? VSCommanding.CommandState.Available : VSCommanding.CommandState.Unspecified;
         }
 
         private static bool IsAvailable(Document document, SnapshotPoint? caretPoint)

@@ -4,6 +4,7 @@ using System;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.LanguageServices.CSharp;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
@@ -19,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             nextHandler();
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return nextHandler();

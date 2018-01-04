@@ -16,10 +16,11 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
 {
-    internal abstract class AbstractEncapsulateFieldCommandHandler : VisualStudio.Commanding.ICommandHandler<EncapsulateFieldCommandArgs>
+    internal abstract class AbstractEncapsulateFieldCommandHandler : VSCommanding.ICommandHandler<EncapsulateFieldCommandArgs>
     {
         private readonly ITextBufferUndoManagerProvider _undoManager;
         private readonly AggregateAsynchronousOperationListener _listener;
@@ -129,21 +130,21 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
             }
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args)
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
     }
 }

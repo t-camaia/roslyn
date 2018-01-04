@@ -7,12 +7,13 @@ Imports Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
+Imports VSCommanding = Microsoft.VisualStudio.Commanding
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.AutomaticCompletion
     ' <summary>
     ' visual basic automatic line ender command handler
     ' </summary>
-    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <Export(GetType(VSCommanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.AutomaticLineEnder)>
     <Order(Before:=PredefinedCommandHandlerNames.Completion)>

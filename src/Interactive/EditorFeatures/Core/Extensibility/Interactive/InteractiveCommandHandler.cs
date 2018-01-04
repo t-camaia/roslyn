@@ -14,12 +14,13 @@ using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Interactive
 {
     internal abstract class InteractiveCommandHandler :
-        VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>,
-        VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs>
+        VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>,
+        VSCommanding.ICommandHandler<CopyToInteractiveCommandArgs>
     {
         private readonly IContentTypeRegistryService _contentTypeRegistryService;
         private readonly IEditorOptionsFactoryService _editorOptionsFactoryService;
@@ -52,12 +53,12 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             return SendToInteractiveSubmissionProvider.GetSelectedText(editorOptions, args, cancellationToken);
         }
 
-        VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
+        VSCommanding.CommandState VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.GetCommandState(ExecuteInInteractiveCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
-        bool VisualStudio.Commanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
+        bool VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
         {
             using (context.WaitContext.AddScope(allowCancellation: true, InteractiveEditorFeaturesResources.Executing_selection_in_Interactive_Window))
             {
@@ -72,12 +73,12 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             return true;
         }
 
-        VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs>.GetCommandState(CopyToInteractiveCommandArgs args)
+        VSCommanding.CommandState VSCommanding.ICommandHandler<CopyToInteractiveCommandArgs>.GetCommandState(CopyToInteractiveCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
-        bool VisualStudio.Commanding.ICommandHandler<CopyToInteractiveCommandArgs>.ExecuteCommand(CopyToInteractiveCommandArgs args, CommandExecutionContext context)
+        bool VSCommanding.ICommandHandler<CopyToInteractiveCommandArgs>.ExecuteCommand(CopyToInteractiveCommandArgs args, CommandExecutionContext context)
         {
             var window = OpenInteractiveWindow(focus: true);
             var buffer = window.CurrentLanguageBuffer;

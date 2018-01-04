@@ -3,6 +3,7 @@
 using System;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
@@ -12,7 +13,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         IChainedCommandHandler<ExtractInterfaceCommandArgs>,
         IChainedCommandHandler<EncapsulateFieldCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(ReorderParametersCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(ReorderParametersCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
@@ -22,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             CommitIfActiveAndCallNextHandler(args, nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(RemoveParametersCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(RemoveParametersCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
@@ -32,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             CommitIfActiveAndCallNextHandler(args, nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ExtractInterfaceCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(ExtractInterfaceCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }
@@ -42,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             CommitIfActiveAndCallNextHandler(args, nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return nextHandler();
         }

@@ -10,14 +10,15 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToDefinition)]
     internal class GoToDefinitionCommandHandler :
-        VisualStudio.Commanding.ICommandHandler<GoToDefinitionCommandArgs>
+        VSCommanding.ICommandHandler<GoToDefinitionCommandArgs>
     {
         public string DisplayName => EditorFeaturesResources.Go_To_Definition_Command_Handler_Name;
 
@@ -27,12 +28,12 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
             return (document, document?.GetLanguageService<IGoToDefinitionService>());
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(GoToDefinitionCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(GoToDefinitionCommandArgs args)
         {
             var (document, service) = GetDocumentAndService(args.SubjectBuffer.CurrentSnapshot);
             return service != null
-                ? VisualStudio.Commanding.CommandState.Available
-                : VisualStudio.Commanding.CommandState.Unspecified;
+                ? VSCommanding.CommandState.Available
+                : VSCommanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(GoToDefinitionCommandArgs args, CommandExecutionContext context)

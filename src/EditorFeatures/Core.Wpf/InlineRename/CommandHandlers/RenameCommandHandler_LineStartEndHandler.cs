@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
@@ -13,22 +14,22 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         IChainedCommandHandler<LineStartCommandArgs>, IChainedCommandHandler<LineEndCommandArgs>,
         IChainedCommandHandler<LineStartExtendCommandArgs>, IChainedCommandHandler<LineEndExtendCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(LineStartCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(LineStartCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(LineEndCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(LineEndCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(LineStartExtendCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(LineStartExtendCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(LineEndExtendCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(LineEndExtendCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }

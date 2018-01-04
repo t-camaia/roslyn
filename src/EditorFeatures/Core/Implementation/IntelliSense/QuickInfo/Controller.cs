@@ -16,13 +16,14 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 {
     internal partial class Controller :
         AbstractController<Session<Controller, Model, IQuickInfoPresenterSession>, Model, IQuickInfoPresenterSession, IQuickInfoSession>,
-        VisualStudio.Commanding.ICommandHandler<InvokeQuickInfoCommandArgs>
+        VSCommanding.ICommandHandler<InvokeQuickInfoCommandArgs>
     {
         private static readonly object s_quickInfoPropertyKey = new object();
 

@@ -8,10 +8,11 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.Rename)]
@@ -38,11 +39,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
         public string DisplayName => EditorFeaturesResources.Rename_Command_Handler_Name;
 
-        private VisualStudio.Commanding.CommandState GetCommandState(Func<VisualStudio.Commanding.CommandState> nextHandler)
+        private VSCommanding.CommandState GetCommandState(Func<VSCommanding.CommandState> nextHandler)
         {
             if (_renameService.ActiveSession != null)
             {
-                return VisualStudio.Commanding.CommandState.Available;
+                return VSCommanding.CommandState.Available;
             }
 
             return nextHandler();

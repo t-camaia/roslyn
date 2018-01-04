@@ -13,20 +13,21 @@ using System.IO;
 using Microsoft.VisualStudio.InteractiveWindow;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Commanding;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 {
     // This command handler must be invoked after the handlers specified in `Order` attribute
     // (those handlers also implement `ICommandHandler<PasteCommandArgs>`),
     // because it will intercept the paste command and skip the rest of handlers in chain.  
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.InteractivePaste)]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(After = PredefinedCommandHandlerNames.FormatDocument)]
     [Order(After = PredefinedCommandHandlerNames.Commit)]
     [Order(After = PredefinedCommandHandlerNames.Completion)]
-    internal sealed class InteractivePasteCommandHandler : VisualStudio.Commanding.ICommandHandler<PasteCommandArgs>
+    internal sealed class InteractivePasteCommandHandler : VSCommanding.ICommandHandler<PasteCommandArgs>
     {
         // The following two field definitions have to stay in sync with VS editor implementation
 
@@ -73,9 +74,9 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             }
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(PasteCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(PasteCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Unspecified;
+            return VSCommanding.CommandState.Unspecified;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]  // Avoid loading InteractiveWindow unless necessary

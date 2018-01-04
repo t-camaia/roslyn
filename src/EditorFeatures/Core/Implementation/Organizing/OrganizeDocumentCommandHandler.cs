@@ -17,21 +17,22 @@ using Microsoft.VisualStudio.Text.Editor.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [ContentType(ContentTypeNames.VisualBasicContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.OrganizeDocument)]
     internal class OrganizeDocumentCommandHandler :
-        VisualStudio.Commanding.ICommandHandler<OrganizeDocumentCommandArgs>,
-        VisualStudio.Commanding.ICommandHandler<SortAndRemoveUnnecessaryImportsCommandArgs>
+        VSCommanding.ICommandHandler<OrganizeDocumentCommandArgs>,
+        VSCommanding.ICommandHandler<SortAndRemoveUnnecessaryImportsCommandArgs>
     {
         public string DisplayName => EditorFeaturesResources.Organize_Document_Command_Handler_Name;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(OrganizeDocumentCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(OrganizeDocumentCommandArgs args)
         {
             return GetCommandState(args, _ => EditorFeaturesResources.Organize_Document);
         }
@@ -46,21 +47,21 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
             return true;
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(SortAndRemoveUnnecessaryImportsCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(SortAndRemoveUnnecessaryImportsCommandArgs args)
         {
             return GetCommandState(args, o => o.SortAndRemoveUnusedImportsDisplayStringWithAccelerator);
         }
 
-        private VisualStudio.Commanding.CommandState GetCommandState(EditorCommandArgs args, Func<IOrganizeImportsService, string> descriptionString)
+        private VSCommanding.CommandState GetCommandState(EditorCommandArgs args, Func<IOrganizeImportsService, string> descriptionString)
         {
             if (IsCommandSupported(args, out var workspace))
             {
                 var organizeImportsService = workspace.Services.GetLanguageServices(args.SubjectBuffer).GetService<IOrganizeImportsService>();
-                return new VisualStudio.Commanding.CommandState(isAvailable: true, displayText: descriptionString(organizeImportsService));
+                return new VSCommanding.CommandState(isAvailable: true, displayText: descriptionString(organizeImportsService));
             }
             else
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
         }
 

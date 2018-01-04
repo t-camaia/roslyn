@@ -6,10 +6,11 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.RenameTrackingCancellation)]
@@ -19,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
     [Order(After = PredefinedCommandHandlerNames.Completion)]
     [Order(After = PredefinedCommandHandlerNames.QuickInfo)]
     [Order(After = PredefinedCommandHandlerNames.EventHookup)]
-    internal class RenameTrackingCancellationCommandHandler : VisualStudio.Commanding.ICommandHandler<EscapeKeyCommandArgs>
+    internal class RenameTrackingCancellationCommandHandler : VSCommanding.ICommandHandler<EscapeKeyCommandArgs>
     {
         public string DisplayName => EditorFeaturesResources.Rename_Tracking_Cancellation_Command_Handler_Name;
 
@@ -31,9 +32,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                 RenameTrackingDismisser.DismissVisibleRenameTracking(document.Project.Solution.Workspace, document.Id);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Unspecified;
+            return VSCommanding.CommandState.Unspecified;
         }
     }
 }

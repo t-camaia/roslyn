@@ -3,18 +3,19 @@
 using System;
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
         IChainedCommandHandler<UndoCommandArgs>, IChainedCommandHandler<RedoCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(UndoCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(UndoCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(RedoCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(RedoCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }

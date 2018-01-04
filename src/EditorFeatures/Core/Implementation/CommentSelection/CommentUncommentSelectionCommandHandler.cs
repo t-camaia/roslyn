@@ -19,15 +19,16 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.CommentSelection)]
     internal class CommentUncommentSelectionCommandHandler :
-        VisualStudio.Commanding.ICommandHandler<CommentSelectionCommandArgs>,
-        VisualStudio.Commanding.ICommandHandler<UncommentSelectionCommandArgs>
+        VSCommanding.ICommandHandler<CommentSelectionCommandArgs>,
+        VSCommanding.ICommandHandler<UncommentSelectionCommandArgs>
     {
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
@@ -46,17 +47,17 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
 
         public string DisplayName => EditorFeaturesResources.Comment_Uncomment_Selection_Command_Handler_Name;
 
-        private static VisualStudio.Commanding.CommandState GetCommandState(ITextBuffer buffer)
+        private static VSCommanding.CommandState GetCommandState(ITextBuffer buffer)
         {
             if (!buffer.CanApplyChangeDocumentToWorkspace())
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(CommentSelectionCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(CommentSelectionCommandArgs args)
         {
             return GetCommandState(args.SubjectBuffer);
         }
@@ -69,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
             return this.ExecuteCommand(args.TextView, args.SubjectBuffer, Operation.Comment, context);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(UncommentSelectionCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(UncommentSelectionCommandArgs args)
         {
             return GetCommandState(args.SubjectBuffer);
         }

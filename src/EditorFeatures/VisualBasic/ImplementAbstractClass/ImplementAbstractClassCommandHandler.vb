@@ -7,9 +7,10 @@ Imports Microsoft.CodeAnalysis.ImplementAbstractClass
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
+Imports VSCommanding = Microsoft.VisualStudio.Commanding
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ImplementAbstractClass
-    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <Export(GetType(VSCommanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("ImplementAbstractClassCommandHandler")>
     <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>

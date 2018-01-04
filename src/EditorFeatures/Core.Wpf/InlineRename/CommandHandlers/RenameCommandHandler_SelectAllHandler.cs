@@ -6,13 +6,14 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
         IChainedCommandHandler<SelectAllCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(SelectAllCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(SelectAllCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }

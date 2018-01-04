@@ -8,9 +8,10 @@ Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Text.Editor
+Imports VSCommanding = Microsoft.VisualStudio.Commanding
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
-    <Export(GetType(VisualStudio.Commanding.ICommandHandler))>
+    <Export(GetType(VSCommanding.ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("XmlTagCompletionCommandHandler")>
     <Order(Before:=PredefinedCommandHandlerNames.Completion)>

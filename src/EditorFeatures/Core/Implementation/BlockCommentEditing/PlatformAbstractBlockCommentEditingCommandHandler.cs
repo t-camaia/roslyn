@@ -3,11 +3,12 @@
 using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
 {
     internal abstract class PlatformAbstractBlockCommentEditingCommandHandler : BaseAbstractBlockCommentEditingCommandHandler, 
-        VisualStudio.Commanding.ICommandHandler<ReturnKeyCommandArgs>
+        VSCommanding.ICommandHandler<ReturnKeyCommandArgs>
     {
         protected PlatformAbstractBlockCommentEditingCommandHandler(
             ITextUndoHistoryRegistry undoHistoryRegistry,
@@ -18,7 +19,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
 
         public string DisplayName => EditorFeaturesResources.Block_Comment_Editing_Command_Handler_Name;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args) => VisualStudio.Commanding.CommandState.Unspecified;
+        public VSCommanding.CommandState GetCommandState(ReturnKeyCommandArgs args) => VSCommanding.CommandState.Unspecified;
 
         public bool ExecuteCommand(ReturnKeyCommandArgs args, CommandExecutionContext context)
         {

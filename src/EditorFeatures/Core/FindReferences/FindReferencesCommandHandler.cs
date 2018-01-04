@@ -20,13 +20,14 @@ using Microsoft.VisualStudio.Commanding;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.FindReferences
 {
-    [Export(typeof(VisualStudio.Commanding.ICommandHandler))]
+    [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.FindReferences)]
-    internal class FindReferencesCommandHandler : VisualStudio.Commanding.ICommandHandler<FindReferencesCommandArgs>
+    internal class FindReferencesCommandHandler : VSCommanding.ICommandHandler<FindReferencesCommandArgs>
     {
         private readonly IEnumerable<IDefinitionsAndReferencesPresenter> _synchronousPresenters;
         private readonly IEnumerable<Lazy<IStreamingFindUsagesPresenter>> _streamingPresenters;
@@ -51,9 +52,9 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
                 asyncListeners, FeatureAttribute.FindReferences);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(FindReferencesCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(FindReferencesCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Unspecified;
+            return VSCommanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(FindReferencesCommandArgs args, CommandExecutionContext context)

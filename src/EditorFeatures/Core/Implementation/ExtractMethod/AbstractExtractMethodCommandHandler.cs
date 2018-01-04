@@ -16,10 +16,11 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
 using Roslyn.Utilities;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 {
-    internal abstract class AbstractExtractMethodCommandHandler : VisualStudio.Commanding.ICommandHandler<ExtractMethodCommandArgs>
+    internal abstract class AbstractExtractMethodCommandHandler : VSCommanding.ICommandHandler<ExtractMethodCommandArgs>
     {
         private readonly ITextBufferUndoManagerProvider _undoManager;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
@@ -40,32 +41,32 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
         }
         public string DisplayName => EditorFeaturesResources.Extract_Method_Command_Handler_Name;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ExtractMethodCommandArgs args)
+        public VSCommanding.CommandState GetCommandState(ExtractMethodCommandArgs args)
         {
             var spans = args.TextView.Selection.GetSnapshotSpansOnBuffer(args.SubjectBuffer);
             if (spans.Count(s => s.Length > 0) != 1)
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
             if (!document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Unspecified;
+                return VSCommanding.CommandState.Unspecified;
             }
 
-            return VisualStudio.Commanding.CommandState.Available;
+            return VSCommanding.CommandState.Available;
         }
 
         public bool ExecuteCommand(ExtractMethodCommandArgs args, CommandExecutionContext context)

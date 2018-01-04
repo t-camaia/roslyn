@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
@@ -14,12 +15,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         IChainedCommandHandler<WordDeleteToStartCommandArgs>,
         IChainedCommandHandler<WordDeleteToEndCommandArgs>
     {
-        public VisualStudio.Commanding.CommandState GetCommandState(WordDeleteToStartCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(WordDeleteToStartCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }
 
-        public VisualStudio.Commanding.CommandState GetCommandState(WordDeleteToEndCommandArgs args, Func<VisualStudio.Commanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(WordDeleteToEndCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             return GetCommandState(nextHandler);
         }

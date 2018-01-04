@@ -39,7 +39,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
         Private ReadOnly _smartIndentationService As ISmartIndentationService
         Private ReadOnly _textUndoHistoryRegistry As ITextUndoHistoryRegistry
 
-        Public ReadOnly Property DisplayName As String Implements IHasDisplayName.DisplayName
+        Public ReadOnly Property DisplayName As String Implements INamed.DisplayName
             Get
                 Return VBEditorResources.Commit_Command_Handler_Name
             End Get

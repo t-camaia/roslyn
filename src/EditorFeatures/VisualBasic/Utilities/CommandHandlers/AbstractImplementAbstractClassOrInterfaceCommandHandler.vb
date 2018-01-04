@@ -21,7 +21,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
 
         Private ReadOnly _editorOperationsFactoryService As IEditorOperationsFactoryService
 
-        Public ReadOnly Property DisplayName As String Implements IHasDisplayName.DisplayName
+        Public ReadOnly Property DisplayName As String Implements INamed.DisplayName
             Get
                 Return VBEditorResources.Implement_Abstract_Class_Or_Interface_Command_Handler_Name
             End Get

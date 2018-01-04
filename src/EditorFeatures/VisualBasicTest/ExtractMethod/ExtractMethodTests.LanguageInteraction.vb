@@ -3388,7 +3388,7 @@ End Namespace"
                         workspace.GetService(Of IInlineRenameService)())
 
                     Dim state = handler.GetCommandState(New ExtractMethodCommandArgs(textView, textView.TextBuffer))
-                    Assert.True(state.IsUndetermined)
+                    Assert.True(state.IsUnspecified)
                 End Using
             End Sub
         End Class

@@ -87,12 +87,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;
@@ -121,12 +121,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;
@@ -155,12 +155,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;
@@ -189,12 +189,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;
@@ -218,17 +218,17 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;

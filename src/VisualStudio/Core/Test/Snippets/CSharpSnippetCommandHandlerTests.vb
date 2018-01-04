@@ -231,7 +231,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Snippets
             Using testState
                 Dim handler = testState.SnippetCommandHandler
                 Dim state = handler.GetCommandState(New InsertSnippetCommandArgs(testState.TextView, testState.SubjectBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
 
                 testState.SnippetExpansionClient.TryInsertExpansionReturnValue = True
 
@@ -250,7 +250,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Snippets
             Using testState
                 Dim handler = CType(testState.SnippetCommandHandler, CSharp.Snippets.SnippetCommandHandler)
                 Dim state = handler.GetCommandState(New SurroundWithCommandArgs(testState.TextView, testState.SubjectBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
 
                 testState.SnippetExpansionClient.TryInsertExpansionReturnValue = True
 

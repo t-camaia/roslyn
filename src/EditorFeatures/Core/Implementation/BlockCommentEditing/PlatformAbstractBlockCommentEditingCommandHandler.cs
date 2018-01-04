@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
 
         public string DisplayName => EditorFeaturesResources.Block_Comment_Editing_Command_Handler_Name;
 
-        public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args) => VisualStudio.Commanding.CommandState.Undetermined;
+        public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args) => VisualStudio.Commanding.CommandState.Unspecified;
 
         public bool ExecuteCommand(ReturnKeyCommandArgs args, CommandExecutionContext context)
         {

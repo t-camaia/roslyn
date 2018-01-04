@@ -12,6 +12,7 @@ Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
+Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
     Friend MustInherit Class AbstractImplementAbstractClassOrInterfaceCommandHandler
@@ -19,7 +20,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
 
         Private ReadOnly _editorOperationsFactoryService As IEditorOperationsFactoryService
 
-        Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
+        Public ReadOnly Property DisplayName As String Implements IHasDisplayName.DisplayName
             Get
                 Return VBEditorResources.Implement_Abstract_Class_Or_Interface_Command_Handler_Name
             End Get

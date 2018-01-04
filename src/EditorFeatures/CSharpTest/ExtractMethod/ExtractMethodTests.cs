@@ -10282,7 +10282,7 @@ namespace ClassLibrary9
                     workspace.GetService<IInlineRenameService>());
 
                 var state = handler.GetCommandState(new ExtractMethodCommandArgs(textView, textView.TextBuffer));
-                Assert.True(state.IsUndetermined);
+                Assert.True(state.IsUnspecified);
             }
         }
 

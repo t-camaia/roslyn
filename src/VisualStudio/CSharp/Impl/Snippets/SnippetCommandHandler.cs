@@ -49,17 +49,17 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
 
             if (!AreSnippetsEnabled(args))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!CodeAnalysis.Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             if (!workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return CommandState.Undetermined;
+                return CommandState.Unspecified;
             }
 
             return CommandState.Available;

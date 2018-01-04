@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Organizing
             }
             else
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
         }
 

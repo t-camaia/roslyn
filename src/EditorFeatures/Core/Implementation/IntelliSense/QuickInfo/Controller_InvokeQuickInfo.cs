@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
         VisualStudio.Commanding.CommandState VisualStudio.Commanding.ICommandHandler<InvokeQuickInfoCommandArgs>.GetCommandState(InvokeQuickInfoCommandArgs args)
         {
             AssertIsForeground();
-            return VisualStudio.Commanding.CommandState.Undetermined;
+            return VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         bool VisualStudio.Commanding.ICommandHandler<InvokeQuickInfoCommandArgs>.ExecuteCommand(InvokeQuickInfoCommandArgs args, CommandExecutionContext context)

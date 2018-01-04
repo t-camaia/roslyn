@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 
         public VisualStudio.Commanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Undetermined;
+            return VisualStudio.Commanding.CommandState.Unspecified;
         }
     }
 }

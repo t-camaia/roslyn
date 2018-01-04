@@ -45,24 +45,24 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
             var spans = args.TextView.Selection.GetSnapshotSpansOnBuffer(args.SubjectBuffer);
             if (spans.Count(s => s.Length > 0) != 1)
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             if (!document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             return VisualStudio.Commanding.CommandState.Available;

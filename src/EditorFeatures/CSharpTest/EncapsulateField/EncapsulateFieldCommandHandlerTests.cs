@@ -216,7 +216,7 @@ class Program
                     workspace.ExportProvider.GetExportedValues<Lazy<IAsynchronousOperationListener, FeatureMetadata>>());
 
                 var state = handler.GetCommandState(new EncapsulateFieldCommandArgs(textView, textView.TextBuffer));
-                Assert.True(state.IsUndetermined);
+                Assert.True(state.IsUnspecified);
             }
         }
     }

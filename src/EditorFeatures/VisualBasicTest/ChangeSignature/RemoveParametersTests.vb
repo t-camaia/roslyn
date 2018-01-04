@@ -119,10 +119,10 @@ End Module
                 Dim handler = New VisualBasicChangeSignatureCommandHandler()
 
                 Dim state = handler.GetCommandState(New ReorderParametersCommandArgs(textView, textView.TextBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
 
                 state = handler.GetCommandState(New RemoveParametersCommandArgs(textView, textView.TextBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
             End Using
         End Sub
     End Class

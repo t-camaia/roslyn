@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
             var (document, service) = GetDocumentAndService(args.SubjectBuffer.CurrentSnapshot);
             return service != null
                 ? VisualStudio.Commanding.CommandState.Available
-                : VisualStudio.Commanding.CommandState.Undetermined;
+                : VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(GoToDefinitionCommandArgs args, CommandExecutionContext context)

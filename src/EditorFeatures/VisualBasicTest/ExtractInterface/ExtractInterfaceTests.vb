@@ -1284,7 +1284,7 @@ End Namespace
                 Dim handler = New ExtractInterfaceCommandHandler()
 
                 Dim state = handler.GetCommandState(New ExtractInterfaceCommandArgs(textView, textView.TextBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
             End Using
         End Sub
 

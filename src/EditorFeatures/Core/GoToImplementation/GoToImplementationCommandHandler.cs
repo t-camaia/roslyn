@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
             var (document, implService, findUsagesService) = GetDocumentAndServices(args.SubjectBuffer.CurrentSnapshot);
             return implService != null || findUsagesService != null
                 ? VisualStudio.Commanding.CommandState.Available
-                : VisualStudio.Commanding.CommandState.Undetermined;
+                : VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(GoToImplementationCommandArgs args, CommandExecutionContext context)

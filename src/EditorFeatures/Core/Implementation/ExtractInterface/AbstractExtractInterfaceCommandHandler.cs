@@ -25,13 +25,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.AddDocument) ||
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             return VisualStudio.Commanding.CommandState.Available;

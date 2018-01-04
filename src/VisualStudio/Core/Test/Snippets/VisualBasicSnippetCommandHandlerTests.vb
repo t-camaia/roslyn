@@ -387,7 +387,7 @@ End Class
             Using testState
                 Dim handler = testState.SnippetCommandHandler
                 Dim state = handler.GetCommandState(New InsertSnippetCommandArgs(testState.TextView, testState.SubjectBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
 
                 testState.SnippetExpansionClient.TryInsertExpansionReturnValue = True
 

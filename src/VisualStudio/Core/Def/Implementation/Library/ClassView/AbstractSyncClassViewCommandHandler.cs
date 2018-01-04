@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
 
         public VisualStudio.Commanding.CommandState GetCommandState(SyncClassViewCommandArgs args)
         {
-            return Commanding.CommandState.Undetermined;
+            return Commanding.CommandState.Unspecified;
         }
     }
 }

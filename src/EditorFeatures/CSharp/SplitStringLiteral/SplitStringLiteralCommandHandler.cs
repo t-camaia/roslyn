@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
 
         public VisualStudio.Commanding.CommandState GetCommandState(ReturnKeyCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Undetermined;
+            return VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(ReturnKeyCommandArgs args, CommandExecutionContext context)

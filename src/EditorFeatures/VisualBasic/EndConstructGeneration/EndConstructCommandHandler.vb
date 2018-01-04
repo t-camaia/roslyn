@@ -29,7 +29,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.EndConstructGeneration
         Private ReadOnly _editorOperationsFactoryService As IEditorOperationsFactoryService
         Private ReadOnly _undoHistoryRegistry As ITextUndoHistoryRegistry
 
-        Public ReadOnly Property DisplayName As String Implements IDiagnosableCommandHandler.DisplayName
+        Public ReadOnly Property DisplayName As String Implements IHasDisplayName.DisplayName
             Get
                 Return VBEditorResources.End_Construct_Command_Handler_Name
             End Get

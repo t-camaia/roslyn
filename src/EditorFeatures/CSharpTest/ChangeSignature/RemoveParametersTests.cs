@@ -295,10 +295,10 @@ class C{i}
                 var handler = new CSharpChangeSignatureCommandHandler();
 
                 var state = handler.GetCommandState(new RemoveParametersCommandArgs(textView, textView.TextBuffer));
-                Assert.True(state.IsUndetermined);
+                Assert.True(state.IsUnspecified);
 
                 state = handler.GetCommandState(new ReorderParametersCommandArgs(textView, textView.TextBuffer));
-                Assert.True(state.IsUndetermined);
+                Assert.True(state.IsUnspecified);
             }
         }
     }

@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public VisualStudio.Commanding.CommandState GetCommandState(PasteCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Undetermined;
+            return VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]  // Avoid loading InteractiveWindow unless necessary

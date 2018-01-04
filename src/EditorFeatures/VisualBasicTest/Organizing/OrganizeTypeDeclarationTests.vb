@@ -960,10 +960,10 @@ End Namespace</element>
                 Dim handler = New OrganizeDocumentCommandHandler()
 
                 Dim state = handler.GetCommandState(New SortAndRemoveUnnecessaryImportsCommandArgs(textView, textView.TextBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
 
                 state = handler.GetCommandState(New OrganizeDocumentCommandArgs(textView, textView.TextBuffer))
-                Assert.True(state.IsUndetermined)
+                Assert.True(state.IsUnspecified)
             End Using
         End Sub
     End Class

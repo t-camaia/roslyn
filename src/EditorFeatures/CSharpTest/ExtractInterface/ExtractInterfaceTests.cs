@@ -1083,7 +1083,7 @@ class $$Test<T, U>
                 var handler = new ExtractInterfaceCommandHandler();
 
                 var state = handler.GetCommandState(new ExtractInterfaceCommandArgs(textView, textView.TextBuffer));
-                Assert.True(state.IsUndetermined);
+                Assert.True(state.IsUnspecified);
             }
         }
 

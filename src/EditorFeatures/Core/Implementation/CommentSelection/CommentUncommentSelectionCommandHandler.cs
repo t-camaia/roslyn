@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
         {
             if (!buffer.CanApplyChangeDocumentToWorkspace())
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             return VisualStudio.Commanding.CommandState.Available;

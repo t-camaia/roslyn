@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
 
         public VisualStudio.Commanding.CommandState GetCommandState(FindReferencesCommandArgs args)
         {
-            return VisualStudio.Commanding.CommandState.Undetermined;
+            return VisualStudio.Commanding.CommandState.Unspecified;
         }
 
         public bool ExecuteCommand(FindReferencesCommandArgs args, CommandExecutionContext context)

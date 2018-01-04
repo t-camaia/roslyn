@@ -134,13 +134,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             if (document == null)
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             var supportsFeatureService = document.Project.Solution.Workspace.Services.GetService<IDocumentSupportsFeatureService>();
             if (!supportsFeatureService.SupportsRefactorings(document))
             {
-                return VisualStudio.Commanding.CommandState.Undetermined;
+                return VisualStudio.Commanding.CommandState.Unspecified;
             }
 
             return VisualStudio.Commanding.CommandState.Available;

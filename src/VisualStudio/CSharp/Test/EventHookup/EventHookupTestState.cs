@@ -25,10 +25,10 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup
         public EventHookupTestState(XElement workspaceElement, IDictionary<OptionKey, object> options)
             : base(workspaceElement, GetExtraParts(), false)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // IQuickInfo* is obsolete
             _commandHandler = new EventHookupCommandHandler(Workspace.GetService<IInlineRenameService>(), Workspace.GetService<IQuickInfoBroker>(),
-#pragma warning restore CS0618 // Type or member is obsolete
                 null, Workspace.ExportProvider.GetExportedValues<IAsynchronousOperationListener>().Select(l => new Lazy<IAsynchronousOperationListener, FeatureMetadata>(() => l, new FeatureMetadata("EventHookup"))));
+#pragma warning restore CS0618 // IQuickInfo* is obsolete
 
             _testSessionHookupMutex = new Mutex(false);
             _commandHandler.TESTSessionHookupMutex = _testSessionHookupMutex;

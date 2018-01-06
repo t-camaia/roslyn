@@ -17,25 +17,21 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
     internal sealed partial class EventHookupSessionManager : ForegroundThreadAffinitizedObject
     {
         private readonly IHACK_EventHookupDismissalOnBufferChangePreventerService _prematureDismissalPreventer;
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // IQuickInfo* is obsolete
         private readonly IQuickInfoBroker _quickInfoBroker;
-#pragma warning restore CS0618 // Type or member is obsolete
 
         internal EventHookupSession CurrentSession { get; set; }
-#pragma warning disable CS0618 // Type or member is obsolete
         internal IQuickInfoSession QuickInfoSession { get; set; }
-#pragma warning restore CS0618 // Type or member is obsolete
 
         // For test purposes only!
         internal FrameworkElement TEST_MostRecentQuickInfoContent { get; set; }
 
-#pragma warning disable CS0618 // Type or member is obsolete
         internal EventHookupSessionManager(IHACK_EventHookupDismissalOnBufferChangePreventerService prematureDismissalPreventer, IQuickInfoBroker quickInfoBroker)
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             _prematureDismissalPreventer = prematureDismissalPreventer;
             _quickInfoBroker = quickInfoBroker;
         }
+#pragma warning restore CS0618 // IQuickInfo* is obsolete
 
         internal void EventHookupFoundInSession(EventHookupSession analyzedSession)
         {

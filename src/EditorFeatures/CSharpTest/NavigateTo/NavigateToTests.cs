@@ -15,7 +15,7 @@ using Roslyn.Test.EditorUtilities.NavigateTo;
 using Roslyn.Test.Utilities;
 using Xunit;
 
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // MatchKind is obsolete
 namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.NavigateTo
 {
     public class NavigateToTests : AbstractNavigateToTests
@@ -1073,4 +1073,4 @@ class D
         }
     }
 }
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // MatchKind is obsolete

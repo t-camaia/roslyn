@@ -1,20 +1,24 @@
-﻿using System.Collections.Concurrent;
+using System;
 using System.ComponentModel.Composition;
-using System.Threading;
-using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.CodeAnalysis.Editor.UnitTests
 {
     // Starting with 15.3 the editor took a dependency on JoinableTaskContext
     // in Text.Logic and Intellisense layers as an editor host provided service.
-    [PartCreationPolicy(CreationPolicy.NonShared)] // JTC is "main thread" affinitized so should not be shared
-    internal class TestExportJoinableTaskContext : ForegroundThreadAffinitizedObject
+    internal class TestExportJoinableTaskContext
     {
-        private static readonly ConcurrentDictionary<Thread, JoinableTaskContext> s_jtcPerThread = new ConcurrentDictionary<Thread, JoinableTaskContext>();
+        [ThreadStatic]
+        private static JoinableTaskContext s_jtcThreadStatic;
 
         [Export]
-        private JoinableTaskContext _joinableTaskContext = s_jtcPerThread.GetOrAdd(ForegroundThreadAffinitizedObject.CurrentForegroundThreadData.Thread,
-            (thread) => new JoinableTaskContext(mainThread: thread));
+        private JoinableTaskContext JoinableTaskContext
+        {
+            get
+            {
+                // Make sure each import gets JTC set up with the calling thread as the "main" thread
+                return s_jtcThreadStatic ?? (s_jtcThreadStatic = new JoinableTaskContext());
+            }
+        }
     }
 }

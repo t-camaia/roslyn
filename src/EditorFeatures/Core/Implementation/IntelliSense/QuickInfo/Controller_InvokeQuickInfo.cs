@@ -28,13 +28,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
             return true;
         }
 
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // IQuickInfo* is obsolete
         public void InvokeQuickInfo(int position, bool trackMouse, IQuickInfoSession augmentSession)
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             AssertIsForeground();
             DismissSessionIfActive();
             StartSession(position, trackMouse, augmentSession);
         }
+#pragma warning restore CS0618 // IQuickInfo* is obsolete
     }
 }

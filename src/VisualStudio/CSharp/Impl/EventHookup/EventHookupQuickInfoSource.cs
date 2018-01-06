@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
+#pragma warning disable CS0618 // IQuickInfo* is obsolete
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -105,3 +106,4 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
         }
     }
 }
+#pragma warning restore CS0618 // IQuickInfo* is obsolete

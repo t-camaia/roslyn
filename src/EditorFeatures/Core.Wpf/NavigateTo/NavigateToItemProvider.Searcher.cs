@@ -122,6 +122,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigateTo
                 }
             }
 
+#pragma warning disable CS0618 // MatchKind is obsolete
             private void ReportMatchResult(Project project, INavigateToSearchResult result)
             {
                 var navigateToItem = new NavigateToItem(
@@ -147,6 +148,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigateTo
                     default: return MatchKind.None;
                 }
             }
+#pragma warning restore CS0618 // MatchKind is obsolete
 
             /// <summary>
             /// Returns the name for the language used by the old Navigate To providers.

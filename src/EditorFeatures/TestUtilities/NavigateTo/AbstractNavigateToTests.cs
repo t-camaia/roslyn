@@ -80,6 +80,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.NavigateTo
             _aggregator = new NavigateToTestAggregator(_provider);
         }
 
+#pragma warning disable CS0618 // MatchKind is obsolete
         protected void VerifyNavigateToResultItems(
             List<NavigateToItem> expecteditems, IEnumerable<NavigateToItem> items)
         {
@@ -164,6 +165,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.NavigateTo
             result = a.SecondarySort.CompareTo(b.SecondarySort);
             return result;
         }
+#pragma warning restore CS0618 // MatchKind is obsolete
     }
 }
 #pragma warning restore CS0618 // Type or member is obsolete

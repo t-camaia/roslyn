@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Roslyn.Utilities;
 using VSCommanding = Microsoft.VisualStudio.Commanding;
 
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // IQuickInfo* is obsolete
 namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 {
     internal partial class Controller :
@@ -173,4 +173,4 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
         }
     }
 }
-#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // IQuickInfo* is obsolete

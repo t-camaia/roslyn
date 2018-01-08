@@ -126,7 +126,7 @@
   <data name="Split_string" xml:space="preserve">
     <value>Split string</value>
   </data>
-  <data name="Split_String_Literal_Command_Handler_Name" xml:space="preserve">
+  <data name="Split_String_Literal_Command_Handler" xml:space="preserve">
     <value>Split String Literal Command Handler</value>
   </data>
 </root>

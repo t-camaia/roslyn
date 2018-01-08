@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     {
         private readonly IAsyncCompletionService _completionService;
 
-        public string DisplayName => EditorFeaturesResources.Completion_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Completion_Command_Handler;
 
         protected AbstractCompletionCommandHandler(IAsyncCompletionService completionService)
         {

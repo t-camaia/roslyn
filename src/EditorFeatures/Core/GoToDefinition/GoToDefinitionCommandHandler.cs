@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
     internal class GoToDefinitionCommandHandler :
         VSCommanding.ICommandHandler<GoToDefinitionCommandArgs>
     {
-        public string DisplayName => EditorFeaturesResources.Go_To_Definition_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Go_To_Definition_Command_Handler;
 
         private (Document, IGoToDefinitionService) GetDocumentAndService(ITextSnapshot snapshot)
         {

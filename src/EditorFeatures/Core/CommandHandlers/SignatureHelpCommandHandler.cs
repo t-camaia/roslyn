@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
         private readonly IEnumerable<Lazy<IAsynchronousOperationListener, FeatureMetadata>> _asyncListeners;
         private readonly IList<Lazy<ISignatureHelpProvider, OrderableLanguageMetadata>> _signatureHelpProviders;
 
-        public string DisplayName => EditorFeaturesResources.Signature_Help_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Signature_Help_Command_Handler;
 
         [ImportingConstructor]
         public SignatureHelpCommandHandler(

@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
         protected readonly IVsEditorAdaptersFactoryService EditorAdaptersFactoryService;
         protected readonly SVsServiceProvider ServiceProvider;
 
-        public string DisplayName => ServicesVSResources.Snippet_Command_Handler_Name;
+        public string DisplayName => ServicesVSResources.Snippet_Command_Handler;
 
         public AbstractSnippetCommandHandler(IVsEditorAdaptersFactoryService editorAdaptersFactoryService, SVsServiceProvider serviceProvider)
         {

@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
         private readonly ICallHierarchyPresenter _presenter;
         private readonly CallHierarchyProvider _provider;
 
-        public string DisplayName => EditorFeaturesResources.View_Call_Hierarchy_Command_Handler_Display_Name;
+        public string DisplayName => EditorFeaturesResources.View_Call_Hierarchy_Command_Handler;
 
         [ImportingConstructor]
         public CallHierarchyCommandHandler([ImportMany] IEnumerable<ICallHierarchyPresenter> presenters, CallHierarchyProvider provider)

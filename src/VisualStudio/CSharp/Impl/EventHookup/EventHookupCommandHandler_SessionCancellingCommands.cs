@@ -11,7 +11,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
     internal partial class EventHookupCommandHandler :
         IChainedCommandHandler<EscapeKeyCommandArgs>
     {
-        public string DisplayName => CSharpVSResources.Event_Hookup_Command_Handler_Name;
+        public string DisplayName => CSharpVSResources.Event_Hookup_Command_Handler;
 
         public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {

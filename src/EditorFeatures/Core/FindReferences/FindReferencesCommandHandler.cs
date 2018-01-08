@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindReferences
 
         private readonly IAsynchronousOperationListener _asyncListener;
 
-        public string DisplayName => EditorFeaturesResources.Find_References_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Find_References_Command_Handler;
 
         [ImportingConstructor]
         internal FindReferencesCommandHandler(

@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
             _streamingPresenters = streamingPresenters;
         }
 
-        public string DisplayName => EditorFeaturesResources.Go_To_Implementation_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Go_To_Implementation_Command_Handler;
 
         private (Document, IGoToImplementationService, IFindUsagesService) GetDocumentAndServices(ITextSnapshot snapshot)
         {

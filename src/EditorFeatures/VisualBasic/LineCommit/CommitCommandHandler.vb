@@ -41,7 +41,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
 
         Public ReadOnly Property DisplayName As String Implements INamed.DisplayName
             Get
-                Return VBEditorResources.Commit_Command_Handler_Name
+                Return VBEditorResources.Commit_Command_Handler
             End Get
         End Property
 

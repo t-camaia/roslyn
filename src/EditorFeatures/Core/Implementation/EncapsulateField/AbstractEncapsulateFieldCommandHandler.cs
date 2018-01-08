@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
         private readonly ITextBufferUndoManagerProvider _undoManager;
         private readonly AggregateAsynchronousOperationListener _listener;
 
-        public string DisplayName => EditorFeaturesResources.Encapsulate_Field_Command_Handler_Name;
+        public string DisplayName => EditorFeaturesResources.Encapsulate_Field_Command_Handler;
 
         public AbstractEncapsulateFieldCommandHandler(
             ITextBufferUndoManagerProvider undoManager,

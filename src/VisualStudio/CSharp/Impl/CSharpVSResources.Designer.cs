@@ -198,9 +198,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp {
         /// <summary>
         ///   Looks up a localized string similar to Generate Event Subscription Command Handler.
         /// </summary>
-        internal static string Event_Hookup_Command_Handler_Name {
+        internal static string Event_Hookup_Command_Handler {
             get {
-                return ResourceManager.GetString("Event_Hookup_Command_Handler_Name", resourceCulture);
+                return ResourceManager.GetString("Event_Hookup_Command_Handler", resourceCulture);
             }
         }
         

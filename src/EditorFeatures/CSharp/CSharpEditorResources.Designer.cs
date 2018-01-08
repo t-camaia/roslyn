@@ -90,9 +90,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp {
         /// <summary>
         ///   Looks up a localized string similar to Split String Literal Command Handler.
         /// </summary>
-        internal static string Split_String_Literal_Command_Handler_Name {
+        internal static string Split_String_Literal_Command_Handler {
             get {
-                return ResourceManager.GetString("Split_String_Literal_Command_Handler_Name", resourceCulture);
+                return ResourceManager.GetString("Split_String_Literal_Command_Handler", resourceCulture);
             }
         }
     }

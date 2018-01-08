@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.VisualStudio.Text;
@@ -10,6 +9,9 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.BlockCommentEditing
 {
+    /// <summary>
+    /// Command system independent abstract Block Comment Editing Command Handler.
+    /// </summary>
     internal abstract class BaseAbstractBlockCommentEditingCommandHandler
     {
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;

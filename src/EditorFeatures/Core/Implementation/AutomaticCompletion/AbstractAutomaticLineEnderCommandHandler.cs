@@ -15,10 +15,8 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 {
-    /// <summary>
-    /// abstract line ender command handler
-    /// </summary>
-    internal abstract class AbstractAutomaticLineEnderCommandHandler : IChainedCommandHandler<AutomaticLineEnderCommandArgs>
+    internal abstract class AbstractAutomaticLineEnderCommandHandler : 
+        IChainedCommandHandler<AutomaticLineEnderCommandArgs>
     {
         private readonly ITextUndoHistoryRegistry _undoRegistry;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;

@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
             var (document, service) = GetDocumentAndService(args.SubjectBuffer.CurrentSnapshot);
             return service != null
                 ? VSCommanding.CommandState.Available
-                : VSCommanding.CommandState.Unspecified;
+                : VSCommanding.CommandState.Unavailable;
         }
 
         public bool ExecuteCommand(GoToDefinitionCommandArgs args, CommandExecutionContext context)
@@ -76,6 +76,10 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
 
             if (errorMessage != null)
             {
+                // We are about to show a modal UI dialog so we should take over the command execution
+                // wait context. That means the command system won't attempt to show its own wait dialog 
+                // and also will take it into consideration when measuring command handling duration.
+                context.WaitContext.TakeOwnership();
                 var workspace = document.Project.Solution.Workspace;
                 var notificationService = workspace.Services.GetService<INotificationService>();
                 notificationService.SendNotification(errorMessage, title: EditorFeaturesResources.Go_to_Definition, severity: NotificationSeverity.Information);

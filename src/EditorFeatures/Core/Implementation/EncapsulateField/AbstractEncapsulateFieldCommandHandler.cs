@@ -99,6 +99,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EncapsulateField
                 var previewService = workspace.Services.GetService<IPreviewDialogService>();
                 if (previewService != null)
                 {
+                    // We are about to show a modal UI dialog so we should take over the command execution
+                    // wait context. That means the command system won't attempt to show its own wait dialog 
+                    // and also will take it into consideration when measuring command handling duration.
+                    waitScope.Context.TakeOwnership();
                     finalSolution = previewService.PreviewChanges(
                         string.Format(EditorFeaturesResources.Preview_Changes_0, EditorFeaturesResources.Encapsulate_Field),
                          "vs.csharp.refactoring.preview",

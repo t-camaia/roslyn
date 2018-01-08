@@ -833,9 +833,6 @@ Do you want to proceed?</value>
   <data name="Outlining_Command_Handler_Name" xml:space="preserve">
     <value>Outlining Command Handler</value>
   </data>
-  <data name="Quick_Info_Command_Handler_Name" xml:space="preserve">
-    <value>Quick Info Command Handler</value>
-  </data>
   <data name="Rename_Command_Handler_Name" xml:space="preserve">
     <value>Rename Command Handler</value>
   </data>

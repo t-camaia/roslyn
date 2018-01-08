@@ -11,17 +11,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
     internal partial class FormatCommandHandler
     {
-        public VSCommanding.CommandState GetCommandState(FormatDocumentCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(FormatDocumentCommandArgs args)
         {
-            return GetCommandState(args.SubjectBuffer, nextHandler);
+            return GetCommandState(args.SubjectBuffer);
         }
 
-        public void ExecuteCommand(FormatDocumentCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(FormatDocumentCommandArgs args, CommandExecutionContext context)
         {
-            if (!TryExecuteCommand(args, context))
-            {
-                nextHandler();
-            }
+            return TryExecuteCommand(args, context);
         }
 
         private bool TryExecuteCommand(FormatDocumentCommandArgs args, CommandExecutionContext context)
@@ -43,15 +40,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 return false;
             }
 
-            var result = false;
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Formatting_document))
             {
                 Format(args.TextView, document, null, context.WaitContext.UserCancellationToken);
-                result = true;
             }
 
-            // We don't call nextHandler, since we have handled this command.
-            return result;
+            return true;
         }
     }
 }

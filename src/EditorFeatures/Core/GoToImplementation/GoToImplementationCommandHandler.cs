@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
+using Microsoft.CodeAnalysis.Editor.Commanding.Commands;
 using Microsoft.CodeAnalysis.Editor.FindUsages;
 using Microsoft.CodeAnalysis.Editor.Host;
-using Microsoft.CodeAnalysis.Editor.PlatformCommands;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
 using Microsoft.CodeAnalysis.Notification;
@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
             var (document, implService, findUsagesService) = GetDocumentAndServices(args.SubjectBuffer.CurrentSnapshot);
             return implService != null || findUsagesService != null
                 ? VSCommanding.CommandState.Available
-                : VSCommanding.CommandState.Unspecified;
+                : VSCommanding.CommandState.Unavailable;
         }
 
         public bool ExecuteCommand(GoToImplementationCommandArgs args, CommandExecutionContext context)
@@ -105,6 +105,10 @@ namespace Microsoft.CodeAnalysis.Editor.GoToImplementation
 
                 if (messageToShow != null)
                 {
+                    // We are about to show a modal UI dialog so we should take over the command execution
+                    // wait context. That means the command system won't attempt to show its own wait dialog 
+                    // and also will take it into consideration when measuring command handling duration.
+                    context.WaitContext.TakeOwnership();
                     var notificationService = document.Project.Solution.Workspace.Services.GetService<INotificationService>();
                     notificationService.SendNotification(messageToShow,
                         title: EditorFeaturesResources.Go_To_Implementation,

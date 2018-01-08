@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.UnitTests.Utilities
 {
-    internal class TestCommandExecutionContext
+    internal static class TestCommandExecutionContext
     {
         public static CommandExecutionContext Create()
         {

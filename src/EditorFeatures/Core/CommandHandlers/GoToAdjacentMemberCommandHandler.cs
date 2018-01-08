@@ -24,7 +24,9 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
     [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.GoToAdjacentMember)]
-    internal class GoToAdjacentMemberCommandHandler : VSCommanding.ICommandHandler<GoToNextMemberCommandArgs>, VSCommanding.ICommandHandler<GoToPreviousMemberCommandArgs>
+    internal class GoToAdjacentMemberCommandHandler : 
+        VSCommanding.ICommandHandler<GoToNextMemberCommandArgs>, 
+        VSCommanding.ICommandHandler<GoToPreviousMemberCommandArgs>
     {
         private readonly IOutliningManagerService _outliningManagerService;
 
@@ -43,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public bool ExecuteCommand(GoToNextMemberCommandArgs args, CommandExecutionContext context)
         {
-            return ExecuteCommandImpl(args, next: true, context);
+            return ExecuteCommandImpl(args, gotoNextMember: true, context);
         }
 
         public VSCommanding.CommandState GetCommandState(GoToPreviousMemberCommandArgs args)
@@ -53,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public bool ExecuteCommand(GoToPreviousMemberCommandArgs args, CommandExecutionContext context)
         {
-            return ExecuteCommandImpl(args, next: false, context);
+            return ExecuteCommandImpl(args, gotoNextMember: false, context);
         }
 
         private VSCommanding.CommandState GetCommandStateImpl(EditorCommandArgs args)
@@ -79,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             return documentSupportsFeatureService?.SupportsNavigationToAnyPosition(document) == true;
         }
 
-        private bool ExecuteCommandImpl(EditorCommandArgs args, bool next, CommandExecutionContext context)
+        private bool ExecuteCommandImpl(EditorCommandArgs args, bool gotoNextMember, CommandExecutionContext context)
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
             var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
@@ -92,7 +94,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
             using (context.WaitContext.AddScope(allowCancellation: true, description: EditorFeaturesResources.Navigating))
             {
-                var task = GetTargetPositionAsync(document, caretPoint.Value.Position, next, context.WaitContext.UserCancellationToken);
+                var task = GetTargetPositionAsync(document, caretPoint.Value.Position, gotoNextMember, context.WaitContext.UserCancellationToken);
                 targetPosition = task.WaitAndGetResult(context.WaitContext.UserCancellationToken);
             }
 

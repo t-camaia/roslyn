@@ -5,15 +5,15 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
 
-namespace Microsoft.CodeAnalysis.Editor.PlatformCommands
+namespace Microsoft.CodeAnalysis.Editor.Commanding.Commands
 {
     /// <summary>
-    /// Arguments for Go To Implementation.
+    /// Arguments for the Sort and Remove Unused Usings command being invoked.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal sealed class GoToImplementationCommandArgs : EditorCommandArgs
+    internal class SortAndRemoveUnnecessaryImportsCommandArgs : EditorCommandArgs
     {
-        public GoToImplementationCommandArgs(ITextView textView, ITextBuffer subjectBuffer)
+        public SortAndRemoveUnnecessaryImportsCommandArgs(ITextView textView, ITextBuffer subjectBuffer)
             : base(textView, subjectBuffer)
         {
         }

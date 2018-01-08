@@ -108,14 +108,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
 
                 var trackingSpans = new List<ITrackingSpan>();
                 var textChanges = new List<TextChange>();
-                var userCancellationToken = context.WaitContext.UserCancellationToken;
                 CollectEdits(
                     document, service, textView.Selection.GetSnapshotSpansOnBuffer(subjectBuffer),
-                    textChanges, trackingSpans, operation, userCancellationToken);
+                    textChanges, trackingSpans, operation, CancellationToken.None);
 
                 using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
                 {
-                    document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, userCancellationToken);
+                    document.Project.Solution.Workspace.ApplyTextChanges(document.Id, textChanges, CancellationToken.None);
                     transaction.Complete();
                 }
 
@@ -123,7 +122,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 {
                     using (var transaction = new CaretPreservingEditTransaction(title, textView, _undoHistoryRegistry, _editorOperationsFactoryService))
                     {
-                        Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, userCancellationToken);
+                        Format(service, subjectBuffer.CurrentSnapshot, trackingSpans, CancellationToken.None);
                         transaction.Complete();
                     }
                 }
@@ -147,7 +146,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 return service;
             }
 
-            // If we couldn't find one, fallback to the  service.
+            // If we couldn't find one, fallback to the legacy service.
 #pragma warning disable CS0618 // Type or member is obsolete
             var legacyService = document.GetLanguageService<ICommentUncommentService>();
 #pragma warning restore CS0618 // Type or member is obsolete

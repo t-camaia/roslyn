@@ -1485,15 +1485,6 @@ namespace Microsoft.CodeAnalysis.Editor {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quick Info Command Handler.
-        /// </summary>
-        internal static string Quick_Info_Command_Handler_Name {
-            get {
-                return ResourceManager.GetString("Quick_Info_Command_Handler_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Referenced In.
         /// </summary>
         internal static string Referenced_In {

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading;
 using Microsoft.CodeAnalysis.Editor.Shared;
 using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.ExtractInterface;
@@ -64,12 +65,16 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
                 return false;
             }
 
+            // We are about to show a modal UI dialog so we should take over the command execution
+            // wait context. That means the command system won't attempt to show its own wait dialog 
+            // and also will take it into consideration when measuring command handling duration.
+            context.WaitContext.TakeOwnership();
             var extractInterfaceService = document.GetLanguageService<AbstractExtractInterfaceService>();
             var result = extractInterfaceService.ExtractInterface(
                 document,
                 caretPoint.Value.Position,
                 (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
-                context.WaitContext.UserCancellationToken);
+                CancellationToken.None);
 
             if (result == null || !result.Succeeded)
             {

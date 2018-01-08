@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using Microsoft.CodeAnalysis.Editor.PlatformCommands;
+using Microsoft.CodeAnalysis.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Editor.Commanding;
 using Microsoft.VisualStudio.LanguageServices;
 

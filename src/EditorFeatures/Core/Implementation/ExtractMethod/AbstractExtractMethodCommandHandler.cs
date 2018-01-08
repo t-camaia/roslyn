@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Text.Operations;
+using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
 using VSCommanding = Microsoft.VisualStudio.Commanding;
 
@@ -92,15 +93,17 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Applying_Extract_Method_refactoring))
             {
-                return Execute(args.SubjectBuffer, args.TextView, context.WaitContext.UserCancellationToken);
+                return Execute(args.SubjectBuffer, args.TextView, context.WaitContext);
             }
         }
 
         private bool Execute(
             ITextBuffer textBuffer,
             ITextView view,
-            CancellationToken cancellationToken)
+            IUIThreadOperationContext waitContext)
         {
+            var cancellationToken = waitContext.UserCancellationToken;
+
             var spans = view.Selection.GetSnapshotSpansOnBuffer(textBuffer);
             if (spans.Count(s => s.Length > 0) != 1)
             {
@@ -126,6 +129,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
                     var notificationService = document.Project.Solution.Workspace.Services.GetService<INotificationService>();
                     if (notificationService != null)
                     {
+                        // We are about to show a modal UI dialog so we should take over the command execution
+                        // wait context. That means the command system won't attempt to show its own wait dialog 
+                        // and also will take it into consideration when measuring command handling duration.
+                        waitContext.TakeOwnership();
                         if (!notificationService.ConfirmMessageBox(
                                 EditorFeaturesResources.Extract_method_failed_with_following_reasons_colon + Environment.NewLine + Environment.NewLine +
                                 string.Join(Environment.NewLine, result.Reasons) + Environment.NewLine + Environment.NewLine +
@@ -141,7 +148,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
                     // reset result
                     result = newResult;
                 }
-                else if (TryNotifyFailureToUser(document, result))
+                else if (TryNotifyFailureToUser(document, result, waitContext))
                 {
                     // We handled the command, displayed a notification and did not produce code.
                     return true;
@@ -171,8 +178,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
         ///       Extract Method does not proceed further and is done.
         /// False: the user proceeded to a best effort scenario.
         /// </returns>
-        private bool TryNotifyFailureToUser(Document document, ExtractMethodResult result)
+        private bool TryNotifyFailureToUser(Document document, ExtractMethodResult result, IUIThreadOperationContext waitContext)
         {
+            // We are about to show a modal UI dialog so we should take over the command execution
+            // wait context. That means the command system won't attempt to show its own wait dialog 
+            // and also will take it into consideration when measuring command handling duration.
+            waitContext.TakeOwnership();
             var notificationService = document.Project.Solution.Workspace.Services.GetService<INotificationService>();
 
             // see whether we will allow best effort extraction and if it is possible.

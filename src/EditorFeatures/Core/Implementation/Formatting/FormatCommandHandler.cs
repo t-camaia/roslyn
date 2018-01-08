@@ -28,8 +28,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
     [Order(After = PredefinedCommandHandlerNames.Rename)]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal partial class FormatCommandHandler :
-        IChainedCommandHandler<FormatDocumentCommandArgs>,
-        IChainedCommandHandler<FormatSelectionCommandArgs>,
+        VSCommanding.ICommandHandler<FormatDocumentCommandArgs>,
+        VSCommanding.ICommandHandler<FormatSelectionCommandArgs>,
         IChainedCommandHandler<PasteCommandArgs>,
         IChainedCommandHandler<TypeCharCommandArgs>,
         IChainedCommandHandler<ReturnKeyCommandArgs>
@@ -89,6 +89,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             }
 
             return VSCommanding.CommandState.Available;
+        }
+
+        private static VSCommanding.CommandState GetCommandState(ITextBuffer buffer)
+        {
+            return buffer.CanApplyChangeDocumentToWorkspace() ? VSCommanding.CommandState.Available :
+                VSCommanding.CommandState.Unspecified;
         }
 
         public void ExecuteReturnOrTypeCommand(EditorCommandArgs args, Action nextHandler, CancellationToken cancellationToken)

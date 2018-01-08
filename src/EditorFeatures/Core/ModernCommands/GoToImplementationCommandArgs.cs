@@ -5,15 +5,15 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
 
-namespace Microsoft.CodeAnalysis.Editor.PlatformCommands
+namespace Microsoft.CodeAnalysis.Editor.Commanding.Commands
 {
     /// <summary>
-    /// Arguments for the Organize Document command being invoked.
+    /// Arguments for Go To Implementation.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class OrganizeDocumentCommandArgs : EditorCommandArgs
+    internal sealed class GoToImplementationCommandArgs : EditorCommandArgs
     {
-        public OrganizeDocumentCommandArgs(ITextView textView, ITextBuffer subjectBuffer)
+        public GoToImplementationCommandArgs(ITextView textView, ITextBuffer subjectBuffer)
             : base(textView, subjectBuffer)
         {
         }

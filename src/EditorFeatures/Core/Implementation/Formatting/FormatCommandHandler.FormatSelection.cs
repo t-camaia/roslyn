@@ -14,17 +14,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
     internal partial class FormatCommandHandler
     {
-        public VSCommanding.CommandState GetCommandState(FormatSelectionCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(FormatSelectionCommandArgs args)
         {
-            return GetCommandState(args.SubjectBuffer, nextHandler);
+            return GetCommandState(args.SubjectBuffer);
         }
 
-        public void ExecuteCommand(FormatSelectionCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(FormatSelectionCommandArgs args, CommandExecutionContext context)
         {
-            if (!TryExecuteCommand(args, context))
-            {
-                nextHandler();
-            }
+            return TryExecuteCommand(args, context);
         }
 
         private bool TryExecuteCommand(FormatSelectionCommandArgs args, CommandExecutionContext context)
@@ -68,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 args.TextView.SetSelection(currentSelection);
                 args.TextView.TryMoveCaretToAndEnsureVisible(currentSelection.End, ensureSpanVisibleOptions: EnsureSpanVisibleOptions.MinimumScroll);
 
-                // We don't call nextHandler, since we have handled this command.
+                // We have handled this command
                 return true;
             }
         }

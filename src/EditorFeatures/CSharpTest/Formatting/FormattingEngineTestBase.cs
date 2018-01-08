@@ -194,7 +194,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Formatting
                 var commandHandler = new FormatCommandHandler(workspace.GetService<ITextUndoHistoryRegistry>(), editorOperationsFactoryService.Object);
 
                 var commandArgs = new FormatDocumentCommandArgs(view, view.TextBuffer);
-                commandHandler.ExecuteCommand(commandArgs, () => { }, TestCommandExecutionContext.Create());
+                commandHandler.ExecuteCommand(commandArgs, TestCommandExecutionContext.Create());
                 MarkupTestFile.GetPosition(expectedWithMarker, out var expected, out int expectedPosition);
 
                 Assert.Equal(expected, view.TextSnapshot.GetText());

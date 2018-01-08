@@ -1194,11 +1194,6 @@ Deseja continuar?</target>
         <target state="new">Outlining Command Handler</target>
         <note />
       </trans-unit>
-      <trans-unit id="Quick_Info_Command_Handler_Name">
-        <source>Quick Info Command Handler</source>
-        <target state="new">Quick Info Command Handler</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Rename_Command_Handler_Name">
         <source>Rename Command Handler</source>
         <target state="new">Rename Command Handler</target>

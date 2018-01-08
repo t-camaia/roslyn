@@ -6,16 +6,20 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
 {
+    /// <summary>
+    /// An adapter between editor's <see cref="IUIThreadOperationScope"/> (which supports reporing progress) 
+    /// and <see cref="IProgressTracker"/>.
+    /// </summary>
     internal class ProgressTrackerAdapter : IProgressTracker
     {
-        private IUIThreadOperationScope _platformWaitScope;
+        private readonly IUIThreadOperationScope _uiThreadOperationScope;
         private int _completedItems;
         private int _totalItems;
 
-        public ProgressTrackerAdapter(IUIThreadOperationScope platformWaitScope)
+        public ProgressTrackerAdapter(IUIThreadOperationScope uiThreadOperationScope)
         {
-            Requires.NotNull(platformWaitScope, nameof(platformWaitScope));
-            _platformWaitScope = platformWaitScope;
+            Requires.NotNull(uiThreadOperationScope, nameof(uiThreadOperationScope));
+            _uiThreadOperationScope = uiThreadOperationScope;
         }
 
         public int CompletedItems => _completedItems;
@@ -43,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
 
         private void ReportProgress()
         {
-            _platformWaitScope.Progress.Report(new ProgressInfo(_completedItems, _totalItems));
+            _uiThreadOperationScope.Progress.Report(new ProgressInfo(_completedItems, _totalItems));
         }
     }
 }

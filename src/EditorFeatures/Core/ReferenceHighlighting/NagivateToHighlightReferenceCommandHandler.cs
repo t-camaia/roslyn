@@ -62,15 +62,15 @@ namespace Microsoft.CodeAnalysis.Editor.ReferenceHighlighting
 
         public bool ExecuteCommand(NavigateToNextHighlightedReferenceCommandArgs args, CommandExecutionContext context)
         {
-            return ExecuteCommandImpl(args, next: true, context);
+            return ExecuteCommandImpl(args, navigateToNext: true, context);
         }
 
         public bool ExecuteCommand(NavigateToPreviousHighlightedReferenceCommandArgs args, CommandExecutionContext context)
         {
-            return ExecuteCommandImpl(args, next: false, context);
+            return ExecuteCommandImpl(args, navigateToNext: false, context);
         }
 
-        private bool ExecuteCommandImpl(EditorCommandArgs args, bool next, CommandExecutionContext context)
+        private bool ExecuteCommandImpl(EditorCommandArgs args, bool navigateToNext, CommandExecutionContext context)
         {
             using (var tagAggregator = _tagAggregatorFactory.CreateTagAggregator<NavigableHighlightTag>(args.TextView))
             {
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Editor.ReferenceHighlighting
 
                 Contract.ThrowIfFalse(spans.Any(), "We should have at least found the tag under the cursor!");
 
-                var destTag = GetDestinationTag(tagUnderCursor.Value, spans, next);
+                var destTag = GetDestinationTag(tagUnderCursor.Value, spans, navigateToNext);
 
                 if (args.TextView.TryMoveCaretToAndEnsureVisible(destTag.Start, _outliningManagerService))
                 {

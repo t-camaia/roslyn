@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
 {
     [Export(typeof(VSCommanding.ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
-    [Name("XmlTagCompletionCommandHandler")]
+    [Name(nameof(XmlTagCompletionCommandHandler))]
     [Order(Before = PredefinedCommandHandlerNames.Completion)]
     internal class XmlTagCompletionCommandHandler : AbstractXmlTagCompletionCommandHandler
     {

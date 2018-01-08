@@ -76,7 +76,8 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Snippets
                 (caretPosition = 1 AndAlso text(0) = "?"c) Then
 
                 DeleteQuestionMark(textView, subjectBuffer, caretPosition)
-                Return TryInvokeInsertionUI(textView, subjectBuffer)
+                TryInvokeInsertionUI(textView, subjectBuffer)
+                Return True
             End If
 
             Return False

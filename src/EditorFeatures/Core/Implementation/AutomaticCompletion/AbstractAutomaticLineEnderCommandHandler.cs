@@ -82,7 +82,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 
             using (context.WaitContext.AddScope(allowCancellation: false, EditorFeaturesResources.Automatically_completing))
             {
-                var userCancellationToken = context.WaitContext.UserCancellationToken;
+                // This is a non cancellable command
+                var userCancellationToken = CancellationToken.None;
 
                 // caret is not on the subject buffer. nothing we can do
                 var position = args.TextView.GetCaretPoint(args.SubjectBuffer);

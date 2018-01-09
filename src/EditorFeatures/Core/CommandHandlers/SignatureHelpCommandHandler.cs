@@ -128,13 +128,13 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             }
         }
 
-        VSCommanding.CommandState IChainedCommandHandler<TypeCharCommandArgs>.GetCommandState(TypeCharCommandArgs args, System.Func<VSCommanding.CommandState> nextHandler)
+        VSCommanding.CommandState IChainedCommandHandler<TypeCharCommandArgs>.GetCommandState(TypeCharCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
         {
             AssertIsForeground();
             return GetCommandStateWorker(args, nextHandler);
         }
 
-        void IChainedCommandHandler<TypeCharCommandArgs>.ExecuteCommand(TypeCharCommandArgs args, System.Action nextHandler, CommandExecutionContext context)
+        void IChainedCommandHandler<TypeCharCommandArgs>.ExecuteCommand(TypeCharCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
             AssertIsForeground();
             ExecuteCommandWorker(args, nextHandler, context);

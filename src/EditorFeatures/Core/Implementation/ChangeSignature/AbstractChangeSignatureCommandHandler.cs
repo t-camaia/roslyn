@@ -86,7 +86,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
                 result = reorderParametersService.ChangeSignature(
                     document,
                     caretPoint.Value.Position,
-                    (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
+                    (errorMessage, severity) =>
+                    {
+                        // We are about to show a modal UI dialog so we should take over the command execution
+                        // wait context. That means the command system won't attempt to show its own wait dialog 
+                        // and also will take it into consideration when measuring command handling duration.
+                        context.WaitContext.TakeOwnership();
+                        workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity);
+                    },
                     context.WaitContext.UserCancellationToken);
             }
 

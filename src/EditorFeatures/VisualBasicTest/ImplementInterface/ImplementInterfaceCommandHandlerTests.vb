@@ -12,6 +12,7 @@ Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
+Imports VSCommanding = Microsoft.VisualStudio.Commanding
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.ImplementInterface
     Public Class ImplementInterfaceCommandHandlerTests
@@ -29,7 +30,7 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.ImplementInterface
             End Using
         End Sub
 
-        Private Shared Function MoveCaretAndCreateCommandHandler(workspace As TestWorkspace) As IChainedCommandHandler(Of ReturnKeyCommandArgs)
+        Private Shared Function MoveCaretAndCreateCommandHandler(workspace As TestWorkspace) As VSCommanding.ICommandHandler(Of ReturnKeyCommandArgs)
             Dim document = workspace.Documents.Single()
             Dim view = document.GetTextView()
             Dim cursorPosition = document.CursorPosition.Value

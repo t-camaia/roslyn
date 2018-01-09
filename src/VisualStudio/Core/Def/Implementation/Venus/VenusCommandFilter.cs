@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
             _subjectBuffer = subjectBuffer;
             CurrentHandlers = commandHandlerServiceFactory.GetService(subjectBuffer);
+            // Setup all command handlers migrated to the modern editor commandig to be execited next
             var componentModel = Shell.ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel)) as IComponentModel;
             var vsCommandHandlerServiceAdapterFactory = componentModel?.GetService<IVsCommandHandlerServiceAdapterFactory>();
             if (vsCommandHandlerServiceAdapterFactory != null)

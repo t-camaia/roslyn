@@ -49,6 +49,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             return nextHandler();
         }
 
+        private VSCommanding.CommandState GetCommandState()
+        {
+            return _renameService.ActiveSession != null ? VSCommanding.CommandState.Available : VSCommanding.CommandState.Unspecified;
+        }
+
         private void HandlePossibleTypingCommand(EditorCommandArgs args, Action nextHandler, Action<SnapshotSpan> actionIfInsideActiveSpan)
         {
             if (_renameService.ActiveSession == null)
@@ -82,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             }
         }
 
-        private void CommitIfActiveAndCallNextHandler(EditorCommandArgs args, Action nextHandler)
+        private void CommitIfActive(EditorCommandArgs args)
         {
             if (_renameService.ActiveSession != null)
             {
@@ -94,7 +99,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 args.TextView.Selection.Select(translatedSelection.Start, translatedSelection.End);
                 args.TextView.Caret.MoveTo(translatedSelection.End);
             }
+        }
 
+        private void CommitIfActiveAndCallNextHandler(EditorCommandArgs args, Action nextHandler)
+        {
+            CommitIfActive(args);
             nextHandler();
         }
     }

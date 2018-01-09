@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
                 enabled = outliningManager.Enabled;
             }
 
-            return enabled ? VSCommanding.CommandState.Unspecified : VSCommanding.CommandState.Available;
+            return new VSCommanding.CommandState(isAvailable: !enabled);
         }
     }
 }

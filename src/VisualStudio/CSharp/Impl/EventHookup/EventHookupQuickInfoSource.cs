@@ -15,9 +15,7 @@ using Microsoft.VisualStudio.Text.Classification;
 #pragma warning disable CS0618 // IQuickInfo* is obsolete, tracked by https://github.com/dotnet/roslyn/issues/24094
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
-#pragma warning disable CS0618 // Type or member is obsolete
     internal sealed class EventHookupQuickInfoSource : IQuickInfoSource
-#pragma warning restore CS0618 // Type or member is obsolete
     {
         private readonly ClassificationTypeMap _classificationTypeMap;
         private readonly IClassificationFormatMapService _classificationFormatMapService;
@@ -30,9 +28,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             _classificationFormatMapService = classificationFormatMapService;
         }
 
-#pragma warning disable CS0618 // Type or member is obsolete
         void IQuickInfoSource.AugmentQuickInfoSession(IQuickInfoSession existingQuickInfoSession, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
-#pragma warning restore CS0618 // Type or member is obsolete
         {
             // Augmenting quick info isn't cancellable.
             var cancellationToken = CancellationToken.None;

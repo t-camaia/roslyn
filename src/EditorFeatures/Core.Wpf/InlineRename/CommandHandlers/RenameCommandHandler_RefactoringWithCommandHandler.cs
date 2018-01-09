@@ -8,49 +8,53 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        IChainedCommandHandler<ReorderParametersCommandArgs>,
-        IChainedCommandHandler<RemoveParametersCommandArgs>,
-        IChainedCommandHandler<ExtractInterfaceCommandArgs>,
-        IChainedCommandHandler<EncapsulateFieldCommandArgs>
+        VSCommanding.ICommandHandler<ReorderParametersCommandArgs>,
+        VSCommanding.ICommandHandler<RemoveParametersCommandArgs>,
+        VSCommanding.ICommandHandler<ExtractInterfaceCommandArgs>,
+        VSCommanding.ICommandHandler<EncapsulateFieldCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(ReorderParametersCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(ReorderParametersCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(ReorderParametersCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(ReorderParametersCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
 
-        public VSCommanding.CommandState GetCommandState(RemoveParametersCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(RemoveParametersCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(RemoveParametersCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(RemoveParametersCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
 
-        public VSCommanding.CommandState GetCommandState(ExtractInterfaceCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(ExtractInterfaceCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(ExtractInterfaceCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(ExtractInterfaceCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
 
-        public VSCommanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EncapsulateFieldCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(EncapsulateFieldCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(EncapsulateFieldCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
     }
 }

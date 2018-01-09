@@ -8,14 +8,14 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
-    internal partial class RenameCommandHandler : IChainedCommandHandler<SaveCommandArgs>
+    internal partial class RenameCommandHandler : VSCommanding.ICommandHandler<SaveCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(SaveCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(SaveCommandArgs args)
         {
-            return GetCommandState(nextHandler);
+            return GetCommandState();
         }
 
-        public void ExecuteCommand(SaveCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(SaveCommandArgs args, CommandExecutionContext context)
         {
             if (_renameService.ActiveSession != null)
             {
@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 ((IWpfTextView)args.TextView).VisualElement.Focus();
             }
 
-            nextHandler();
+            return false;
         }
     }
 }

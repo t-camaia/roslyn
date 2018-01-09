@@ -81,9 +81,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             }
         }
 
+        private static bool CanExecuteCommand(ITextBuffer buffer)
+        {
+            return buffer.CanApplyChangeDocumentToWorkspace();
+        }
+
         private static VSCommanding.CommandState GetCommandState(ITextBuffer buffer, Func<VSCommanding.CommandState> nextHandler)
         {
-            if (!buffer.CanApplyChangeDocumentToWorkspace())
+            if (!CanExecuteCommand(buffer))
             {
                 return nextHandler();
             }
@@ -93,8 +98,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 
         private static VSCommanding.CommandState GetCommandState(ITextBuffer buffer)
         {
-            return buffer.CanApplyChangeDocumentToWorkspace() ? VSCommanding.CommandState.Available :
-                VSCommanding.CommandState.Unspecified;
+            return CanExecuteCommand(buffer) ? VSCommanding.CommandState.Available : VSCommanding.CommandState.Unspecified;
         }
 
         public void ExecuteReturnOrTypeCommand(EditorCommandArgs args, Action nextHandler, CancellationToken cancellationToken)

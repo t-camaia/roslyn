@@ -7,6 +7,7 @@ Imports Microsoft.CodeAnalysis.Editor.Implementation.Interactive
 Imports Microsoft.CodeAnalysis.Editor.Shared.Extensions
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 Imports Microsoft.CodeAnalysis.Text.Shared.Extensions
+Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
@@ -298,9 +299,8 @@ Goo f;
                 view.Selection.Clear()
                 Assert.True(view.Selection.IsEmpty())
 
-                commandHandler.ExecuteCommand(New SelectAllCommandArgs(view, view.TextBuffer),
-                                              Sub() AssertEx.Fail("Ctrl+A should not have been passed to the editor."),
-                                              Utilities.TestCommandExecutionContext.Create())
+                Assert.True(commandHandler.ExecuteCommand(New SelectAllCommandArgs(view, view.TextBuffer),
+                                              Utilities.TestCommandExecutionContext.Create()))
                 Assert.Equal(identifierSpan, view.Selection.SelectedSpans.Single().Span)
                 Assert.Equal(identifierSpan.End, view.Caret.Position.BufferPosition.Position)
 

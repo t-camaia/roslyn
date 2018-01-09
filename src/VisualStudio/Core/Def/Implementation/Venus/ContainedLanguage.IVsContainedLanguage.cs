@@ -37,8 +37,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
             }
 
             var commandHandlerServiceFactory = ComponentModel.GetService<ICommandHandlerServiceFactory>();
-            textViewFilter = new VenusCommandFilter<TPackage, TLanguageService>(_languageService, wpfTextView, commandHandlerServiceFactory,
-                SubjectBuffer, nextCmdTarget, _editorAdaptersFactoryService);
+            textViewFilter = new VenusCommandFilter<TPackage, TLanguageService>(_languageService, wpfTextView, commandHandlerServiceFactory, SubjectBuffer, nextCmdTarget, _editorAdaptersFactoryService);
 
             return VSConstants.S_OK;
         }

@@ -9,21 +9,21 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
     internal partial class EventHookupCommandHandler :
-        IChainedCommandHandler<EscapeKeyCommandArgs>
+        VSCommanding.ICommandHandler<EscapeKeyCommandArgs>
     {
         public string DisplayName => CSharpVSResources.Event_Hookup_Command_Handler;
 
-        public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(EscapeKeyCommandArgs args, CommandExecutionContext context)
         {
             AssertIsForeground();
             EventHookupSessionManager.CancelAndDismissExistingSessions();
-            nextHandler();
+            return false;
         }
 
-        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
         {
             AssertIsForeground();
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
     }
 }

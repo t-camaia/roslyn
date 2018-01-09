@@ -10,6 +10,7 @@ Imports Microsoft.VisualStudio.Commanding
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
+Imports VSCommanding = Microsoft.VisualStudio.Commanding
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.UnitTests.ImplementAbstractClass
     Public Class ImplementAbstractClassCommandHandlerTests
@@ -202,7 +203,7 @@ End Class</text>
 
             view.Caret.MoveTo(New SnapshotPoint(snapshot, cursorPosition))
 
-            Dim commandHandler As IChainedCommandHandler(Of ReturnKeyCommandArgs) =
+            Dim commandHandler As VSCommanding.ICommandHandler(Of ReturnKeyCommandArgs) =
                 New ImplementAbstractClassCommandHandler(workspace.GetService(Of IEditorOperationsFactoryService))
             commandHandler.ExecuteCommand(New ReturnKeyCommandArgs(view, view.TextBuffer), nextHandler, TestCommandExecutionContext.Create())
 

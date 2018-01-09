@@ -11,21 +11,16 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        IChainedCommandHandler<SelectAllCommandArgs>
+        VSCommanding.ICommandHandler<SelectAllCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(SelectAllCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(SelectAllCommandArgs args)
         {
-            return GetCommandState(nextHandler);
+            return GetCommandState();
         }
 
-        public void ExecuteCommand(SelectAllCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(SelectAllCommandArgs args, CommandExecutionContext context)
         {
-            if (ExecuteSelectAll(args.SubjectBuffer, args.TextView))
-            {
-                return;
-            }
-
-            nextHandler();
+            return ExecuteSelectAll(args.SubjectBuffer, args.TextView);
         }
 
         private bool ExecuteSelectAll(ITextBuffer subjectBuffer, ITextView view)

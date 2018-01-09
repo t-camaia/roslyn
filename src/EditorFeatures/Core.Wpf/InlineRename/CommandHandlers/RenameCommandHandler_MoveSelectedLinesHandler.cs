@@ -8,26 +8,28 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        IChainedCommandHandler<MoveSelectedLinesUpCommandArgs>, IChainedCommandHandler<MoveSelectedLinesDownCommandArgs>
+        VSCommanding.ICommandHandler<MoveSelectedLinesUpCommandArgs>, VSCommanding.ICommandHandler<MoveSelectedLinesDownCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(MoveSelectedLinesUpCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(MoveSelectedLinesUpCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(MoveSelectedLinesUpCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(MoveSelectedLinesUpCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
 
-        public VSCommanding.CommandState GetCommandState(MoveSelectedLinesDownCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(MoveSelectedLinesDownCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(MoveSelectedLinesDownCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(MoveSelectedLinesDownCommandArgs args, CommandExecutionContext context)
         {
-            CommitIfActiveAndCallNextHandler(args, nextHandler);
+            CommitIfActive(args);
+            return false;
         }
     }
 }

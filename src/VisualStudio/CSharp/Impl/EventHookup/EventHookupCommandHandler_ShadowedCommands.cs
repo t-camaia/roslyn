@@ -7,21 +7,23 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 {
-    internal partial class EventHookupCommandHandler : IChainedCommandHandler<InvokeCompletionListCommandArgs>
+    internal partial class EventHookupCommandHandler : VSCommanding.ICommandHandler<InvokeCompletionListCommandArgs>
     {
-        public void ExecuteCommand(InvokeCompletionListCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(InvokeCompletionListCommandArgs args, CommandExecutionContext context)
         {
             AssertIsForeground();
             if (EventHookupSessionManager.QuickInfoSession == null || EventHookupSessionManager.QuickInfoSession.IsDismissed)
             {
-                nextHandler();
+                return false;
             }
+
+            return true;
         }
 
-        public VSCommanding.CommandState GetCommandState(InvokeCompletionListCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(InvokeCompletionListCommandArgs args)
         {
             AssertIsForeground();
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
     }
 }

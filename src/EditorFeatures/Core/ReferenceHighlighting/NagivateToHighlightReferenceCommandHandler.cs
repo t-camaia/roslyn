@@ -108,13 +108,13 @@ namespace Microsoft.CodeAnalysis.Editor.ReferenceHighlighting
         private static SnapshotSpan GetDestinationTag(
             SnapshotSpan tagUnderCursor,
             List<SnapshotSpan> orderedTagSpans,
-            bool next)
+            bool navigateToNext)
         {
             var destIndex = orderedTagSpans.BinarySearch(tagUnderCursor, new StartComparer());
 
             Contract.ThrowIfFalse(destIndex >= 0, "Expected to find start tag in the collection");
 
-            destIndex += next ? 1 : -1;
+            destIndex += navigateToNext ? 1 : -1;
             if (destIndex < 0)
             {
                 destIndex = orderedTagSpans.Count - 1;

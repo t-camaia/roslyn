@@ -8,24 +8,23 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
-    internal partial class RenameCommandHandler : IChainedCommandHandler<EscapeKeyCommandArgs>
+    internal partial class RenameCommandHandler : VSCommanding.ICommandHandler<EscapeKeyCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(EscapeKeyCommandArgs args)
         {
-            return GetCommandState(nextHandler);
+            return GetCommandState();
         }
 
-        public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(EscapeKeyCommandArgs args, CommandExecutionContext context)
         {
             if (_renameService.ActiveSession != null)
             {
                 _renameService.ActiveSession.Cancel();
                 (args.TextView as IWpfTextView).VisualElement.Focus();
+                return true;
             }
-            else
-            {
-                nextHandler();
-            }
+
+            return false;
         }
     }
 }

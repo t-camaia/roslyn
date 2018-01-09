@@ -25,7 +25,6 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
         private readonly IContentTypeRegistryService _contentTypeRegistryService;
         private readonly IEditorOptionsFactoryService _editorOptionsFactoryService;
         private readonly IEditorOperationsFactoryService _editorOperationsFactoryService;
-        private readonly IWaitIndicator _waitIndicator;
 
         protected InteractiveCommandHandler(
             IContentTypeRegistryService contentTypeRegistryService,
@@ -36,7 +35,6 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             _contentTypeRegistryService = contentTypeRegistryService;
             _editorOptionsFactoryService = editorOptionsFactoryService;
             _editorOperationsFactoryService = editorOperationsFactoryService;
-            _waitIndicator = waitIndicator;
         }
 
         protected IContentTypeRegistryService ContentTypeRegistryService { get { return _contentTypeRegistryService; } }
@@ -60,9 +58,9 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         bool VSCommanding.ICommandHandler<ExecuteInInteractiveCommandArgs>.ExecuteCommand(ExecuteInInteractiveCommandArgs args, CommandExecutionContext context)
         {
+            var window = OpenInteractiveWindow(focus: false);
             using (context.WaitContext.AddScope(allowCancellation: true, InteractiveEditorFeaturesResources.Executing_selection_in_Interactive_Window))
             {
-                var window = OpenInteractiveWindow(focus: false);
                 string submission = GetSelectedText(args, context.WaitContext.UserCancellationToken);
                 if (!String.IsNullOrWhiteSpace(submission))
                 {
@@ -85,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
             if (buffer != null)
             {
-                CopyToWindow(window, args);
+                CopyToWindow(window, args, context);
             }
             else
             {
@@ -93,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
                 action = new Action(() =>
                 {
                     window.ReadyForInput -= action;
-                    CopyToWindow(window, args);
+                    CopyToWindow(window, args, context);
                 });
 
                 window.ReadyForInput += action;
@@ -102,34 +100,31 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             return true;
         }
 
-        private void CopyToWindow(IInteractiveWindow window, CopyToInteractiveCommandArgs args)
+        private void CopyToWindow(IInteractiveWindow window, CopyToInteractiveCommandArgs args, CommandExecutionContext context)
         {
             var buffer = window.CurrentLanguageBuffer;
             Debug.Assert(buffer != null);
 
             using (var edit = buffer.CreateEdit())
             {
-                _waitIndicator.Wait(
-                    InteractiveEditorFeaturesResources.Copying_selection_to_Interactive_Window,
-                    allowCancel: true,
-                    action: context =>
+                using (var waitScope = context.WaitContext.AddScope(allowCancellation: true, 
+                    InteractiveEditorFeaturesResources.Copying_selection_to_Interactive_Window))
+                {
+                    var text = GetSelectedText(args, context.WaitContext.UserCancellationToken);
+
+                    // If the last line isn't empty in the existing submission buffer, we will prepend a
+                    // newline
+                    var lastLine = buffer.CurrentSnapshot.GetLineFromLineNumber(buffer.CurrentSnapshot.LineCount - 1);
+                    if (lastLine.Extent.Length > 0)
                     {
-                        Thread.Sleep(5000);
-                        var text = GetSelectedText(args, context.CancellationToken);
+                        var editorOptions = _editorOptionsFactoryService.GetOptions(args.SubjectBuffer);
+                        text = editorOptions.GetNewLineCharacter() + text;
+                    }
 
-                        // If the last line isn't empty in the existing submission buffer, we will prepend a
-                        // newline
-                        var lastLine = buffer.CurrentSnapshot.GetLineFromLineNumber(buffer.CurrentSnapshot.LineCount - 1);
-                        if (lastLine.Extent.Length > 0)
-                        {
-                            var editorOptions = _editorOptionsFactoryService.GetOptions(args.SubjectBuffer);
-                            text = editorOptions.GetNewLineCharacter() + text;
-                        }
-
-                        edit.Insert(buffer.CurrentSnapshot.Length, text);
-                        edit.Apply();
-                    });
+                    edit.Insert(buffer.CurrentSnapshot.Length, text);
+                    edit.Apply();
                 }
+            }
 
             // Move the caret to the end
             var editorOperations = _editorOperationsFactoryService.GetEditorOperations(window.TextView);

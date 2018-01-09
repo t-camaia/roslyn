@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Utilities;
 namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
 {
     /// <summary>
-    /// An adapter between editor's <see cref="IUIThreadOperationScope"/> (which supports reporing progress) 
+    /// An adapter between editor's <see cref="IUIThreadOperationScope"/> (which supports reporting progress) 
     /// and <see cref="IProgressTracker"/>.
     /// </summary>
     internal class ProgressTrackerAdapter : IProgressTracker

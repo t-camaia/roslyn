@@ -8,19 +8,19 @@ using VSCommanding = Microsoft.VisualStudio.Commanding;
 namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 {
     internal partial class RenameCommandHandler :
-        IChainedCommandHandler<UndoCommandArgs>, IChainedCommandHandler<RedoCommandArgs>
+        VSCommanding.ICommandHandler<UndoCommandArgs>, VSCommanding.ICommandHandler<RedoCommandArgs>
     {
-        public VSCommanding.CommandState GetCommandState(UndoCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(UndoCommandArgs args)
         {
-            return GetCommandState(nextHandler);
+            return GetCommandState();
         }
 
-        public VSCommanding.CommandState GetCommandState(RedoCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(RedoCommandArgs args)
         {
-            return GetCommandState(nextHandler);
+            return GetCommandState();
         }
 
-        public void ExecuteCommand(UndoCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(UndoCommandArgs args, CommandExecutionContext context)
         {
             if (_renameService.ActiveSession != null)
             {
@@ -28,14 +28,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 {
                     _renameService.ActiveSession.UndoManager.Undo(args.SubjectBuffer);
                 }
+
+                return true;
             }
-            else
-            {
-                nextHandler();
-            }
+
+            return false;
         }
 
-        public void ExecuteCommand(RedoCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(RedoCommandArgs args, CommandExecutionContext context)
         {
             if (_renameService.ActiveSession != null)
             {
@@ -43,11 +43,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 {
                     _renameService.ActiveSession.UndoManager.Redo(args.SubjectBuffer);
                 }
+
+                return true;
             }
-            else
-            {
-                nextHandler();
-            }
+
+            return false;
         }
     }
 }

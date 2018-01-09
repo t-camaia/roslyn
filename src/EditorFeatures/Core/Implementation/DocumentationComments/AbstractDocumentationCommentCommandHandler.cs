@@ -24,8 +24,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 {
     internal abstract class AbstractDocumentationCommentCommandHandler<TDocumentationComment, TMemberNode> :
         IChainedCommandHandler<TypeCharCommandArgs>,
-        IChainedCommandHandler<ReturnKeyCommandArgs>,
-        IChainedCommandHandler<InsertCommentCommandArgs>,
+        VSCommanding.ICommandHandler<ReturnKeyCommandArgs>,
+        VSCommanding.ICommandHandler<InsertCommentCommandArgs>,
         IChainedCommandHandler<OpenLineAboveCommandArgs>,
         IChainedCommandHandler<OpenLineBelowCommandArgs>
         where TDocumentationComment : SyntaxNode, IStructuredTriviaSyntax
@@ -489,12 +489,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCharacterTyped, CancellationToken.None);
         }
 
-        public VSCommanding.CommandState GetCommandState(ReturnKeyCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(ReturnKeyCommandArgs args)
         {
-            return nextHandler();
+            return VSCommanding.CommandState.Unspecified;
         }
 
-        public void ExecuteCommand(ReturnKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(ReturnKeyCommandArgs args, CommandExecutionContext context)
         {
             // Check to see if the current line starts with exterior trivia. If so, we'll take over.
             // If not, let the nextHandler run.
@@ -518,14 +518,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 
             if (originalPosition < 0)
             {
-                nextHandler();
-                return;
+                return false;
             }
 
             if (!CurrentLineStartsWithExteriorTrivia(args.SubjectBuffer, originalPosition))
             {
-                nextHandler();
-                return;
+                return false;
             }
 
             // According to JasonMal, the text undo history is associated with the surface buffer
@@ -542,9 +540,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
                 // the transaction -- even if we didn't generate anything.
                 transaction.Complete();
             }
+
+            return true;
         }
 
-        public VSCommanding.CommandState GetCommandState(InsertCommentCommandArgs args, Func<VSCommanding.CommandState> nextHandler)
+        public VSCommanding.CommandState GetCommandState(InsertCommentCommandArgs args)
         {
             var caretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
             if (caretPosition < 0)
@@ -571,16 +571,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
                 : VSCommanding.CommandState.Unavailable;
         }
 
-        public void ExecuteCommand(InsertCommentCommandArgs args, Action nextHandler, CommandExecutionContext context)
+        public bool ExecuteCommand(InsertCommentCommandArgs args, CommandExecutionContext context)
         {
             var originalCaretPosition = args.TextView.GetCaretPoint(args.SubjectBuffer) ?? -1;
 
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Inserting_documentation_comment))
             {
-                if (!CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.UserCancellationToken))
-                {
-                    nextHandler();
-                }
+                return CompleteComment(args.SubjectBuffer, args.TextView, originalCaretPosition, InsertOnCommandInvoke, context.WaitContext.UserCancellationToken);
             }
         }
 
